@@ -1,3 +1,8 @@
+/**
+ * this class represents patients in the hospital management system
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.patient;
 
 import javax.persistence.*;
@@ -25,6 +30,7 @@ public class Patient {
     @Column(name = "address",nullable = false,columnDefinition = "TEXT")
     private String address;
 
+
     public Patient(Long ssn, String familyDoctor, String firstName, String lastName, Long phone, String address) {
         this.ssn = ssn;
         this.familyDoctor = familyDoctor;
@@ -37,47 +43,90 @@ public class Patient {
     public Patient() {
     }
 
-
+    /**
+     * update a patients family doctor
+     * @param familyDoctor the patients new family doctor
+     */
     public void setFamilyDoctor(String familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
+    /**
+     * update a patients first name
+     * @param firstName the patients new first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * update a persons last name
+     * @param lastName the persons new last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * update a persons phone number
+     * @param phone the persons new phone number
+     */
     public void setPhone(Long phone) {
         this.phone = phone;
     }
 
+    /**
+     * update a persons address
+     * @param address the persons new phone number
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * getter for a patients ssn
+     * @return the patients ssn
+     */
     public Long getSsn() {
         return ssn;
     }
 
+    /**
+     * getter for a patients family doctor
+     * @return the patients family doctor
+     */
     public String getFamilyDoctor() {
         return familyDoctor;
     }
 
+    /**
+     * getter for a patients first name
+     * @return the patients first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * getter for a patients last name
+     * @return the patients last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * getter for a patients phone number
+     * @return the patients phone number
+     */
     public Long getPhone() {
         return phone;
     }
 
+    /**
+     * getter for a patients address
+     * @return the patients address
+     */
     public String getAddress() {
         return address;
     }
