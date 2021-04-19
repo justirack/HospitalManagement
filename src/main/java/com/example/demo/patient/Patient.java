@@ -5,9 +5,11 @@
 
 package com.example.demo.patient;
 
+import com.example.demo.doctor.Doctor;
+
 import javax.persistence.*;
 
-@Entity(name = "patient")
+@Entity
 @Table
 public class Patient {
 
@@ -20,19 +22,18 @@ public class Patient {
     @Column(name = "ssn", updatable = false)
     private Long ssn;
     @Column(name = "family_doctor", nullable = false, columnDefinition = "TEXT")
-    private String familyDoctor;
+    private Doctor familyDoctor;
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     private String firstName;
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
     @Column(name = "phone",nullable = false,columnDefinition = "LONG",length = 10)
-    private Long phone;
+    private Integer phone;
     @Column(name = "address",nullable = false,columnDefinition = "TEXT")
     private String address;
 
 
-    public Patient(Long ssn, String familyDoctor, String firstName, String lastName, Long phone, String address) {
-        this.ssn = ssn;
+    public Patient(Doctor familyDoctor, String firstName, String lastName, Integer phone, String address) {
         this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,7 +48,7 @@ public class Patient {
      * update a patients family doctor
      * @param familyDoctor the patients new family doctor
      */
-    public void setFamilyDoctor(String familyDoctor) {
+    public void setFamilyDoctor(Doctor familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
@@ -71,7 +72,7 @@ public class Patient {
      * update a persons phone number
      * @param phone the persons new phone number
      */
-    public void setPhone(Long phone) {
+    public void setPhone(Integer phone) {
         this.phone = phone;
     }
 
@@ -95,7 +96,7 @@ public class Patient {
      * getter for a patients family doctor
      * @return the patients family doctor
      */
-    public String getFamilyDoctor() {
+    public Doctor getFamilyDoctor() {
         return familyDoctor;
     }
 
@@ -119,7 +120,7 @@ public class Patient {
      * getter for a patients phone number
      * @return the patients phone number
      */
-    public Long getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
