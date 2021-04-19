@@ -5,7 +5,6 @@
 
 package com.example.demo.patient;
 
-import com.example.demo.doctor.Doctor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -20,22 +19,22 @@ public class Patient {
     @SequenceGenerator(name = "ssn", sequenceName = "ssn", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
     //ssn should have its own column
-    @Column(name = "ssn", updatable = false)
+    @Column(name = "ssn",updatable = false)
     private Long ssn;
-    @Column(name = "family_doctor", nullable = false, columnDefinition = "TEXT")
-    @Type(type = "Doctor")
-    private Doctor familyDoctor;
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "family_doctor",nullable = false)
+    private String familyDoctor;
+    @Column(name = "first_name",nullable = false)
     private String firstName;
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "last_name",nullable = false)
     private String lastName;
-    @Column(name = "phone",nullable = false,columnDefinition = "LONG",length = 10)
+    @Column(name = "phone",length = 10, nullable = false)
     private Integer phone;
-    @Column(name = "address",nullable = false,columnDefinition = "TEXT")
+    @Column(name = "address",nullable = false)
     private String address;
 
 
-    public Patient(Doctor familyDoctor, String firstName, String lastName, Integer phone, String address) {
+
+    public Patient(String familyDoctor, String firstName, String lastName, Integer phone, String address) {
         this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,7 +49,7 @@ public class Patient {
      * update a patients family doctor
      * @param familyDoctor the patients new family doctor
      */
-    public void setFamilyDoctor(Doctor familyDoctor) {
+    public void setFamilyDoctor(String familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
@@ -98,7 +97,7 @@ public class Patient {
      * getter for a patients family doctor
      * @return the patients family doctor
      */
-    public Doctor getFamilyDoctor() {
+    public String getFamilyDoctor() {
         return familyDoctor;
     }
 

@@ -1,5 +1,4 @@
 package com.example.demo.patient;
-import com.example.demo.doctor.Doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +54,7 @@ public class PatientService {
         }
     }
 
-    public void changeFamilyDoctor(Long ssn, Doctor newDoctor){
+    public void changeFamilyDoctor(Long ssn, String newDoctor){
         Patient patient = createPatient(ssn);
 
         //check if doctor exists in doctor repo

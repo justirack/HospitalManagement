@@ -6,7 +6,6 @@
 
 package com.example.demo.patient;
 
-import com.example.demo.doctor.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import java.util.List;
 //allow the class to serve REST endpoints
 @RestController
 //create a new page for patients at localhost:8080/patient
-@RequestMapping
+@RequestMapping(path = "patient")
 public class PatientController {
 
     //create a permanent reference to patient service
@@ -45,7 +44,7 @@ public class PatientController {
     public void updatePatient(@PathVariable("patientSsn") Long ssn,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
-                              @RequestParam(required = false) Doctor familyDoctor,
+                              @RequestParam(required = false) String familyDoctor,
                               @RequestParam(required = false) Integer phone,
                               @RequestParam(required = false) String address){
         patientService.changeName(ssn,firstName,lastName);
