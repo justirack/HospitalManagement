@@ -6,6 +6,7 @@
 package com.example.demo.patient;
 
 import com.example.demo.doctor.Doctor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -22,6 +23,7 @@ public class Patient {
     @Column(name = "ssn", updatable = false)
     private Long ssn;
     @Column(name = "family_doctor", nullable = false, columnDefinition = "TEXT")
+    @Type(type = "Doctor")
     private Doctor familyDoctor;
     @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
     private String firstName;

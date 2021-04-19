@@ -55,7 +55,7 @@ public class PatientService {
         }
     }
 
-    public void changeFamilyDoctor(Long ssn, String newDoctor){
+    public void changeFamilyDoctor(Long ssn, Doctor newDoctor){
         Patient patient = createPatient(ssn);
 
         //check if doctor exists in doctor repo
@@ -85,7 +85,7 @@ public class PatientService {
                 "Patient with SSN " + ssn + " not found."));
     }
 
-    private Doctor createDoctor (){
-        //make and return new doctor here
-    }
+//    private Doctor createDoctor (){
+//        //make and return new doctor here
+//    }
 }
