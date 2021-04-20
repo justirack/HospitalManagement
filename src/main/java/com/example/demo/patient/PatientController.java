@@ -35,12 +35,12 @@ public class PatientController {
         patientService.addNewPatient(patient);
     }
 
-    @DeleteMapping(path = "patientSsn")
+    @DeleteMapping(path = "{patientSsn}")
     public void deletePatient(@PathVariable("patientSsn")Long ssn){
         patientService.removePatientBySsn(ssn);
     }
 
-    @PutMapping(path = "patientSsn")
+    @PutMapping(path = "{patientSsn}")
     public void updatePatient(@PathVariable("patientSsn") Long ssn,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
