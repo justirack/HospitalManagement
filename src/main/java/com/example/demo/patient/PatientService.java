@@ -34,6 +34,7 @@ public class PatientService {
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
             throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
         }
+        patientRepository.deleteById(ssn);
     }
 
     public void changeName(@RequestParam Long ssn,
@@ -84,7 +85,4 @@ public class PatientService {
                 "Patient with SSN " + ssn + " not found."));
     }
 
-//    private Doctor createDoctor (){
-//        //make and return new doctor here
-//    }
 }
