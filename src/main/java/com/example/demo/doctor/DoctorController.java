@@ -19,12 +19,15 @@ public class DoctorController {
     }
 
     @GetMapping
-    public
+    public List<Doctor> getDoctors(){
+        return doctorService.getDoctors();
+    }
 
     @PostMapping
-    public List<Doctor> addDoctor(@RequestBody Doctor doctor){
+    public void addDoctor(@RequestBody Doctor doctor){
         doctorService.addDoctor(doctor);
     }
+
 
 
 }

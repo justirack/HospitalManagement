@@ -44,12 +44,12 @@ public class PatientController {
     public void updatePatient(@PathVariable("patientSsn") Long ssn,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
-                              @RequestParam(required = false) String familyDoctor,
+                              @RequestParam(required = false) Long DoctorId,
                               @RequestParam(required = false) String phone,
                               @RequestParam(required = false) String address){
         patientService.changeName(ssn,firstName,lastName);
         patientService.changeAddress(ssn,address);
-        patientService.changeFamilyDoctor(ssn,familyDoctor);
+        patientService.changeFamilyDoctor(ssn,DoctorId);
         patientService.changePhone(ssn, phone);
     }
 

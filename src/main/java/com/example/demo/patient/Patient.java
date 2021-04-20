@@ -5,6 +5,7 @@
 
 package com.example.demo.patient;
 
+import com.example.demo.doctor.Doctor;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -21,7 +22,8 @@ public class Patient {
     @Column(name = "ssn",updatable = false)
     private Long ssn;
     @Column(name = "family_doctor",nullable = false)
-    private String familyDoctor;
+    @Type(type = "doctor")
+    private Doctor familyDoctor;
     @Column(name = "first_name",nullable = false)
     private String firstName;
     @Column(name = "last_name",nullable = false)
@@ -33,7 +35,7 @@ public class Patient {
 
 
 
-    public Patient(String familyDoctor, String firstName, String lastName, String phone, String address) {
+    public Patient(Doctor familyDoctor, String firstName, String lastName, String phone, String address) {
         this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,7 +50,7 @@ public class Patient {
      * update a patients family doctor
      * @param familyDoctor the patients new family doctor
      */
-    public void setFamilyDoctor(String familyDoctor) {
+    public void setFamilyDoctor(Doctor familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
@@ -96,7 +98,7 @@ public class Patient {
      * getter for a patients family doctor
      * @return the patients family doctor
      */
-    public String getFamilyDoctor() {
+    public Doctor getFamilyDoctor() {
         return familyDoctor;
     }
 

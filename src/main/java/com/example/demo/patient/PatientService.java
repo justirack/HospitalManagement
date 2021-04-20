@@ -1,5 +1,7 @@
 package com.example.demo.patient;
 
+import com.example.demo.doctor.Doctor;
+import com.example.demo.doctor.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -10,12 +12,15 @@ import java.util.Objects;
 @Service
 public class PatientService {
 
-    //create a permanent reference to the repository
+    //create a permanent reference to the patient repository
     private final PatientRepository patientRepository;
+    //create a permanent reference to the doctor repository
+    private final DoctorRepository doctorRepository;
 
     @Autowired
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, DoctorRepository doctorRepository) {
         this.patientRepository = patientRepository;
+        this.doctorRepository = doctorRepository;
     }
 
     public List<Patient> getPatients(){
@@ -55,9 +60,9 @@ public class PatientService {
         }
     }
 
-    public void changeFamilyDoctor(Long ssn, String newDoctor){
+    public void changeFamilyDoctor(Long ssn, Long doctorId){
         Patient patient = createPatient(ssn);
-
+        Doctor doctor = createDoctor(doctorId);
         //check if doctor exists in doctor repo
     }
 
@@ -85,4 +90,11 @@ public class PatientService {
                 "Patient with SSN " + ssn + " not found."));
     }
 
+    //a helper method to make sure a doctor exists
+    private Doctor createDoctor(Long id){
+        //create a temporary doctor by getting the doctor with the given id
+        //if no such doctor exists, throw an exception
+        return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(
+                "Doctor with id " + id + " not found."));
+    }
 }
