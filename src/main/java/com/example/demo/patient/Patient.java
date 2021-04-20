@@ -18,7 +18,6 @@ public class Patient {
     //ssn's will be automatically generated
     @SequenceGenerator(name = "ssn", sequenceName = "ssn", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
-    //ssn should have its own column
     @Column(name = "ssn",updatable = false)
     private Long ssn;
     @Column(name = "family_doctor",nullable = false)
@@ -28,13 +27,13 @@ public class Patient {
     @Column(name = "last_name",nullable = false)
     private String lastName;
     @Column(name = "phone",length = 10, nullable = false)
-    private Integer phone;
+    private String phone;
     @Column(name = "address",nullable = false)
     private String address;
 
 
 
-    public Patient(String familyDoctor, String firstName, String lastName, Integer phone, String address) {
+    public Patient(String familyDoctor, String firstName, String lastName, String phone, String address) {
         this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,7 +72,7 @@ public class Patient {
      * update a persons phone number
      * @param phone the persons new phone number
      */
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -121,7 +120,7 @@ public class Patient {
      * getter for a patients phone number
      * @return the patients phone number
      */
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 

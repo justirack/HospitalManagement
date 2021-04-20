@@ -60,10 +60,10 @@ public class PatientService {
         //check if doctor exists in doctor repo
     }
 
-    public void changePhone(Long ssn, Integer newPhone){
+    public void changePhone(Long ssn, String newPhone){
         Patient patient = createPatient(ssn);
 
-        if (newPhone != null && newPhone > 0 && newPhone != patient.getPhone()){
+        if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
             patient.setPhone(newPhone);
         }
     }
