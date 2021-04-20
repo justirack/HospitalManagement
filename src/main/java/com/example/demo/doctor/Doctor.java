@@ -14,16 +14,16 @@ public class Doctor {
     @Column(name = "employee_id")
     private Long empId;
     @Column(name = "first_name",nullable = false)
-    private String first_name;
+    private String firstName;
     @Column(name = "last_name",nullable = false)
-    private String last_name;
+    private String lastName;
     @Column(name = "phone",nullable = false,length = 10)
     private String phone;
 
-    public Doctor(Long empId, String first_name, String last_name, String phone) {
+    public Doctor(Long empId, String firstName, String lastName, String phone) {
         this.empId = empId;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phone = phone;
     }
 
@@ -34,12 +34,12 @@ public class Doctor {
         this.empId = empId;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setPhone(String phone) {
@@ -50,12 +50,12 @@ public class Doctor {
         return empId;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getPhone() {
