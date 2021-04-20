@@ -1,5 +1,6 @@
 /**
  * this class represents patients in the hospital management system
+ * each patient will have a ssn, family doctor, first name, last name, phone and address
  * @author - Justin Rackley
  */
 

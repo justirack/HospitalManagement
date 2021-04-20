@@ -1,3 +1,9 @@
+/**
+ * this class represents doctors in the hospital management system
+ * each doctor will have an id, first name, last name and phone
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.doctor;
 
 import javax.persistence.*;
@@ -11,7 +17,7 @@ public class Doctor {
     //employee id's are generated in a sequence
     @SequenceGenerator(name = "employee_id",sequenceName = "employee_id",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employee_id")
-    @Column(name = "employee_id")
+    @Column(name = "employee_id", updatable = false)
     private Long empId;
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -30,34 +36,58 @@ public class Doctor {
     public Doctor() {
     }
 
-    public void setEmpId(Long empId) {
-        this.empId = empId;
-    }
-
+    /**
+     * setter for a doctors first name
+     * @param firstName
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * setter for a doctors last name
+     * @param lastName
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * setter for a doctors phone
+     * @param phone
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    /**
+     * getter for a doctors employee id
+     * @return the doctors employee id
+     */
     public Long getEmpId() {
         return empId;
     }
 
+    /**
+     * getter for a doctors first name
+     * @return the doctors first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * getter for a doctors last name
+     * @return the doctors last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * getter for a doctor's phone number
+     * @return the doctors phone number
+     */
     public String getPhone() {
         return phone;
     }

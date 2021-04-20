@@ -1,3 +1,9 @@
+/**
+ * this class acts as an in-between for the patientController and the patientRepository
+ * this is called the "service layer"
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.patient;
 
 import com.example.demo.doctor.Doctor;
@@ -17,16 +23,25 @@ public class PatientService {
     //create a permanent reference to the doctor repository
     private final DoctorRepository doctorRepository;
 
+    //inject patientRepository and doctorRepository's beans into this class
     @Autowired
     public PatientService(PatientRepository patientRepository, DoctorRepository doctorRepository) {
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
     }
 
+    /**
+     * a getter for a list of the patients in the database
+     * @return a list of all of the patients in the database
+     */
     public List<Patient> getPatients(){
         return patientRepository.findAll();
     }
 
+    /**
+     * a method to allow a user to add a new patient to the database
+     * @param patient teh patient to add to the database
+     */
     public void addNewPatient(Patient patient){
         //make sure this patient doesnt already exist in our database
         if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
@@ -35,13 +50,23 @@ public class PatientService {
         patientRepository.save(patient);
     }
 
-    public void removePatientBySsn(Long ssn){
+    /**
+     * a method to allow a user to remove a patient from the database
+     * @param ssn the ssn of the patient to remove
+     */
+    public void removePatient(Long ssn){
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
             throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
         }
         patientRepository.deleteById(ssn);
     }
 
+    /**
+     * a method to allow a user to change a patient's name
+     * @param ssn the ssn of the patient to change
+     * @param firstName the new first name
+     * @param lastName the new last name
+     */
     public void changeName(@RequestParam Long ssn,
                            @RequestParam(required = false) String firstName,
                            @RequestParam(required = false) String lastName)
@@ -60,12 +85,22 @@ public class PatientService {
         }
     }
 
+    /**
+     * a method to change a patient's family doctor
+     * @param ssn the ssn of the patient to change
+     * @param doctorId the employee id of the new family doctor
+     */
     public void changeFamilyDoctor(Long ssn, Long doctorId){
         Patient patient = createPatient(ssn);
         Doctor doctor = createDoctor(doctorId);
         //check if doctor exists in doctor repo
     }
 
+    /**
+     * a method to change the phone number of a patient
+     * @param ssn the ssn of the patient to change
+     * @param newPhone the new phone number
+     */
     public void changePhone(Long ssn, String newPhone){
         Patient patient = createPatient(ssn);
 
@@ -74,6 +109,11 @@ public class PatientService {
         }
     }
 
+    /**
+     * a method to change the address of a patient
+     * @param ssn the ssn of the patient to change
+     * @param newAddress the new address
+     */
     public void changeAddress(Long ssn, String newAddress){
         Patient patient = createPatient(ssn);
 
