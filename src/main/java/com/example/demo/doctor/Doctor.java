@@ -38,7 +38,7 @@ public class Doctor {
 
     /**
      * setter for a doctors first name
-     * @param firstName
+     * @param firstName the new first name
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -46,7 +46,7 @@ public class Doctor {
 
     /**
      * setter for a doctors last name
-     * @param lastName
+     * @param lastName the new last name
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -54,7 +54,7 @@ public class Doctor {
 
     /**
      * setter for a doctors phone
-     * @param phone
+     * @param phone the new phone number
      */
     public void setPhone(String phone) {
         this.phone = phone;
