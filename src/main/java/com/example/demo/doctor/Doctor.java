@@ -19,11 +19,11 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employee_id")
     @Column(name = "employee_id", updatable = false)
     private Long empId;
-    @Column(name = "first_name",nullable = false)
+    @Column(nullable = false)
     private String firstName;
-    @Column(name = "last_name",nullable = false)
+    @Column(nullable = false)
     private String lastName;
-    @Column(name = "phone",nullable = false,length = 10)
+    @Column(nullable = false,length = 10)
     private String phone;
 
     public Doctor(Long empId, String firstName, String lastName, String phone) {
