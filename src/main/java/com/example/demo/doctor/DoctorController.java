@@ -18,7 +18,6 @@ public class DoctorController {
     //create a permanent reference to doctorService
     private final DoctorService doctorService;
 
-
     //inject doctorService's bean into this class' bean
     @Autowired
     public DoctorController(DoctorService doctorService){
@@ -36,11 +35,11 @@ public class DoctorController {
 
     /**
      * allow a user to add a doctor to the database
-     * @param doctorId the doctor to add to the database's id
+     * @param doctor the doctor to add to the database
      */
     @PostMapping(path = "addDoctor")
-    public void addDoctor(@RequestBody long doctorId){
-        doctorService.addDoctor(doctorId);
+    public void addDoctor(@RequestBody Doctor doctor){
+        doctorService.addDoctor(doctor);
     }
 
     /**

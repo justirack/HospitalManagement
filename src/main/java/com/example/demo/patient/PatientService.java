@@ -40,14 +40,14 @@ public class PatientService {
 
     /**
      * a method to allow a user to add a new patient to the database
-     * @param ssn the ssn of the patient to add to the database
+     * @param patient teh patient to add to the database
      */
-    public void addNewPatient(long ssn){
+    public void addNewPatient(Patient patient){
         //make sure this patient doesnt already exist in our database
-        if (patientRepository.findPatientBySsn(ssn).isPresent()){
+        if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
             throw new IllegalStateException("A patient with this ssn already exists.");
         }
-        patientRepository.save(createPatient(ssn));
+        patientRepository.save(patient);
     }
 
     /**
@@ -90,7 +90,7 @@ public class PatientService {
      * @param ssn the ssn of the patient to change
      * @param doctorId the employee id of the new family doctor
      */
-    public void changeFamilyDoctor(Long ssn, Long doctorId){
+    public void changeFamilyDoctor(long ssn, Long doctorId){
         Patient patient = createPatient(ssn);
         Doctor doctor = createDoctor(doctorId);
         //check if doctor exists in doctor repo
@@ -101,7 +101,7 @@ public class PatientService {
      * @param ssn the ssn of the patient to change
      * @param newPhone the new phone number
      */
-    public void changePhone(Long ssn, String newPhone){
+    public void changePhone(long ssn, String newPhone){
         Patient patient = createPatient(ssn);
 
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
@@ -114,7 +114,7 @@ public class PatientService {
      * @param ssn the ssn of the patient to change
      * @param newAddress the new address
      */
-    public void changeAddress(Long ssn, String newAddress){
+    public void changeAddress(long ssn, String newAddress){
         Patient patient = createPatient(ssn);
 
         if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
@@ -123,7 +123,7 @@ public class PatientService {
     }
 
     //A helper method to check if the patient exists in our database
-    private Patient createPatient(Long ssn){
+    private Patient createPatient(long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
         return patientRepository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
@@ -131,7 +131,7 @@ public class PatientService {
     }
 
     //a helper method to make sure a doctor exists
-    private Doctor createDoctor(Long id){
+    private Doctor createDoctor(long id){
         //create a temporary doctor by getting the doctor with the given id
         //if no such doctor exists, throw an exception
         return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(

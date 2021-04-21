@@ -35,13 +35,13 @@ public class DoctorService {
 
     /**
      * a method to add a new doctor to the database
-     * @param doctorId the doctor to add to the databse's id
+     * @param doctor the doctor to add to the databse
      */
-    public void addDoctor(long doctorId){
-        if (doctorRepository.findById(doctorId).isPresent()){
+    public void addDoctor(Doctor doctor){
+        if (doctorRepository.findById(doctor.getEmpId()).isPresent()){
             throw new IllegalStateException("A doctor with this employee id already exists.");
         }
-        doctorRepository.save(createDoctor(doctorId));
+        doctorRepository.save(doctor);
     }
 
     /**

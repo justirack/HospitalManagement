@@ -47,9 +47,8 @@ public class PatientController {
      * allow a user to add a new patient to the database
      */
     @PostMapping(path = "addPatient")
-    public void addPatient(@RequestBody long ssn){
-
-        patientService.addNewPatient(ssn);
+    public void addPatient(@RequestBody Patient patient){
+        patientService.addNewPatient(patient);
     }
 
     /**

@@ -24,8 +24,8 @@ public class Patient {
     private long ssn;
     @Type(type = "doctor")
     @ManyToOne(optional = false)
-    private long familyDoctorId;
-    @Column(nullable = false)
+    private Doctor familyDoctor;
+    @Column(name = "first_name",nullable = false)
     private String firstName;
     @Column(nullable = false)
     private String lastName;
@@ -34,8 +34,8 @@ public class Patient {
     @Column(nullable = false)
     private String address;
 
-    public Patient(long familyDoctorId, String firstName, String lastName, String phone, String address) {
-        this.familyDoctorId = familyDoctorId;
+    public Patient(Doctor familyDoctor, String firstName, String lastName, String phone, String address) {
+        this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -47,10 +47,10 @@ public class Patient {
 
     /**
      * update a patients family doctor
-     * @param familyDoctorId the patients new family doctor
+     * @param familyDoctor the patients new family doctor
      */
-    public void setFamilyDoctor(long familyDoctorId) {
-        this.familyDoctorId = familyDoctorId;
+    public void setFamilyDoctor(Doctor familyDoctor) {
+        this.familyDoctor = familyDoctor;
     }
 
     /**
@@ -89,7 +89,7 @@ public class Patient {
      * getter for a patients ssn
      * @return the patients ssn
      */
-    public Long getSsn() {
+    public long getSsn() {
         return ssn;
     }
 
@@ -97,8 +97,8 @@ public class Patient {
      * getter for a patients family doctor
      * @return the patients family doctor
      */
-    public long getFamilyDoctorId() {
-        return familyDoctorId;
+    public Doctor getFamilyDoctor() {
+        return familyDoctor;
     }
 
     /**
