@@ -39,8 +39,8 @@ public class DrugController {
                            @RequestParam String description){
         Drug drug = createDrug(formula,name,description);
         drugService.changeFormula(formula);
-        drugService.changeName(name);
-        drugService.changeDescription(description);
+        drugService.changeName(formula, name);
+        drugService.changeDescription(formula, description);
     }
 
     private Drug createDrug(String formula, String name, String description){
