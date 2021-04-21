@@ -21,9 +21,10 @@ public class Patient {
     @SequenceGenerator(name = "ssn", sequenceName = "ssn", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
     @Column(name = "ssn",updatable = false)
-    private Long ssn;
-    @Column(name = "family_doctor",nullable = false)
+    private long ssn;
+//    @Column(name = "family_doctor",nullable = false)
     @Type(type = "doctor")
+    @ManyToOne(optional = false)
     private Doctor familyDoctor;
     @Column(name = "first_name",nullable = false)
     private String firstName;
@@ -33,8 +34,6 @@ public class Patient {
     private String phone;
     @Column(name = "address",nullable = false)
     private String address;
-
-
 
     public Patient(Doctor familyDoctor, String firstName, String lastName, String phone, String address) {
         this.familyDoctor = familyDoctor;
