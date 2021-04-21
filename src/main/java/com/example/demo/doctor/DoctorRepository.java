@@ -1,3 +1,8 @@
+/**
+ * This class will connect with the database
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.doctor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
