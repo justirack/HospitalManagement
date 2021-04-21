@@ -1,3 +1,8 @@
+/**
+ * This class will help serve REST endpoints and perform CRUD operations
+ * this is the "API layer" that the user interacts with
+ */
+
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,36 +19,53 @@ public class DrugController {
         this.drugService = drugService;
     }
 
+    /**
+     * allow a user to get a list of all drugs in the system
+     * @return the list of all the drugs
+     */
     @GetMapping(path = "getDrugs")
     public List<Drug> getDrugs(){
         return drugService.getDrugs();
     }
 
+    /**
+     * allow a user to add a new drug to the system
+     * @param formula the drugs formula
+     * @param name the drugs name
+     * @param description the drugs description
+     */
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam String formula, @RequestParam String name, @RequestParam String description){
-        Drug drug = createDrug(formula,name,description);
         drugService.addDrug(formula,name,description);
     }
 
+    /**
+     * allow a user to delete a drug
+     * @param formula the formula of the drug to delete
+     * @param name the name of the drug to delete
+     * @param description the description of the drug to delete
+     */
     @DeleteMapping(path = "deleteDrug")
     public void deleteDrug(@RequestParam String formula,
                            @RequestParam String name,
                            @RequestParam String description){
-        Drug drug = createDrug(formula,name,description);
         drugService.deleteDrug(formula,name,description);
     }
 
+    /**
+     * allow a user to change a drugs formula name or description
+     * @param oldFormula the old formula
+     * @param newFormula the new formula
+     * @param name the new name
+     * @param description the new description
+     */
     @PutMapping(path = "updateDrug")
-    public void updateDrug(@RequestParam("updateDrug") String formula,
+    public void updateDrug(@RequestParam("updateDrug") String oldFormula,
+                           @RequestParam String newFormula,
                            @RequestParam String name,
                            @RequestParam String description){
-        Drug drug = createDrug(formula,name,description);
-        drugService.changeFormula(formula);
-        drugService.changeName(formula, name);
-        drugService.changeDescription(formula, description);
-    }
-
-    private Drug createDrug(String formula, String name, String description){
-        return new Drug(formula,name,description);
+        drugService.changeFormula(oldFormula, newFormula);
+        drugService.changeName(oldFormula, name);
+        drugService.changeDescription(oldFormula, description);
     }
 }
