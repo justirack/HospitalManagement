@@ -15,9 +15,9 @@ public class Doctor {
     //A doctors employee id is the primary key
     @Id
     //employee id's are generated in a sequence
-    @SequenceGenerator(name = "employee_id",sequenceName = "employee_id",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "employee_id")
-    @Column(name = "employee_id", updatable = false)
+    @SequenceGenerator(name = "empId",sequenceName = "empId",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "empId")
+    @Column(updatable = false)
     private Long empId;
     @Column(nullable = false)
     private String firstName;
@@ -26,8 +26,7 @@ public class Doctor {
     @Column(nullable = false,length = 10)
     private String phone;
 
-    public Doctor(Long empId, String firstName, String lastName, String phone) {
-        this.empId = empId;
+    public Doctor(String firstName, String lastName, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

@@ -40,21 +40,21 @@ public class PatientService {
 
     /**
      * a method to allow a user to add a new patient to the database
-     * @param patient teh patient to add to the database
+     * @param ssn the ssn of the patient to add to the database
      */
-    public void addNewPatient(Patient patient){
+    public void addNewPatient(long ssn){
         //make sure this patient doesnt already exist in our database
-        if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
+        if (patientRepository.findPatientBySsn(ssn).isPresent()){
             throw new IllegalStateException("A patient with this ssn already exists.");
         }
-        patientRepository.save(patient);
+        patientRepository.save(createPatient(ssn));
     }
 
     /**
      * a method to allow a user to remove a patient from the database
      * @param ssn the ssn of the patient to remove
      */
-    public void removePatient(Long ssn){
+    public void removePatient(long ssn){
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
             throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
         }
@@ -67,7 +67,7 @@ public class PatientService {
      * @param firstName the new first name
      * @param lastName the new last name
      */
-    public void changeName(@RequestParam Long ssn,
+    public void changeName(@RequestParam long ssn,
                            @RequestParam(required = false) String firstName,
                            @RequestParam(required = false) String lastName)
     {

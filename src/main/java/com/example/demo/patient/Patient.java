@@ -22,21 +22,20 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
     @Column(name = "ssn",updatable = false)
     private long ssn;
-//    @Column(name = "family_doctor",nullable = false)
     @Type(type = "doctor")
     @ManyToOne(optional = false)
-    private Doctor familyDoctor;
-    @Column(name = "first_name",nullable = false)
+    private long familyDoctorId;
+    @Column(nullable = false)
     private String firstName;
-    @Column(name = "last_name",nullable = false)
+    @Column(nullable = false)
     private String lastName;
-    @Column(name = "phone",length = 10, nullable = false)
+    @Column(length = 10, nullable = false)
     private String phone;
-    @Column(name = "address",nullable = false)
+    @Column(nullable = false)
     private String address;
 
-    public Patient(Doctor familyDoctor, String firstName, String lastName, String phone, String address) {
-        this.familyDoctor = familyDoctor;
+    public Patient(long familyDoctorId, String firstName, String lastName, String phone, String address) {
+        this.familyDoctorId = familyDoctorId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -48,10 +47,10 @@ public class Patient {
 
     /**
      * update a patients family doctor
-     * @param familyDoctor the patients new family doctor
+     * @param familyDoctorId the patients new family doctor
      */
-    public void setFamilyDoctor(Doctor familyDoctor) {
-        this.familyDoctor = familyDoctor;
+    public void setFamilyDoctor(long familyDoctorId) {
+        this.familyDoctorId = familyDoctorId;
     }
 
     /**
@@ -98,8 +97,8 @@ public class Patient {
      * getter for a patients family doctor
      * @return the patients family doctor
      */
-    public Doctor getFamilyDoctor() {
-        return familyDoctor;
+    public long getFamilyDoctorId() {
+        return familyDoctorId;
     }
 
     /**

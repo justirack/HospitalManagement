@@ -35,20 +35,20 @@ public class DoctorService {
 
     /**
      * a method to add a new doctor to the database
-     * @param doctor the doctor to add to the databse
+     * @param doctorId the doctor to add to the databse's id
      */
-    public void addDoctor(Doctor doctor){
-        if (doctorRepository.findById(doctor.getEmpId()).isPresent()){
+    public void addDoctor(long doctorId){
+        if (doctorRepository.findById(doctorId).isPresent()){
             throw new IllegalStateException("A doctor with this employee id already exists.");
         }
-        doctorRepository.save(doctor);
+        doctorRepository.save(createDoctor(doctorId));
     }
 
     /**
      * a method to remove a doctor from the database
      * @param id the employee id of the doctor to remove
      */
-    public void removeDoctor(Long id){
+    public void removeDoctor(long id){
         if (doctorRepository.findById(id).isEmpty()){
             throw new IllegalStateException("No doctor with this employee id found.");
         }
@@ -61,7 +61,7 @@ public class DoctorService {
      * @param firstName the doctors new first name
      * @param lastName the doctors new last name
      */
-    public void changeName(@RequestParam Long id,
+    public void changeName(@RequestParam long id,
                            @RequestParam(required = false) String firstName,
                            @RequestParam(required = false) String lastName) {
         Doctor doctor = createDoctor(id);
@@ -78,7 +78,7 @@ public class DoctorService {
      * @param id the id of the doctor to change
      * @param phone the doctors new phone number
      */
-    public void changePhone(Long id, String phone){
+    public void changePhone(long id, String phone){
         Doctor doctor = createDoctor(id);
 
         if (phone != null && phone.length() == 10 && !Objects.equals(doctor.getPhone(),phone)){
@@ -87,7 +87,7 @@ public class DoctorService {
     }
 
     //a helper method to make sure a doctor exists
-    private Doctor createDoctor(Long id){
+    private Doctor createDoctor(long id){
         //create a temporary doctor by getting the doctor with the given id
         //if no such doctor exists, throw an exception
         return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(
