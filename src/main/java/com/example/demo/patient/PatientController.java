@@ -55,7 +55,7 @@ public class PatientController {
      * allow a user to delete a person by their ssn
      * @param ssn the person to deletes ssn
      */
-    @DeleteMapping(path = "deletePatient")
+    @DeleteMapping(path = "{deletePatient}")
     public void deletePatient(@PathVariable("deletePatient")long ssn){
         patientService.removePatient(ssn);
     }
@@ -69,8 +69,8 @@ public class PatientController {
      * @param phone the patients phone number
      * @param address the patients address
      */
-    @PutMapping(path = "updatePatient")
-    public void updatePatient(@PathVariable("patientSsn") long ssn,
+    @PutMapping(path = "{updatePatient}")
+    public void updatePatient(@PathVariable("updatePatient") long ssn,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,
                               @RequestParam(required = false) Long DoctorId,

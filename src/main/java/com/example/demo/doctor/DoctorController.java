@@ -46,8 +46,8 @@ public class DoctorController {
      * allow a user to delete a doctor from the database
      * @param doctorId the doctor to remove from the database
      */
-    @DeleteMapping(path = "deleteDoctor")
-    public void deleteDoctor(@PathVariable("doctorId") long doctorId){
+    @DeleteMapping(path = "{deleteDoctor}")
+    public void deleteDoctor(@PathVariable("deleteDoctor") long doctorId){
         doctorService.removeDoctor(doctorId);
     }
 
@@ -58,8 +58,8 @@ public class DoctorController {
      * @param lastName the doctors last name
      * @param phone the doctors phone number
      */
-    @PutMapping(path = "updateDoctor")
-    public void updateDoctor(@PathVariable("doctorId") long id,
+    @PutMapping(path = "{updateDoctor}")
+    public void updateDoctor(@PathVariable("updateDoctor") long id,
                              @RequestParam String firstName,
                              @RequestParam String lastName,
                              @RequestParam String phone){
