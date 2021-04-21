@@ -38,7 +38,7 @@ public class PatientController {
      * allow a user to get a list of all patients in the database
      * @return a list of all patients in teh database
      */
-    @GetMapping
+    @GetMapping(path = "getPatients")
     public List<Patient> getPatients(){
         return patientService.getPatients();
     }
@@ -46,8 +46,8 @@ public class PatientController {
     /**
      * allow a user to add a new patient to the database
      */
-    @PostMapping
-    public void addNewPatient(@RequestBody Patient patient){
+    @PostMapping(path = "addPatient")
+    public void addPatient(@RequestBody Patient patient){
         patientService.addNewPatient(patient);
     }
 
@@ -55,8 +55,8 @@ public class PatientController {
      * allow a user to delete a person by their ssn
      * @param ssn the person to deletes ssn
      */
-    @DeleteMapping(path = "{patientSsn}")
-    public void deletePatient(@PathVariable("patientSsn")Long ssn){
+    @DeleteMapping(path = "deletePatient")
+    public void deletePatient(@PathVariable("deletePatient")Long ssn){
         patientService.removePatient(ssn);
     }
 
@@ -69,7 +69,7 @@ public class PatientController {
      * @param phone the patients phone number
      * @param address the patients address
      */
-    @PutMapping(path = "{patientSsn}")
+    @PutMapping(path = "updatePatient")
     public void updatePatient(@PathVariable("patientSsn") Long ssn,
                               @RequestParam(required = false) String firstName,
                               @RequestParam(required = false) String lastName,

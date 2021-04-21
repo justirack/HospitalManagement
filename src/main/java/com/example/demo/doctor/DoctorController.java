@@ -28,7 +28,7 @@ public class DoctorController {
      * allow a user to get a list of all doctors in the database
      * @return a list of all doctors in the database
      */
-    @GetMapping
+    @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
         return doctorService.getDoctors();
     }
@@ -37,7 +37,7 @@ public class DoctorController {
      * allow a user to add a doctor to the database
      * @param doctor the doctor to add to the database
      */
-    @PostMapping
+    @PostMapping(path = "addDoctor")
     public void addDoctor(@RequestBody Doctor doctor){
         doctorService.addDoctor(doctor);
     }
@@ -46,7 +46,7 @@ public class DoctorController {
      * allow a user to delete a doctor from the database
      * @param doctorId the doctor to remove from the database
      */
-    @DeleteMapping(path = "{doctorId}")
+    @DeleteMapping(path = "deleteDoctor")
     public void deleteDoctor(@PathVariable("doctorId") Long doctorId){
         doctorService.removeDoctor(doctorId);
     }
@@ -58,7 +58,7 @@ public class DoctorController {
      * @param lastName the doctors last name
      * @param phone the doctors phone number
      */
-    @PutMapping(path = "{doctorId}")
+    @PutMapping(path = "updateDoctor")
     public void updateDoctor(@PathVariable("doctorId") Long id,
                              @RequestParam String firstName,
                              @RequestParam String lastName,
