@@ -18,23 +18,23 @@ public class PrescriptionController {
         this.prescriptionService = prescriptionService;
     }
 
-    @GetMapping
+    @GetMapping(path = "getPrescriptions")
     public List<Prescription> getPrescriptions(){
         return prescriptionService.getPrescriptions();
     }
 
-    @PostMapping
+    @PostMapping("addPrescription")
     public void addPrescription(long presId){
         prescriptionService.addPrescription(presId);
     }
 
-    @DeleteMapping
-    public void deletePrescription(long presId){
+    @DeleteMapping("{deletePresctption}")
+    public void deletePrescription(@PathVariable("deletePresctption") long presId){
         prescriptionService.deletePrescription(presId);
     }
 
-    @PutMapping
-    public void updatePrescription(long presId, long amount){
+    @PutMapping("{updatePrescription}")
+    public void updatePrescription(@PathVariable("updatePrescription") long presId, long amount){
         prescriptionService.updatePrescription(presId,amount);
     }
 }
