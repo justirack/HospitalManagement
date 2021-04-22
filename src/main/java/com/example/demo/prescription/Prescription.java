@@ -1,5 +1,5 @@
 /**
- * This class will represent a prescription in the hospital management sytsem
+ * This class will represent a prescription in the hospital management system
  * @author - Justin Rackley
  */
 

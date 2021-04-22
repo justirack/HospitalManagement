@@ -1,6 +1,8 @@
 /**
  * create a class to help serve REST endpoints and perform CRUD operations
  * this is the "API layer" that a user interacts with
+ * this class should be accessible by: 1.Management 2.Doctors(update method only)
+ * @author - Justin Rackley
  */
 
 package com.example.demo.doctor;

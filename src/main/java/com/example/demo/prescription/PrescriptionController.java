@@ -1,6 +1,7 @@
 /**
  * create a class to help serve REST endpoints and perform CRUD operations
  * this is the "API layer" that a user will interact with
+ * this class should only be accessible by: 1.Doctors
  * @author - Justin Rackley
  */
 
