@@ -9,6 +9,7 @@ package com.example.demo.patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OneToMany;
 import java.util.List;
 
 /*
@@ -25,6 +26,7 @@ this class should be accessible by
 public class PatientController {
 
     //create a permanent reference to patient service
+    @OneToMany
     private final PatientService patientService;
 
     //inject patientService's bean into this class' bean
