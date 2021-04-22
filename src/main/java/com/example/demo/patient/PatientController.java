@@ -1,6 +1,7 @@
 /**
  * create a class to help serve REST endpoints and perform CRUD operations
  * this is the "API layer" that a user will interact with
+ * this class should be accessible by: 1.Management 2.Patients(update method only)
  * @author - Justin Rackley
  */
 
@@ -9,6 +10,7 @@ package com.example.demo.patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OneToMany;
 import java.util.List;
 
 /*

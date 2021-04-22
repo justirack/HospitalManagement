@@ -1,6 +1,8 @@
 /**
  * This class will help serve REST endpoints and perform CRUD operations
  * this is the "API layer" that the user interacts with
+ * this class should be accessible by: 1.Management
+ * @author - Justin Rackley
  */
 
 package com.example.demo.drug;
@@ -36,7 +38,7 @@ public class DrugController {
      */
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam String formula, @RequestParam String name, @RequestParam String description){
-        drugService.addDrug(formula,name,description);
+        drugService.addDrug(formula);
     }
 
     /**

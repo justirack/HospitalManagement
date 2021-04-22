@@ -25,7 +25,7 @@ public class Patient {
     @Type(type = "doctor")
     @ManyToOne(optional = false)
     private Doctor familyDoctor;
-    @Column(name = "first_name",nullable = false)
+    @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
     private String lastName;

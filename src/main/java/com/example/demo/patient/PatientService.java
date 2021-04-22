@@ -18,9 +18,8 @@ import java.util.Objects;
 @Service
 public class PatientService {
 
-    //create a permanent reference to the patient repository
+    //create a permanent reference to the patient and doctor repositories
     private final PatientRepository patientRepository;
-    //create a permanent reference to the doctor repository
     private final DoctorRepository doctorRepository;
 
     //inject patientRepository and doctorRepository's beans into this class
