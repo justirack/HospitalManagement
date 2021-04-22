@@ -26,7 +26,6 @@ this class should be accessible by
 public class PatientController {
 
     //create a permanent reference to patient service
-    @OneToMany
     private final PatientService patientService;
 
     //inject patientService's bean into this class' bean

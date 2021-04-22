@@ -12,5 +12,5 @@ import java.util.Optional;
 
 public interface DrugRepository extends JpaRepository<Drug, String> {
     @Query("SELECT s FROM Drug s WHERE s.formula = ?1")
-    Optional<Drug> findPatientBySsn(Long ssn);
+    Optional<Drug> findDrugByFormula(Long ssn);
 }

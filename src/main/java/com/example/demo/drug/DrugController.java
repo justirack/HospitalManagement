@@ -36,7 +36,7 @@ public class DrugController {
      */
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam String formula, @RequestParam String name, @RequestParam String description){
-        drugService.addDrug(formula,name,description);
+        drugService.addDrug(formula);
     }
 
     /**

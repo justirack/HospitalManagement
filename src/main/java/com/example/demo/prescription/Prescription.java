@@ -5,20 +5,29 @@
 
 package com.example.demo.prescription;
 
-import com.example.demo.patient.PatientService;
+import com.example.demo.doctor.Doctor;
+import com.example.demo.doctor.DoctorController;
+import com.example.demo.patient.Patient;
+import com.example.demo.patient.PatientController;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
 public class Prescription {
+//    //create permanent references to the patient and doctor controllers
+//    //to help make sure a patient/doctor exists before changing their info
+//    private final transient PatientController patientController;
+//    private final transient DoctorController doctorController;
+
     //a prescriptions id is its primary key
     @Id
     //prescription ids will be generated in a sequence
     @SequenceGenerator(name = "presId", sequenceName = "presId",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "presId")
     @Column(nullable = false)
-    private String presId;
+    private long presId;
     @Column(nullable = false)
     private long patientSsn;
     @Column(nullable = false)
@@ -26,31 +35,46 @@ public class Prescription {
     @Column(nullable = false)
     private long amount;
 
-    public Prescription(String presId, long patientSsn, long doctorEmpId, long amount) {
+    public Prescription(PatientController patientController, DoctorController doctorController,
+                        long presId, long patientSsn, long doctorEmpId, long amount) {
+//        this.patientController = patientController;
+//        this.doctorController = doctorController;
         this.presId = presId;
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
         this.amount = amount;
     }
 
-    public Prescription() {
-    }
-
-    /**
-     * update the ssn of a patient who is prescribed this drug (the patient must exist)
-     * @param patientSsn the new patients ssn
-     */
-    public void setPatientSsn(long patientSsn) {
-        this.patientSsn = patientSsn;
-    }
-
-    /**
-     * setter for the doctor who prescribed's employee id (must be a valid id)
-     * @param doctorEmpId the new doctors employee id
-     */
-    public void setDoctorEmpId(long doctorEmpId) {
-        this.doctorEmpId = doctorEmpId;
-    }
+    //might not need this but want to think it over first
+//    /**
+//     * update the ssn of a patient who is prescribed this drug (the patient must exist)
+//     * @param patientSsn the new patients ssn
+//     */
+//    public void setPatientSsn(long patientSsn) {
+//        List<Patient> patientList = patientController.getPatients();
+//
+//        for (Patient patient:patientList) {
+//            if (patient.getSsn() == patientSsn){
+//                this.patientSsn = patientSsn;
+//                break;
+//            }
+//        }
+//    }
+//
+//    /**
+//     * setter for the doctor who prescribed's employee id (must be a valid id)
+//     * @param doctorEmpId the new doctors employee id
+//     */
+//    public void setDoctorEmpId(long doctorEmpId) {
+//        List<Doctor> doctorList = doctorController.getDoctors();
+//
+//        for (Doctor doctor:doctorList) {
+//            if (doctor.getEmpId() == doctorEmpId){
+//                this.doctorEmpId = doctorEmpId;
+//                break;
+//            }
+//        }
+//    }
 
     /**
      * setter for the drug amount
@@ -64,7 +88,7 @@ public class Prescription {
      * getter for the prescription id
      * @return the prescription id
      */
-    public String getPresId() {
+    public long getPresId() {
         return presId;
     }
 

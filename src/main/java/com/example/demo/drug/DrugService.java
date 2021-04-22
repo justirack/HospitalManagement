@@ -34,10 +34,8 @@ public class DrugService {
     /**
      * a method to add a drug to the database
      * @param formula the formula of the drug
-     * @param name the name of the drug
-     * @param description the description of the drug
      */
-    public void addDrug(String formula, String name, String description){
+    public void addDrug(String formula){
         Drug drug = findDrug(formula);
         drugRepository.save(drug);
     }
