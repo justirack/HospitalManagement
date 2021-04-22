@@ -1,3 +1,8 @@
+/**
+ * This class will connect with the database
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.prescription;
 
 import com.example.demo.patient.Patient;

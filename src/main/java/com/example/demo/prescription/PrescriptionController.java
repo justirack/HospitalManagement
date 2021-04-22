@@ -1,3 +1,9 @@
+/**
+ * create a class to help serve REST endpoints and perform CRUD operations
+ * this is the "API layer" that a user will interact with
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.prescription;
 
 import com.example.demo.patient.Patient;
