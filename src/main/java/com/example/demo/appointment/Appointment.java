@@ -15,14 +15,15 @@ public class Appointment {
     @Id
     @SequenceGenerator(name = "appId", sequenceName = "appId",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appId")
-    
+    private long appId;
     private long patientSsn;
     private long doctorEmpId;
     private LocalTime time;
     private LocalDate date;
     private int room;
 
-    public Appointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room) {
+    public Appointment(long appId, long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room) {
+        this.appId = appId;
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
         this.time = time;
@@ -31,6 +32,10 @@ public class Appointment {
     }
 
     public Appointment() {
+    }
+
+    public void setAppId(long appId) {
+        this.appId = appId;
     }
 
     public void setPatientSsn(long patientSsn) {
@@ -51,6 +56,10 @@ public class Appointment {
 
     public void setRoom(int room) {
         this.room = room;
+    }
+
+    public long getAppId() {
+        return appId;
     }
 
     public long getPatientSsn() {
