@@ -1,3 +1,9 @@
+/**
+ * this class acts as an in-between for the appointmentController and the appointmentRepository
+ * this is called the "service layer"
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.appointment;
 
 import org.springframework.beans.factory.annotation.Autowired;
