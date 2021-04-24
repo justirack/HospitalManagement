@@ -1,7 +1,5 @@
 package com.example.demo.appointment;
 
-import com.example.demo.doctor.DoctorRepository;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +21,14 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-    public void addAppointment(long appId, long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room){
-        appointmentRepository.save(createAppointment(appId,patientSsn,doctorEmpId,time,date,room));
+    public void addAppointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room){
+        appointmentRepository.save(createAppointment(patientSsn,doctorEmpId,time,date,room));
     }
 
     public void removeAppointment(long appId){
+        //check to make sure the appointment exists, will throw an exception if it doesnt
+        findAppointment(appId);
+        //delete the appointment from the repository
         appointmentRepository.deleteById(appId);
     }
 
@@ -47,9 +48,9 @@ public class AppointmentService {
     }
 
     //a helper method to create an appointment
-    private Appointment createAppointment(long appId, long patientSsn, long doctorEmpId,
+    private Appointment createAppointment(long patientSsn, long doctorEmpId,
                                           LocalTime time, LocalDate date, int room){
-        return new Appointment(appId,patientSsn,doctorEmpId,time,date,room);
+        return new Appointment(patientSsn,doctorEmpId,time,date,room);
     }
 
     //a helper method to find an appointment in the repository

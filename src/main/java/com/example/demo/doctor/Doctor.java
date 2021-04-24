@@ -26,8 +26,7 @@ public class Doctor {
     @Column(nullable = false,length = 10)
     private String phone;
 
-    public Doctor(long empId, String firstName, String lastName, String phone) {
-        this.empId = empId;
+    public Doctor(String firstName, String lastName, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

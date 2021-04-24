@@ -22,8 +22,7 @@ public class Appointment {
     private LocalDate date;
     private int room;
 
-    public Appointment(long appId, long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room) {
-        this.appId = appId;
+    public Appointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room) {
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
         this.time = time;

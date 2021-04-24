@@ -35,37 +35,23 @@ public class DoctorController {
         return doctorService.getDoctors();
     }
 
-    /**
-     * allow a user to add a doctor to the database
-     * @param doctor the doctor to add to the database
-     */
     @PostMapping(path = "addDoctor")
-    public void addDoctor(@RequestBody Doctor doctor){
-        doctorService.addDoctor(doctor);
+    public void addDoctor(String firstName, String lastName, String phone){
+        doctorService.addDoctor(firstName,lastName,phone);
     }
 
-    /**
-     * allow a user to delete a doctor from the database
-     * @param doctorId the doctor to remove from the database
-     */
     @DeleteMapping(path = "{deleteDoctor}")
     public void deleteDoctor(@PathVariable("deleteDoctor") long doctorId){
         doctorService.removeDoctor(doctorId);
     }
 
-    /**
-     * allow a user to update a doctors information
-     * @param id the doctors employee id
-     * @param firstName the doctors first name
-     * @param lastName the doctors last name
-     * @param phone the doctors phone number
-     */
     @PutMapping(path = "{updateDoctor}")
     public void updateDoctor(@PathVariable("updateDoctor") long id,
                              @RequestParam String firstName,
                              @RequestParam String lastName,
                              @RequestParam String phone){
-        doctorService.changeName(id, firstName, lastName);
+        doctorService.changeFirstName(id, firstName);
+        doctorService.changeLastName(id,lastName);
         doctorService.changePhone(id, phone);
 
 
