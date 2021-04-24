@@ -1,3 +1,10 @@
+/**
+ * create a class to help serve REST endpoints and perform CRUD operations
+ * this is the "API layer" that a user interacts with
+ * this class should be accessible by: 1. Patients
+ * @author - Justin Rackley
+ */
+
 package com.example.demo.appointment;
 
 import org.springframework.beans.factory.annotation.Autowired;
