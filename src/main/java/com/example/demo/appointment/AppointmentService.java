@@ -21,28 +21,28 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-    public void addAppointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room){
+    public void bookAppointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room){
         appointmentRepository.save(createAppointment(patientSsn,doctorEmpId,time,date,room));
     }
 
-    public void removeAppointment(long appId){
+    public void cancelAppointment(long appId){
         //check to make sure the appointment exists, will throw an exception if it doesnt
         findAppointment(appId);
         //delete the appointment from the database
         appointmentRepository.deleteById(appId);
     }
 
-    public void updateDate(long appId, LocalDate date){
+    public void changeDate(long appId, LocalDate date){
         Appointment appointment = findAppointment(appId);
         appointment.setDate(date);
     }
 
-    public void updateTime(long appId, LocalTime time){
+    public void changeTime(long appId, LocalTime time){
         Appointment appointment = findAppointment(appId);
         appointment.setTime(time);
     }
 
-    public void updateRoom(long appId, int room){
+    public void changeRoom(long appId, int room){
         Appointment appointment = findAppointment(appId);
         appointment.setRoom(room);
     }
