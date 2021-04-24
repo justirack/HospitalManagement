@@ -28,7 +28,7 @@ public class AppointmentService {
     public void removeAppointment(long appId){
         //check to make sure the appointment exists, will throw an exception if it doesnt
         findAppointment(appId);
-        //delete the appointment from the repository
+        //delete the appointment from the database
         appointmentRepository.deleteById(appId);
     }
 

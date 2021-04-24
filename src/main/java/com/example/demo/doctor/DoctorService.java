@@ -38,7 +38,7 @@ public class DoctorService {
     public void removeDoctor(long empId){
         //check to make sure the doctor exists, will throw an exception if not
         findDoctor(empId);
-        //delete the doctor from the repository
+        //delete the doctor from the database
         doctorRepository.deleteById(empId);
     }
 

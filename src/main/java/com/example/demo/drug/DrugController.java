@@ -38,20 +38,16 @@ public class DrugController {
      */
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam String formula, @RequestParam String name, @RequestParam String description){
-        drugService.addDrug(formula);
+        drugService.addDrug(formula,name,description);
     }
 
     /**
      * allow a user to delete a drug
      * @param formula the formula of the drug to delete
-     * @param name the name of the drug to delete
-     * @param description the description of the drug to delete
      */
     @DeleteMapping(path = "deleteDrug")
-    public void deleteDrug(@RequestParam String formula,
-                           @RequestParam String name,
-                           @RequestParam String description){
-        drugService.deleteDrug(formula,name,description);
+    public void deleteDrug(@RequestParam String formula){
+        drugService.deleteDrug(formula);
     }
 
     /**

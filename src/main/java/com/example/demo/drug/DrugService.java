@@ -31,31 +31,18 @@ public class DrugService {
         return drugRepository.findAll();
     }
 
-    /**
-     * a method to add a drug to the database
-     * @param formula the formula of the drug
-     */
-    public void addDrug(String formula){
-        Drug drug = findDrug(formula);
+    public void addDrug(String formula, String name, String description){
+        Drug drug = createDrug(formula,name,description);
         drugRepository.save(drug);
     }
 
-    /**
-     * delete a drug from the database
-     * @param formula the formula of the drug to remove
-     * @param name the name of the drug to remove
-     * @param description the description of the drug to remove
-     */
-    public void deleteDrug(String formula, String name, String description){
-        Drug drug = findDrug(formula);
-        drugRepository.delete(drug);
+    public void deleteDrug(String formula){
+        //make sure the drug exists, will throw an exception if not
+        findDrug(formula);
+        //delete the drug from the database
+        drugRepository.deleteById(formula);
     }
 
-    /**
-     * change the formula of a drug
-     * @param oldFormula the drugs old formula
-     * @param newFormula the drugs new formula
-     */
     public void changeFormula(String oldFormula, String newFormula){
         Drug drug = findDrug(oldFormula);
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
@@ -63,11 +50,6 @@ public class DrugService {
         }
     }
 
-    /**
-     * change the name of a drug
-     * @param formula the formula of the drug
-     * @param name the drugs new name
-     */
     public void changeName(String formula, String name){
         Drug drug = findDrug(formula);
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
@@ -75,11 +57,6 @@ public class DrugService {
         }
     }
 
-    /**
-     * change the description of a drug
-     * @param formula the drugs formula
-     * @param description the drugs new description
-     */
     public void changeDescription(String formula, String description){
         Drug drug = findDrug(formula);
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){
@@ -87,7 +64,12 @@ public class DrugService {
         }
     }
 
-    //a helper method to get a drug from the database
+    //a helper method to create a drug
+    private Drug createDrug(String formula, String name, String description){
+        return new Drug(formula, name, description);
+    }
+
+    //a helper method to find a drug in the database
     private Drug findDrug(String formula){
         return drugRepository.findById(formula).orElseThrow(() -> new IllegalStateException(
                 "Formula with formula  " + formula + " not found."));
