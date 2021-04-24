@@ -43,24 +43,32 @@ public class DoctorService {
     }
 
     public void changeFirstName(long empId, String firstName) {
+        //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
+        //change the doctors first name
         doctor.setFirstName(firstName);
     }
 
     public void changeLastName(long empId, String lastName){
+        //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
+        //change the doctors last name
         doctor.setLastName(lastName);
     }
 
     public void changePhone(long empId, String phone){
+        //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
+        //change the doctors phone
         doctor.setPhone(phone);
     }
 
+    //helper method to create a new doctor
     private Doctor createDoctor(String firstName, String lastName, String phone){
         return new Doctor(firstName,lastName,phone);
     }
 
+    //helper method to find a doctor in the database
     private Doctor findDoctor(long empId){
         return doctorRepository.findById(empId).orElseThrow(() -> new IllegalStateException(
                 "Doctor with id  " + empId + " not found."));
