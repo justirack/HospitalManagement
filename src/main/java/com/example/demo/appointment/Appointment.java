@@ -18,6 +18,8 @@ public class Appointment {
     private long appId;
     private long patientSsn;
     private long doctorEmpId;
+    //how to make these non-nullable without adding @Column annotation
+    //dont think @NonNull is the right one
     private LocalTime time;
     private LocalDate date;
     private int room;
@@ -32,7 +34,7 @@ public class Appointment {
 
     public Appointment() {
     }
-    
+
     /**
      * setter for the appointments time
      * @param time the appointments new time
