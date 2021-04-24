@@ -78,5 +78,4 @@ public class AppointmentController {
         appointmentService.changeRoom(appId, room);
     }
 
-
 }
