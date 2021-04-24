@@ -32,51 +32,75 @@ public class Appointment {
 
     public Appointment() {
     }
-
-    public void setAppId(long appId) {
-        this.appId = appId;
-    }
-
-    public void setPatientSsn(long patientSsn) {
-        this.patientSsn = patientSsn;
-    }
-
-    public void setDoctorEmpId(long doctorEmpId) {
-        this.doctorEmpId = doctorEmpId;
-    }
-
+    
+    /**
+     * setter for the appointments time
+     * @param time the appointments new time
+     */
     public void setTime(LocalTime time) {
         this.time = time;
     }
 
+    /**
+     * setter for the appointments date
+     * @param date the appointments new date
+     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /**
+     * setter for the appointments room
+     * @param room the appointments new room
+     */
     public void setRoom(int room) {
         this.room = room;
     }
 
+    /**
+     * getter for the appointment id
+     * @return the appointment id
+     */
     public long getAppId() {
         return appId;
     }
 
+    /**
+     * getter for the patients ssn
+     * @return the patients ssn
+     */
     public long getPatientSsn() {
         return patientSsn;
     }
 
+    /**
+     * getter for the doctors employee id
+     * @return the doctors employee id
+     */
     public long getDoctorEmpId() {
         return doctorEmpId;
     }
 
+    /**
+     * getter for the appointments time
+     * @return the appointments time
+     */
     public LocalTime getTime() {
         return time;
     }
 
+    /**
+     * getter for the appointments data
+     * @return the appointments data
+     */
     public LocalDate getDate() {
         return date;
     }
 
+    /**
+     * getter for the appointments room
+     * @return the room the appointment is in
+     */
     public int getRoom() {
         return room;
     }
