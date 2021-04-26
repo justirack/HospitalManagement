@@ -60,7 +60,7 @@ public final class DoctorService {
      */
     public void changeFirstName(final long empId, final String firstName) {
         //check to make sure the doctor exists, will throw an exception if not
-        Doctor doctor = find(empId);
+        final Doctor doctor = find(empId);
         //change the doctors first name
         doctor.setFirstName(firstName);
     }
@@ -72,7 +72,7 @@ public final class DoctorService {
      */
     public void changeLastName(final long empId, final String lastName){
         //check to make sure the doctor exists, will throw an exception if not
-        Doctor doctor = find(empId);
+        final Doctor doctor = find(empId);
         //change the doctors last name
         doctor.setLastName(lastName);
     }
@@ -84,7 +84,7 @@ public final class DoctorService {
      */
     public void changePhone(final long empId, final String phone){
         //check to make sure the doctor exists, will throw an exception if not
-        Doctor doctor = find(empId);
+        final Doctor doctor = find(empId);
         //change the doctors phone
         doctor.setPhone(phone);
     }

@@ -72,7 +72,7 @@ public final class PatientService {
                            @RequestParam(required = false) final String lastName)
     {
         //use the helper method to get the patient
-        Patient patient = createPatient(ssn);
+        final Patient patient = createPatient(ssn);
 
         //make sure firstName is not null, has length > 0 and is not the same as the current first name
         if (firstName != null && firstName .length()> 0 && !Objects.equals(patient.getFirstName(),firstName)){
@@ -91,8 +91,8 @@ public final class PatientService {
      * @param doctorId The employee id of the new family doctor.
      */
     public void changeFamilyDoctor(final long ssn, final Long doctorId){
-        Patient patient = createPatient(ssn);
-        Doctor doctor = createDoctor(doctorId);
+        final Patient patient = createPatient(ssn);
+        final Doctor doctor = createDoctor(doctorId);
         //check if doctor exists in doctor repo
     }
 
@@ -102,7 +102,7 @@ public final class PatientService {
      * @param newPhone The new phone number.
      */
     public void changePhone(final long ssn, final String newPhone){
-        Patient patient = createPatient(ssn);
+        final Patient patient = createPatient(ssn);
 
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
             patient.setPhone(newPhone);
@@ -115,7 +115,7 @@ public final class PatientService {
      * @param newAddress The new address.
      */
     public void changeAddress(final long ssn, final String newAddress){
-        Patient patient = createPatient(ssn);
+        final Patient patient = createPatient(ssn);
 
         if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
             patient.setAddress(newAddress);

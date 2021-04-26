@@ -44,9 +44,9 @@ public final class AppointmentService {
     public void book(final long patientSsn, final long doctorEmpId, final LocalTime time,
                      final LocalDate date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
-        boolean doctorAvailable = doctorAvailability(doctorEmpId, date, time);
+        final boolean doctorAvailable = doctorAvailability(doctorEmpId, date, time);
         //check to make sure the room will be available at the given date and time
-        boolean roomAvailable = roomAvailability(date, time, room);
+        final boolean roomAvailable = roomAvailability(date, time, room);
         //if the doctor and room are available book the appointment
         if (doctorAvailable && roomAvailable) {
             repository.save(create(patientSsn, doctorEmpId, time, date, room));
@@ -71,10 +71,10 @@ public final class AppointmentService {
      */
     public void changeDate(final long appId, final LocalDate date){
         //make sure the appointment exists
-        Appointment appointment = find(appId);
+        final Appointment appointment = find(appId);
 
         //make sure no conflict, assume same appointment time
-        boolean doctorAvailable = doctorAvailability(appId,date,appointment.getTime());
+        final boolean doctorAvailable = doctorAvailability(appId,date,appointment.getTime());
 
         //if the doctor is available set the new appointment date
         if (doctorAvailable) {
@@ -89,10 +89,10 @@ public final class AppointmentService {
      */
     public void changeTime(final long appId,final  LocalTime time){
         //make sure the appointment exists
-        Appointment appointment = find(appId);
+        final Appointment appointment = find(appId);
 
         //make sure no conflict, assume same appointment data
-        boolean doctorAvailable = doctorAvailability(appId,appointment.getDate(),time);
+        final boolean doctorAvailable = doctorAvailability(appId,appointment.getDate(),time);
 
         //if the doctor is available set the new appointment time
         if (doctorAvailable) {
@@ -110,7 +110,7 @@ public final class AppointmentService {
         Appointment appointment = find(appId);
 
         //make sure no conflict
-        boolean roomAvailable = roomAvailability(appointment.getDate(), appointment.getTime(), room);
+        final boolean roomAvailable = roomAvailability(appointment.getDate(), appointment.getTime(), room);
 
         //if the room is available change it
         if (roomAvailable) {
@@ -123,7 +123,7 @@ public final class AppointmentService {
 
     private boolean roomAvailability(final LocalDate date, final LocalTime time, final int room){
         //get a list of all the appointments
-        List<Appointment> appointments =  getAppointments();
+        final List<Appointment> appointments =  getAppointments();
 
         //loop through all of the appointments
         for (Appointment appointment:appointments) {
@@ -141,7 +141,7 @@ public final class AppointmentService {
     //helper method to make sure a doctor is available at a certain date and time
     private boolean doctorAvailability(final long doctorEmpId, final LocalDate date, final LocalTime time){
         //get a list of all an individual doctors appointments
-        List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
+        final List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
 
         //go through the list and make sure there isn't one at the same data and time of the new appointment
         for (Appointment appointment:doctorAppointments) {

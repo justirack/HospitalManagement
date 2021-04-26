@@ -39,7 +39,7 @@ public final class DrugService {
      * @param description The drugs description.
      */
     public void add(final String formula, final String name, final String description){
-        Drug drug = create(formula,name,description);
+        final Drug drug = create(formula,name,description);
         repository.save(drug);
     }
 
@@ -60,7 +60,7 @@ public final class DrugService {
      * @param newFormula The new formula.
      */
     public void changeFormula(final String oldFormula,final String newFormula){
-        Drug drug = find(oldFormula);
+        final Drug drug = find(oldFormula);
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
             drug.setFormula(newFormula);
         }
@@ -72,7 +72,7 @@ public final class DrugService {
      * @param name The drugs name.
      */
     public void changeName(final String formula, final String name){
-        Drug drug = find(formula);
+        final Drug drug = find(formula);
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
         }
@@ -84,7 +84,7 @@ public final class DrugService {
      * @param description The drugs description.
      */
     public void changeDescription(final String formula, final String description){
-        Drug drug = find(formula);
+        final Drug drug = find(formula);
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){
             drug.setFormula(description);
         }
