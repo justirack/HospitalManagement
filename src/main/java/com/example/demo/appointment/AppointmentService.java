@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 @Service
-public class AppointmentService {
+public final class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
 

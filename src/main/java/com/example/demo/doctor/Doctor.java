@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Doctor {
+public final class Doctor {
 
     //A doctors employee id is the primary key
     @Id

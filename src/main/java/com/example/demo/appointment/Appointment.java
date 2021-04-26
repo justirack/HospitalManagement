@@ -14,7 +14,7 @@ import java.time.LocalTime;
  */
 @Entity
 @Table
-public class Appointment {
+public final class Appointment {
     @Id
     @SequenceGenerator(name = "appId", sequenceName = "appId",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appId")

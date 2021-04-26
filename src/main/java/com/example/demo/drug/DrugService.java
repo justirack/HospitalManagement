@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author - Justin Rackley
  */
 @Service
-public class DrugService {
+public final class DrugService {
 
     //create a permanent reference to the drug repository
     private final DrugRepository drugRepository;

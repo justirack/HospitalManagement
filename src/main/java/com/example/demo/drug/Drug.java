@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Drug {
+public final class Drug {
     //a drugs formula is its primary id
     @Id
     @Column(nullable = false)

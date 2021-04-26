@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "patient")
-public class PatientController {
+public final class PatientController {
 
     //create a permanent reference to patient service
     private final PatientService patientService;

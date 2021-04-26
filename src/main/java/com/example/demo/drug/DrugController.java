@@ -17,7 +17,9 @@ import java.util.List;
  * This class should be accessible by: 1.Management.
  * @author - Justin Rackley
  */
-public class DrugController {
+@RestController
+@RequestMapping("drug")
+public final class DrugController {
     //create a permanent reference to drugService
     private final DrugService drugService;
 

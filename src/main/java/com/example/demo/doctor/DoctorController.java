@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "doctor")
-public class DoctorController {
+public final class DoctorController {
     //create a permanent reference to doctorService
     private final DoctorService doctorService;
 

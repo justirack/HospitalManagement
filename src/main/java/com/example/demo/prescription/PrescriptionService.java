@@ -10,7 +10,7 @@ import java.util.List;
  * @author - Justin Rackley
  */
 @Service
-public class PrescriptionService {
+public final class PrescriptionService {
     //create a permanent reference to the prescriptionRepository
     private final PrescriptionRepository prescriptionRepository;
 

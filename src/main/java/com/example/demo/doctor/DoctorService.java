@@ -11,7 +11,7 @@ import java.util.List;
  * @author - Justin Rackley
  */
 @Service
-public class DoctorService {
+public final class DoctorService {
 
     //create a permanent reference to the doctor repository
     private final DoctorRepository doctorRepository;

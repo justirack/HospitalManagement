@@ -15,7 +15,7 @@ import java.util.Objects;
  * @author - Justin Rackley
  */
 @Service
-public class PatientService {
+public final class PatientService {
 
     //create a permanent reference to the patient and doctor repositories
     private final PatientRepository patientRepository;

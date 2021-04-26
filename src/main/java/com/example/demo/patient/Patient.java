@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table
-public class Patient {
+public final class Patient {
 
     //A persons ssn is the primary key
     @Id
