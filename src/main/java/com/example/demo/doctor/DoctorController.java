@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,7 +37,8 @@ public final class DoctorController {
      */
     @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
-        return doctorService.getDoctors();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(doctorService.getDoctors());
     }
 
     /**

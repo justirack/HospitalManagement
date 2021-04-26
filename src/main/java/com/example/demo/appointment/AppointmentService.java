@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ public final class AppointmentService {
      * @return The list of all appointments.
      */
     public List<Appointment> getAppointments(){
-        return appointmentRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(appointmentRepository.findAll());
     }
 
     /**

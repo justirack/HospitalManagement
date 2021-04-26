@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,7 +35,8 @@ public final class DrugController {
      */
     @GetMapping(path = "getDrugs")
     public List<Drug> getDrugs(){
-        return drugService.getDrugs();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(drugService.getDrugs());
     }
 
     /**

@@ -3,6 +3,7 @@ package com.example.demo.drug;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,8 @@ public final class DrugService {
      * @return The list of all drugs.
      */
     public List<Drug> getDrugs(){
-        return drugRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(drugRepository.findAll());
     }
 
     /**

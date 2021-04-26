@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +34,8 @@ public final class PatientService {
      * @return A list of all of the patients in the database.
      */
     public List<Patient> getPatients(){
-        return patientRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(patientRepository.findAll());
     }
 
     /**

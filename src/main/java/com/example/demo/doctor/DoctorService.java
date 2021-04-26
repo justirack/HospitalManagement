@@ -3,6 +3,7 @@ package com.example.demo.doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,7 +28,8 @@ public final class DoctorService {
      * @return A list of all the doctors.
      */
     public List<Doctor> getDoctors(){
-        return doctorRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(doctorRepository.findAll());
     }
 
     /**

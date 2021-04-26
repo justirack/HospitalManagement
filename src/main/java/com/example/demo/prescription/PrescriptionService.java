@@ -2,6 +2,7 @@ package com.example.demo.prescription;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +24,8 @@ public final class PrescriptionService {
      * @return The list of prescription.
      */
     public List<Prescription> getPrescriptions(){
-        return prescriptionRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(prescriptionRepository.findAll());
     }
 
     /**

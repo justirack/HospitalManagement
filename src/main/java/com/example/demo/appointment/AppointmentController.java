@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public final class AppointmentController {
      */
     @GetMapping("getAppointments")
     public List<Appointment> getAppointments(){
-        return appointmentService.getAppointments();
+        return Collections.unmodifiableList(appointmentService.getAppointments());
     }
 
     /**
