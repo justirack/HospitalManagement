@@ -1,17 +1,17 @@
-/**
- * this class acts as an in-between for the prescriptionController and the prescriptionRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.prescription;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class acts as an in-between for the prescriptionController and the prescriptionRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
-public class PrescriptionService {
+public final class PrescriptionService {
     //create a permanent reference to the prescriptionRepository
     private final PrescriptionRepository prescriptionRepository;
 
@@ -19,23 +19,41 @@ public class PrescriptionService {
         this.prescriptionRepository = prescriptionRepository;
     }
 
+    /**
+     * Allow a user to get a list of prescriptions from the database.
+     * @return The list of prescription.
+     */
     public List<Prescription> getPrescriptions(){
-        return prescriptionRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(prescriptionRepository.findAll());
     }
 
-    public void addPrescription(long presId){
+    /**
+     * Allow a user to add a prescription to the database.
+     * @param presId The prescriptions id.
+     */
+    public void addPrescription(final long presId){
         prescriptionRepository.save(findPrescription(presId));
     }
 
-    public void deletePrescription(long presId){
+    /**
+     * Allow a user to delete a prescription from the database.
+     * @param presId The prescriptions id;
+     */
+    public void deletePrescription(final long presId){
         prescriptionRepository.delete(findPrescription(presId));
     }
 
-    public void updatePrescription(long presId, long amount){
+    /**
+     * Allow a user to update a prescriptions information.
+     * @param presId The prescriptions id.
+     * @param amount The prescriptions amount.
+     */
+    public void updatePrescription(final long presId, final long amount){
         Prescription prescription = findPrescription(presId);
     }
 
-    private Prescription findPrescription(long presId){
+    private Prescription findPrescription(final long presId){
         return prescriptionRepository.findById(presId).orElseThrow(() -> new IllegalStateException(
                 "Prescription with id  " + presId + " not found."));
     }

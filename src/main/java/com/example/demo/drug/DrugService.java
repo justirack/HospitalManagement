@@ -1,62 +1,65 @@
-/**
- * This class acts as an in-between for drugController and DrugRepository
- * This is called the "service layer"
- * @autor - Justin Rackley
- */
-
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class acts as an in-between for drugController and DrugRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
-public class DrugService {
+public final class DrugService {
 
     //create a permanent reference to the drug repository
     private final DrugRepository drugRepository;
 
     @Autowired
-    public DrugService(DrugRepository drugRepository) {
+    public DrugService(final DrugRepository drugRepository) {
         this.drugRepository = drugRepository;
     }
 
     /**
-     * a method that will return a list of all the drugs in the database
-     * @return the list of all drugs
+     * A method that will return a list of all the drugs in the database.
+     * @return The list of all drugs.
      */
     public List<Drug> getDrugs(){
-        return drugRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(drugRepository.findAll());
     }
 
     /**
-     * a method to add a drug to the database
-     * @param formula the formula of the drug
+     * Allow a user to add a drug to the database.
+     * @param formula The drugs formula.
+     * @param name The drugs name.
+     * @param description The drugs description.
      */
-    public void addDrug(String formula){
-        Drug drug = findDrug(formula);
+    public void addDrug(final String formula, final String name, final String description){
+        Drug drug = createDrug(formula,name,description);
         drugRepository.save(drug);
     }
 
     /**
-     * delete a drug from the database
-     * @param formula the formula of the drug to remove
-     * @param name the name of the drug to remove
-     * @param description the description of the drug to remove
+     * Allow a user to delete a drug from the database.
+     * @param formula The drugs formula.
      */
-    public void deleteDrug(String formula, String name, String description){
-        Drug drug = findDrug(formula);
-        drugRepository.delete(drug);
+    public void deleteDrug(final String formula){
+        //make sure the drug exists, will throw an exception if not
+        findDrug(formula);
+        //delete the drug from the database
+        drugRepository.deleteById(formula);
     }
 
     /**
-     * change the formula of a drug
-     * @param oldFormula the drugs old formula
-     * @param newFormula the drugs new formula
+     * Allow a user to change the formula of a drug.
+     * @param oldFormula The old formula.
+     * @param newFormula The new formula.
      */
-    public void changeFormula(String oldFormula, String newFormula){
+    public void changeFormula(final String oldFormula,final String newFormula){
         Drug drug = findDrug(oldFormula);
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
             drug.setFormula(newFormula);
@@ -64,11 +67,11 @@ public class DrugService {
     }
 
     /**
-     * change the name of a drug
-     * @param formula the formula of the drug
-     * @param name the drugs new name
+     * Allow a user to change the name of a drug.
+     * @param formula The drugs formula.
+     * @param name The drugs name.
      */
-    public void changeName(String formula, String name){
+    public void changeName(final String formula, final String name){
         Drug drug = findDrug(formula);
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
@@ -76,19 +79,24 @@ public class DrugService {
     }
 
     /**
-     * change the description of a drug
-     * @param formula the drugs formula
-     * @param description the drugs new description
+     * Allow a user to change the description of a drug
+     * @param formula The drugs formula.
+     * @param description The drugs description.
      */
-    public void changeDescription(String formula, String description){
+    public void changeDescription(final String formula, final String description){
         Drug drug = findDrug(formula);
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){
             drug.setFormula(description);
         }
     }
 
-    //a helper method to get a drug from the database
-    private Drug findDrug(String formula){
+    //a helper method to create a drug
+    private Drug createDrug(final String formula, final String name, final String description){
+        return new Drug(formula, name, description);
+    }
+
+    //a helper method to find a drug in the database
+    private Drug findDrug(final String formula){
         return drugRepository.findById(formula).orElseThrow(() -> new IllegalStateException(
                 "Formula with formula  " + formula + " not found."));
     }

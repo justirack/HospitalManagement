@@ -1,71 +1,80 @@
-/**
- * create a class to help serve REST endpoints and perform CRUD operations
- * this is the "API layer" that a user interacts with
- * this class should be accessible by: 1.Management 2.Doctors(update method only)
- * @author - Justin Rackley
- */
-
 package com.example.demo.doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
-//allows the class to serve REST endpoints
+/**
+ * Create a class to help serve REST endpoints and perform CRUD operations.
+ * This is the "API layer" that a user interacts with.
+ * This class should be accessible by: 1.Management 2.Doctors(update method only).
+ * @author - Justin Rackley
+ */
 @RestController
-//create a new page for doctors at localhost:8080/doctor
 @RequestMapping(path = "doctor")
-public class DoctorController {
+public final class DoctorController {
     //create a permanent reference to doctorService
     private final DoctorService doctorService;
 
     //inject doctorService's bean into this class' bean
     @Autowired
-    public DoctorController(DoctorService doctorService){
+    public DoctorController(final DoctorService doctorService){
         this.doctorService = doctorService;
     }
 
     /**
-     * allow a user to get a list of all doctors in the database
-     * @return a list of all doctors in the database
+     * Allow a user to get a list of all doctors in the database.
+     * @return A list of all doctors in the database.
      */
     @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
-        return doctorService.getDoctors();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(doctorService.getDoctors());
     }
 
     /**
-     * allow a user to add a doctor to the database
-     * @param doctor the doctor to add to the database
+     * Allow a user to add a doctor to the database.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name.
+     * @param phone The doctors phone number.
      */
     @PostMapping(path = "addDoctor")
-    public void addDoctor(@RequestBody Doctor doctor){
-        doctorService.addDoctor(doctor);
+    public void addDoctor(final String firstName, final String lastName, final String phone){
+        doctorService.addDoctor(firstName,lastName,phone);
     }
 
     /**
-     * allow a user to delete a doctor from the database
-     * @param doctorId the doctor to remove from the database
+     * Allow a user to delete a doctor from the repository.
+     * @param doctorId The id of the doctor to remove.
      */
     @DeleteMapping(path = "{deleteDoctor}")
-    public void deleteDoctor(@PathVariable("deleteDoctor") long doctorId){
+    public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
         doctorService.removeDoctor(doctorId);
     }
 
     /**
-     * allow a user to update a doctors information
-     * @param id the doctors employee id
-     * @param firstName the doctors first name
-     * @param lastName the doctors last name
-     * @param phone the doctors phone number
+     * Allow a user to update a doctors information.
+     * @param id The doctors id.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name
+     * @param phone The doctors phone number
      */
     @PutMapping(path = "{updateDoctor}")
-    public void updateDoctor(@PathVariable("updateDoctor") long id,
-                             @RequestParam String firstName,
-                             @RequestParam String lastName,
-                             @RequestParam String phone){
-        doctorService.changeName(id, firstName, lastName);
+    public void updateDoctor(@PathVariable("updateDoctor") final long id,
+                             @RequestParam final String firstName,
+                             @RequestParam final String lastName,
+                             @RequestParam final String phone){
+        doctorService.changeFirstName(id, firstName);
+        doctorService.changeLastName(id,lastName);
         doctorService.changePhone(id, phone);
 
 

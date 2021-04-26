@@ -1,96 +1,103 @@
-/**
- * this class acts as an in-between for the doctorController and the doctorRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * This class acts as an in-between for the doctorController and the doctorRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
-public class DoctorService {
+public final class DoctorService {
 
     //create a permanent reference to the doctor repository
     private final DoctorRepository doctorRepository;
 
     //inject the doctorRepository bean into this class' bean
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(final DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
     /**
-     * getter for a list of all the doctors in the database
-     * @return a list of all the doctors
+     * Getter for a list of all the doctors in the database.
+     * @return A list of all the doctors.
      */
     public List<Doctor> getDoctors(){
-        return doctorRepository.findAll();
+        //make the returned collection unmodifiable
+        return Collections.unmodifiableList(doctorRepository.findAll());
     }
 
     /**
-     * a method to add a new doctor to the database
-     * @param doctor the doctor to add to the databse
+     * Allow a user to add a doctor to the database.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name.
+     * @param phone The doctors phone number.
      */
-    public void addDoctor(Doctor doctor){
-        if (doctorRepository.findById(doctor.getEmpId()).isPresent()){
-            throw new IllegalStateException("A doctor with this employee id already exists.");
-        }
-        doctorRepository.save(doctor);
+    public void addDoctor(final String firstName, final String lastName, final String phone){
+        doctorRepository.save(createDoctor(firstName,lastName,phone));
     }
 
     /**
-     * a method to remove a doctor from the database
-     * @param id the employee id of the doctor to remove
+     * Allow a user to remove a doctor from the database.
+     * @param empId The doctors employee id.
      */
-    public void removeDoctor(long id){
-        if (doctorRepository.findById(id).isEmpty()){
-            throw new IllegalStateException("No doctor with this employee id found.");
-        }
-        doctorRepository.deleteById(id);
+    public void removeDoctor(final long empId){
+        //check to make sure the doctor exists, will throw an exception if not
+        findDoctor(empId);
+        //delete the doctor from the database
+        doctorRepository.deleteById(empId);
     }
 
     /**
-     * a method to change the name of a doctor
-     * @param id the id of the doctor to change
-     * @param firstName the doctors new first name
-     * @param lastName the doctors new last name
+     * Allow a user to change a doctors first name.
+     * @param empId The doctors employee id.
+     * @param firstName The doctors new first name.
      */
-    public void changeName(@RequestParam long id,
-                           @RequestParam(required = false) String firstName,
-                           @RequestParam(required = false) String lastName) {
-        Doctor doctor = createDoctor(id);
-
-        if (firstName != null && firstName.length() > 0 && !Objects.equals(doctor.getFirstName(),firstName)){
-            doctor.setFirstName(firstName);
-        }
-
-        if (lastName != null && lastName.length() > 0 && !Objects.equals(doctor.getFirstName(),firstName));
+    public void changeFirstName(final long empId, final String firstName) {
+        //check to make sure the doctor exists, will throw an exception if not
+        Doctor doctor = findDoctor(empId);
+        //change the doctors first name
+        doctor.setFirstName(firstName);
     }
 
     /**
-     * a method to change a doctors phone number
-     * @param id the id of the doctor to change
-     * @param phone the doctors new phone number
+     * Allow a user to change a doctors last name.
+     * @param empId The doctors employee id.
+     * @param lastName The doctors new last name.
      */
-    public void changePhone(long id, String phone){
-        Doctor doctor = createDoctor(id);
-
-        if (phone != null && phone.length() == 10 && !Objects.equals(doctor.getPhone(),phone)){
-            doctor.setPhone(phone);
-        }
+    public void changeLastName(final long empId, final String lastName){
+        //check to make sure the doctor exists, will throw an exception if not
+        Doctor doctor = findDoctor(empId);
+        //change the doctors last name
+        doctor.setLastName(lastName);
     }
 
-    //a helper method to make sure a doctor exists
-    private Doctor createDoctor(long id){
-        //create a temporary doctor by getting the doctor with the given id
-        //if no such doctor exists, throw an exception
-        return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(
-                "Doctor with id " + id + " not found."));
+    /**
+     * Allow a user to change a doctors phone number.
+     * @param empId The doctors employee id.
+     * @param phone The doctors new phone number.
+     */
+    public void changePhone(final long empId, final String phone){
+        //check to make sure the doctor exists, will throw an exception if not
+        Doctor doctor = findDoctor(empId);
+        //change the doctors phone
+        doctor.setPhone(phone);
+    }
+
+    //helper method to create a new doctor
+    private Doctor createDoctor(final String firstName, final String lastName, final String phone){
+        return new Doctor(firstName,lastName,phone);
+    }
+
+    //helper method to find a doctor in the database
+    private Doctor findDoctor(final long empId){
+        return doctorRepository.findById(empId).orElseThrow(() -> new IllegalStateException(
+                "Doctor with id  " + empId + " not found."));
     }
 }
+
