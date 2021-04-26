@@ -125,17 +125,18 @@ public final class AppointmentService {
         //get a list of all the appointments
         final List<Appointment> appointments =  getAppointments();
 
+        boolean isAvailable = false;
         //loop through all of the appointments
         for (Appointment appointment:appointments) {
             //check if there is an appointment at the same date and time in the same room
-            if (appointment.getDate().equals(date) && appointment.getTime().equals(time) &&
-                    appointment.getRoom() == room){
-                //return false if there is
-                return false;
+            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time) &&
+                    appointment.getRoom() == room)){
+                //make isAvailable
+                isAvailable = true;
             }
         }
-        //else return true
-        return true;
+        //return isAvailable, false by default
+        return isAvailable;
     }
 
     //helper method to make sure a doctor is available at a certain date and time
