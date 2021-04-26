@@ -1,10 +1,3 @@
-/**
- * This class will help serve REST endpoints and perform CRUD operations
- * this is the "API layer" that the user interacts with
- * this class should be accessible by: 1.Management
- * @author - Justin Rackley
- */
-
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * This class will help serve REST endpoints and perform CRUD operations.
+ * This is the "API layer" that the user interacts with.
+ * This class should be accessible by: 1.Management.
+ * @author - Justin Rackley
+ */
 public class DrugController {
     //create a permanent reference to drugService
     private final DrugService drugService;

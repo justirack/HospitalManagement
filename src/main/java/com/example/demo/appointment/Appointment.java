@@ -1,14 +1,12 @@
-/**
- * this class will represent an appointment in the Hospital Management System
- * @author - Justin Rackley
- */
-
 package com.example.demo.appointment;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+/**
+ * This class will represent an appointment in the Hospital Management System.
+ * @author - Justin Rackley
+ */
 @Entity
 @Table
 public class Appointment {

@@ -1,10 +1,3 @@
-/**
- * create a class to help serve REST endpoints and perform CRUD operations
- * this is the "API layer" that a user interacts with
- * this class should be accessible by: 1. Patients
- * @author - Justin Rackley
- */
-
 package com.example.demo.appointment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+/**
+ * Create a class to help serve REST endpoints and perform CRUD operations.
+ * This is the "API layer" that a user interacts with.
+ * This class should be accessible by: 1. Patients.
+ * @author - Justin Rackley
+ */
 
 @RestController
 @RequestMapping(path = "appointment")

@@ -1,19 +1,18 @@
-/**
- * create a class to help serve REST endpoints and perform CRUD operations
- * this is the "API layer" that a user will interact with
- * this class should only be accessible by: 1.Doctors
- * @author - Justin Rackley
- */
-
 package com.example.demo.prescription;
 
-import com.example.demo.patient.Patient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Create a class to help serve REST endpoints and perform CRUD operations.
+ * This is the "API layer" that a user will interact with.
+ * This class should only be accessible by: 1.Doctors.
+ * @author - Justin Rackley
+ */
 @Controller
 @RequestMapping(path = "prescription")
 public class PrescriptionController {

@@ -1,9 +1,3 @@
-/**
- * this class acts as an in-between for the appointmentController and the appointmentRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.appointment;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +6,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+/**
+ * This class acts as an in-between for the appointmentController and the appointmentRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 
 @Service
 public class AppointmentService {

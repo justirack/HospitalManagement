@@ -1,9 +1,3 @@
-/**
- * This class acts as an in-between for drugController and DrugRepository
- * This is called the "service layer"
- * @autor - Justin Rackley
- */
-
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class acts as an in-between for drugController and DrugRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
 public class DrugService {
 

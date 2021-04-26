@@ -1,9 +1,3 @@
-/**
- * this class represents patients in the hospital management system
- * each patient will have a ssn, family doctor, first name, last name, phone and address
- * @author - Justin Rackley
- */
-
 package com.example.demo.patient;
 
 import com.example.demo.doctor.Doctor;
@@ -11,6 +5,11 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
+/**
+ * This class represents patients in the hospital management system.
+ * Each patient will have a ssn, family doctor, first name, last name, phone and address.
+ * @author - Justin Rackley
+ */
 @Entity
 @Table
 public class Patient {

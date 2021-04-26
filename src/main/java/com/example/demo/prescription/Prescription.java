@@ -1,12 +1,11 @@
-/**
- * This class will represent a prescription in the hospital management system
- * @author - Justin Rackley
- */
-
 package com.example.demo.prescription;
 
 import javax.persistence.*;
 
+/**
+ * This class will represent a prescription in the hospital management system.
+ * @author - Justin Rackley
+ */
 @Entity
 @Table
 public class Prescription {

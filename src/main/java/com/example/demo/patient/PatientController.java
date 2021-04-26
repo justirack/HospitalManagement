@@ -1,28 +1,17 @@
-/**
- * create a class to help serve REST endpoints and perform CRUD operations
- * this is the "API layer" that a user will interact with
- * this class should be accessible by: 1.Management 2.Patients(update method only)
- * @author - Justin Rackley
- */
-
 package com.example.demo.patient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.OneToMany;
 import java.util.List;
 
-/*
-this class should be accessible by
-1.doctors
-2.management
-3. a patient should be able to change their own information, no other methods
+/**
+ * Create a class to help serve REST endpoints and perform CRUD operations.
+ * This is the "API layer" that a user will interact with.
+ * This class should be accessible by: 1.Management 2.Patients(update method only).
+ * @author - Justin Rackley
  */
-
-//allow the class to serve REST endpoints
 @RestController
-//create a new page for patients at localhost:8080/patient
 @RequestMapping(path = "patient")
 public class PatientController {
 

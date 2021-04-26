@@ -1,9 +1,3 @@
-/**
- * this class acts as an in-between for the patientController and the patientRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.patient;
 
 import com.example.demo.doctor.Doctor;
@@ -15,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * This class acts as an in-between for the patientController and the patientRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
 public class PatientService {
 

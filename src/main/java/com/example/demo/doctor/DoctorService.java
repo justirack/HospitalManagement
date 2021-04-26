@@ -1,9 +1,3 @@
-/**
- * this class acts as an in-between for the doctorController and the doctorRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * This class acts as an in-between for the doctorController and the doctorRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
 public class DoctorService {
 

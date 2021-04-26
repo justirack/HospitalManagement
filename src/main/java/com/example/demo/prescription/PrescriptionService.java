@@ -1,15 +1,14 @@
-/**
- * this class acts as an in-between for the prescriptionController and the prescriptionRepository
- * this is called the "service layer"
- * @author - Justin Rackley
- */
-
 package com.example.demo.prescription;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * This class acts as an in-between for the prescriptionController and the prescriptionRepository.
+ * This is called the "service layer".
+ * @author - Justin Rackley
+ */
 @Service
 public class PrescriptionService {
     //create a permanent reference to the prescriptionRepository

@@ -1,9 +1,3 @@
-/**
- * this class will represent a drug in the hospital management system
- * a drug will have a formula, name and description
- * @author - Justin Rackley
- */
-
 package com.example.demo.drug;
 
 import javax.persistence.Column;
@@ -11,8 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * This class will represent a drug in the hospital management system.
+ * A drug will have a formula, name and description.
+ * @author - Justin Rackley
+ */
 @Entity
-//create a new table in the database for drugs
 @Table
 public class Drug {
     //a drugs formula is its primary id

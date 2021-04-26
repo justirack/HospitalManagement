@@ -1,13 +1,12 @@
-/**
- * this class represents doctors in the hospital management system
- * each doctor will have an id, first name, last name and phone
- * @author - Justin Rackley
- */
-
 package com.example.demo.doctor;
 
 import javax.persistence.*;
 
+/**
+ * This class represents doctors in the hospital management system.
+ * Each doctor will have an id, first name, last name and phone.
+ * @author - Justin Rackley
+ */
 @Entity
 @Table
 public class Doctor {
