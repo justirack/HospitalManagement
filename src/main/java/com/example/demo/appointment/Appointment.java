@@ -27,7 +27,8 @@ public final class Appointment {
     private LocalDate date;
     private int room;
 
-    public Appointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room) {
+    public Appointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
+                       final LocalDate date, final int room) {
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
         this.time = time;
@@ -42,7 +43,7 @@ public final class Appointment {
      * setter for the appointments time
      * @param time the appointments new time
      */
-    public void setTime(LocalTime time) {
+    public void setTime(final LocalTime time) {
         this.time = time;
     }
 
@@ -50,7 +51,7 @@ public final class Appointment {
      * setter for the appointments date
      * @param date the appointments new date
      */
-    public void setDate(LocalDate date) {
+    public void setDate(final LocalDate date) {
         this.date = date;
     }
 
@@ -58,7 +59,7 @@ public final class Appointment {
      * setter for the appointments room
      * @param room the appointments new room
      */
-    public void setRoom(int room) {
+    public void setRoom(final int room) {
         this.room = room;
     }
 

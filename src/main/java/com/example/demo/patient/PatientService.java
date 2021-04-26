@@ -23,7 +23,7 @@ public final class PatientService {
 
     //inject patientRepository and doctorRepository's beans into this class
     @Autowired
-    public PatientService(PatientRepository patientRepository, DoctorRepository doctorRepository) {
+    public PatientService(final PatientRepository patientRepository, final DoctorRepository doctorRepository) {
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
     }
@@ -40,7 +40,7 @@ public final class PatientService {
      * a method to allow a user to add a new patient to the database
      * @param patient teh patient to add to the database
      */
-    public void addNewPatient(Patient patient){
+    public void addNewPatient(final Patient patient){
         //make sure this patient doesnt already exist in our database
         if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
             throw new IllegalStateException("A patient with this ssn already exists.");
@@ -52,7 +52,7 @@ public final class PatientService {
      * a method to allow a user to remove a patient from the database
      * @param ssn the ssn of the patient to remove
      */
-    public void removePatient(long ssn){
+    public void removePatient(final long ssn){
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
             throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
         }
@@ -65,9 +65,9 @@ public final class PatientService {
      * @param firstName the new first name
      * @param lastName the new last name
      */
-    public void changeName(@RequestParam long ssn,
-                           @RequestParam(required = false) String firstName,
-                           @RequestParam(required = false) String lastName)
+    public void changeName(@RequestParam final long ssn,
+                           @RequestParam(required = false) final String firstName,
+                           @RequestParam(required = false) final String lastName)
     {
         //use the helper method to get the patient
         Patient patient = createPatient(ssn);
@@ -88,7 +88,7 @@ public final class PatientService {
      * @param ssn the ssn of the patient to change
      * @param doctorId the employee id of the new family doctor
      */
-    public void changeFamilyDoctor(long ssn, Long doctorId){
+    public void changeFamilyDoctor(final long ssn, final Long doctorId){
         Patient patient = createPatient(ssn);
         Doctor doctor = createDoctor(doctorId);
         //check if doctor exists in doctor repo
@@ -99,7 +99,7 @@ public final class PatientService {
      * @param ssn the ssn of the patient to change
      * @param newPhone the new phone number
      */
-    public void changePhone(long ssn, String newPhone){
+    public void changePhone(final long ssn, final String newPhone){
         Patient patient = createPatient(ssn);
 
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
@@ -112,7 +112,7 @@ public final class PatientService {
      * @param ssn the ssn of the patient to change
      * @param newAddress the new address
      */
-    public void changeAddress(long ssn, String newAddress){
+    public void changeAddress(final long ssn, final String newAddress){
         Patient patient = createPatient(ssn);
 
         if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
@@ -121,7 +121,7 @@ public final class PatientService {
     }
 
     //A helper method to check if the patient exists in our database
-    private Patient createPatient(long ssn){
+    private Patient createPatient(final long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
         return patientRepository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
@@ -129,7 +129,7 @@ public final class PatientService {
     }
 
     //a helper method to make sure a doctor exists
-    private Doctor createDoctor(long id){
+    private Doctor createDoctor(final long id){
         //create a temporary doctor by getting the doctor with the given id
         //if no such doctor exists, throw an exception
         return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(

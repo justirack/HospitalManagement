@@ -40,7 +40,8 @@ public final class Patient {
     @Column(nullable = false)
     private String address;
 
-    public Patient(Doctor familyDoctor, String firstName, String lastName, String phone, String address) {
+    public Patient(final Doctor familyDoctor, final String firstName, final String lastName,
+                   final String phone, final String address) {
         this.familyDoctor = familyDoctor;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,7 +56,7 @@ public final class Patient {
      * update a patients family doctor
      * @param familyDoctor the patients new family doctor
      */
-    public void setFamilyDoctor(Doctor familyDoctor) {
+    public void setFamilyDoctor(final Doctor familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
@@ -63,7 +64,7 @@ public final class Patient {
      * update a patients first name
      * @param firstName the patients new first name
      */
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -71,7 +72,7 @@ public final class Patient {
      * update a persons last name
      * @param lastName the persons new last name
      */
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -79,7 +80,7 @@ public final class Patient {
      * update a persons phone number
      * @param phone the persons new phone number
      */
-    public void setPhone(String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
     }
 
@@ -87,7 +88,7 @@ public final class Patient {
      * update a persons address
      * @param address the persons new phone number
      */
-    public void setAddress(String address) {
+    public void setAddress(final String address) {
         this.address = address;
     }
 

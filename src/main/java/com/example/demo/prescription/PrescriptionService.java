@@ -22,19 +22,19 @@ public final class PrescriptionService {
         return prescriptionRepository.findAll();
     }
 
-    public void addPrescription(long presId){
+    public void addPrescription(final long presId){
         prescriptionRepository.save(findPrescription(presId));
     }
 
-    public void deletePrescription(long presId){
+    public void deletePrescription(final long presId){
         prescriptionRepository.delete(findPrescription(presId));
     }
 
-    public void updatePrescription(long presId, long amount){
+    public void updatePrescription(final long presId, final long amount){
         Prescription prescription = findPrescription(presId);
     }
 
-    private Prescription findPrescription(long presId){
+    private Prescription findPrescription(final long presId){
         return prescriptionRepository.findById(presId).orElseThrow(() -> new IllegalStateException(
                 "Prescription with id  " + presId + " not found."));
     }

@@ -26,7 +26,7 @@ public final class DoctorController {
 
     //inject doctorService's bean into this class' bean
     @Autowired
-    public DoctorController(DoctorService doctorService){
+    public DoctorController(final DoctorService doctorService){
         this.doctorService = doctorService;
     }
 
@@ -40,20 +40,20 @@ public final class DoctorController {
     }
 
     @PostMapping(path = "addDoctor")
-    public void addDoctor(String firstName, String lastName, String phone){
+    public void addDoctor(final String firstName, final String lastName, final String phone){
         doctorService.addDoctor(firstName,lastName,phone);
     }
 
     @DeleteMapping(path = "{deleteDoctor}")
-    public void deleteDoctor(@PathVariable("deleteDoctor") long doctorId){
+    public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
         doctorService.removeDoctor(doctorId);
     }
 
     @PutMapping(path = "{updateDoctor}")
-    public void updateDoctor(@PathVariable("updateDoctor") long id,
-                             @RequestParam String firstName,
-                             @RequestParam String lastName,
-                             @RequestParam String phone){
+    public void updateDoctor(@PathVariable("updateDoctor") final long id,
+                             @RequestParam final String firstName,
+                             @RequestParam final String lastName,
+                             @RequestParam final String phone){
         doctorService.changeFirstName(id, firstName);
         doctorService.changeLastName(id,lastName);
         doctorService.changePhone(id, phone);

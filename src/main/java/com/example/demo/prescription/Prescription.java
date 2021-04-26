@@ -30,7 +30,7 @@ public final class Prescription {
     @Column(nullable = false)
     private long amount;
 
-    public Prescription(long presId, long patientSsn, long doctorEmpId, long amount) {
+    public Prescription(final long presId, final long patientSsn, final long doctorEmpId, final long amount) {
         this.presId = presId;
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
@@ -45,7 +45,7 @@ public final class Prescription {
      * setter for the drug amount
      * @param amount the new amount of the drug
      */
-    public void setAmount(long amount) {
+    public void setAmount(final long amount) {
         this.amount = amount;
     }
 

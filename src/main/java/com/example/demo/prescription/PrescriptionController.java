@@ -35,17 +35,17 @@ public final class PrescriptionController {
     }
 
     @PostMapping("addPrescription")
-    public void addPrescription(long presId){
+    public void addPrescription(final long presId){
         prescriptionService.addPrescription(presId);
     }
 
     @DeleteMapping("{deletePresctption}")
-    public void deletePrescription(@PathVariable("deletePresctption") long presId){
+    public void deletePrescription(@PathVariable("deletePresctption") final long presId){
         prescriptionService.deletePrescription(presId);
     }
 
     @PutMapping("{updatePrescription}")
-    public void updatePrescription(@PathVariable("updatePrescription") long presId, long amount){
+    public void updatePrescription(@PathVariable("updatePrescription") final long presId, final long amount){
         prescriptionService.updatePrescription(presId,amount);
     }
 }

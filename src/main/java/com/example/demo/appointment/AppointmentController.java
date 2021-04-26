@@ -25,7 +25,7 @@ public final class AppointmentController {
     private final AppointmentService appointmentService;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService) {
+    public AppointmentController(final AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
     }
 
@@ -47,7 +47,8 @@ public final class AppointmentController {
      * @param room the room the appointment is in
      */
     @PostMapping("bookAppointment")
-    public void bookAppointment(long patientSsn, long doctorEmpId, LocalTime time, LocalDate date, int room){
+    public void bookAppointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
+                                final LocalDate date, final int room){
         appointmentService.bookAppointment(patientSsn,doctorEmpId,time,date,room);
     }
 
@@ -56,7 +57,7 @@ public final class AppointmentController {
      * @param appId the id of the appointment to cancel
      */
     @DeleteMapping("cancelAppointment")
-    public void cancelAppointment(long appId){
+    public void cancelAppointment(final long appId){
         appointmentService.cancelAppointment(appId);
     }
 
@@ -66,7 +67,7 @@ public final class AppointmentController {
      * @param date the new date of the appointment
      */
     @PutMapping("changeAppointmentDate")
-    public void changeDate(long appId, LocalDate date){
+    public void changeDate(final long appId, final LocalDate date){
         appointmentService.changeDate(appId, date);
     }
 
@@ -76,7 +77,7 @@ public final class AppointmentController {
      * @param time the new time of the appointment
      */
     @PutMapping("changeAppointmentTime")
-    public void changeTime(long appId, LocalTime time){
+    public void changeTime(final long appId, final LocalTime time){
         appointmentService.changeTime(appId, time);
     }
 
@@ -86,7 +87,7 @@ public final class AppointmentController {
      * @param room the new room of the appointment
      */
     @PutMapping("changeAppointmentRoom")
-    public void changeRoom(long appId, int room){
+    public void changeRoom(final long appId, final int room){
         appointmentService.changeRoom(appId, room);
     }
 

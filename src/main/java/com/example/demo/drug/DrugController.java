@@ -24,7 +24,7 @@ public final class DrugController {
     private final DrugService drugService;
 
     @Autowired
-    public DrugController(DrugService drugService) {
+    public DrugController(final DrugService drugService) {
         this.drugService = drugService;
     }
 
@@ -44,7 +44,8 @@ public final class DrugController {
      * @param description the drugs description
      */
     @PostMapping(path = "addDrug")
-    public void addDrug(@RequestParam String formula, @RequestParam String name, @RequestParam String description){
+    public void addDrug(@RequestParam final String formula, @RequestParam final String name,
+                        @RequestParam final String description){
         drugService.addDrug(formula,name,description);
     }
 
@@ -53,7 +54,7 @@ public final class DrugController {
      * @param formula the formula of the drug to delete
      */
     @DeleteMapping(path = "deleteDrug")
-    public void deleteDrug(@RequestParam String formula){
+    public void deleteDrug(@RequestParam final String formula){
         drugService.deleteDrug(formula);
     }
 
@@ -65,10 +66,10 @@ public final class DrugController {
      * @param description the new description
      */
     @PutMapping(path = "updateDrug")
-    public void updateDrug(@RequestParam("updateDrug") String oldFormula,
-                           @RequestParam String newFormula,
-                           @RequestParam String name,
-                           @RequestParam String description){
+    public void updateDrug(@RequestParam("updateDrug") final String oldFormula,
+                           @RequestParam final String newFormula,
+                           @RequestParam final String name,
+                           @RequestParam final String description){
         drugService.changeFormula(oldFormula, newFormula);
         drugService.changeName(oldFormula, name);
         drugService.changeDescription(oldFormula, description);

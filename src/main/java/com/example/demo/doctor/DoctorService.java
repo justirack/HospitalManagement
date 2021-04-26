@@ -18,7 +18,7 @@ public final class DoctorService {
 
     //inject the doctorRepository bean into this class' bean
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(final DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
     }
 
@@ -30,32 +30,32 @@ public final class DoctorService {
         return doctorRepository.findAll();
     }
 
-    public void addDoctor(String firstName, String lastName, String phone){
+    public void addDoctor(final String firstName, final String lastName, final String phone){
         doctorRepository.save(createDoctor(firstName,lastName,phone));
     }
 
-    public void removeDoctor(long empId){
+    public void removeDoctor(final long empId){
         //check to make sure the doctor exists, will throw an exception if not
         findDoctor(empId);
         //delete the doctor from the database
         doctorRepository.deleteById(empId);
     }
 
-    public void changeFirstName(long empId, String firstName) {
+    public void changeFirstName(final long empId, final String firstName) {
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
         //change the doctors first name
         doctor.setFirstName(firstName);
     }
 
-    public void changeLastName(long empId, String lastName){
+    public void changeLastName(final long empId, final String lastName){
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
         //change the doctors last name
         doctor.setLastName(lastName);
     }
 
-    public void changePhone(long empId, String phone){
+    public void changePhone(final long empId, final String phone){
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
         //change the doctors phone
@@ -63,12 +63,12 @@ public final class DoctorService {
     }
 
     //helper method to create a new doctor
-    private Doctor createDoctor(String firstName, String lastName, String phone){
+    private Doctor createDoctor(final String firstName, final String lastName, final String phone){
         return new Doctor(firstName,lastName,phone);
     }
 
     //helper method to find a doctor in the database
-    private Doctor findDoctor(long empId){
+    private Doctor findDoctor(final long empId){
         return doctorRepository.findById(empId).orElseThrow(() -> new IllegalStateException(
                 "Doctor with id  " + empId + " not found."));
     }

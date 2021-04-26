@@ -22,7 +22,7 @@ public final class Drug {
     @Column(nullable = false)
     private String description;
 
-    public Drug(String formula, String name, String description) {
+    public Drug(final String formula, final String name, final String description) {
         this.formula = formula;
         this.name = name;
         this.description = description;
@@ -35,7 +35,7 @@ public final class Drug {
      * setter for the drugs formula
      * @param formula the drugs new formula
      */
-    public void setFormula(String formula) {
+    public void setFormula(final String formula) {
         this.formula = formula;
     }
 
@@ -43,7 +43,7 @@ public final class Drug {
      * setter for the drugs name
      * @param name teh drugs new name
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -51,7 +51,7 @@ public final class Drug {
      * setter for the drugs description
      * @param description the drugs new description
      */
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 

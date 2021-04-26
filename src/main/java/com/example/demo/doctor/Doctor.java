@@ -31,7 +31,7 @@ public final class Doctor {
     @Column(nullable = false,length = 10)
     private String phone;
 
-    public Doctor(String firstName, String lastName, String phone) {
+    public Doctor(final String firstName, final String lastName, final String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -44,7 +44,7 @@ public final class Doctor {
      * setter for a doctors first name
      * @param firstName the new first name
      */
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
@@ -52,7 +52,7 @@ public final class Doctor {
      * setter for a doctors last name
      * @param lastName the new last name
      */
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -60,7 +60,7 @@ public final class Doctor {
      * setter for a doctors phone
      * @param phone the new phone number
      */
-    public void setPhone(String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
     }
 
