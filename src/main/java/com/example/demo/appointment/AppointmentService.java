@@ -102,7 +102,7 @@ public final class AppointmentService {
 
     /**
      * Change the room an appointment is in.
-     * @param appId The if of the appointment
+     * @param appId The id of the appointment
      * @param room The new room for the appointment
      */
     public void changeRoom(final long appId, final int room){
