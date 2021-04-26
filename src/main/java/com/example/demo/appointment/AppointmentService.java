@@ -24,20 +24,20 @@ public final class AppointmentService {
     }
 
     /**
-     * get a list of all appointments at the hospital
-     * @return the list of all appointments
+     * Get a list of all appointments at the hospital.
+     * @return The list of all appointments.
      */
     public List<Appointment> getAppointments(){
         return appointmentRepository.findAll();
     }
 
     /**
-     * book a new appointment at the hospital
-     * @param patientSsn the patient who is booking the appointment
-     * @param doctorEmpId the doctor who is being booked with
-     * @param time the time of the appointment
-     * @param date the date of the appointment
-     * @param room the room the appointment is in
+     * Book a new appointment at the hospital.
+     * @param patientSsn The patient who is booking the appointment.
+     * @param doctorEmpId The doctor who is being booked with.
+     * @param time The time of the appointment.
+     * @param date The date of the appointment.
+     * @param room The room the appointment is in.
      */
     public void bookAppointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
                                 final LocalDate date, final int room){
@@ -52,8 +52,8 @@ public final class AppointmentService {
     }
 
     /**
-     * cancel an appointment
-     * @param appId the id of the appointment to cancel
+     * Cancel an appointment.
+     * @param appId The id of the appointment to cancel.
      */
     public void cancelAppointment(final long appId){
         //check to make sure the appointment exists, will throw an exception if it doesnt
@@ -63,9 +63,9 @@ public final class AppointmentService {
     }
 
     /**
-     * change the date of an appointment
-     * @param appId the id of the appointment
-     * @param date the new date of the appointment
+     * Change the date of an appointment.
+     * @param appId The id of the appointment.
+     * @param date The new date of the appointment.
      */
     public void changeDate(final long appId, final LocalDate date){
         //make sure the appointment exists
@@ -81,9 +81,9 @@ public final class AppointmentService {
     }
 
     /**
-     * change the time of an appointment
-     * @param appId the id of the appointment
-     * @param time the new time of the appointment
+     * Change the time of an appointment.
+     * @param appId The id of the appointment.
+     * @param time The new time of the appointment.
      */
     public void changeTime(final long appId,final  LocalTime time){
         //make sure the appointment exists
@@ -99,9 +99,9 @@ public final class AppointmentService {
     }
 
     /**
-     * change the room an appointment is in
-     * @param appId the if of the appointment
-     * @param room the new room for the appointment
+     * Change the room an appointment is in.
+     * @param appId The if of the appointment
+     * @param room The new room for the appointment
      */
     public void changeRoom(final long appId, final int room){
         //make sure the appointment exists

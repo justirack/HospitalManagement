@@ -29,8 +29,8 @@ public final class DrugController {
     }
 
     /**
-     * allow a user to get a list of all drugs in the system
-     * @return the list of all the drugs
+     * Allow a user to get a list of all drugs in the system.
+     * @return tThe list of all the drugs.
      */
     @GetMapping(path = "getDrugs")
     public List<Drug> getDrugs(){
@@ -38,10 +38,10 @@ public final class DrugController {
     }
 
     /**
-     * allow a user to add a new drug to the system
-     * @param formula the drugs formula
-     * @param name the drugs name
-     * @param description the drugs description
+     * Allow a user to add a new drug to the system.
+     * @param formula The drugs formula.
+     * @param name The drugs name.
+     * @param description The drugs description.
      */
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam final String formula, @RequestParam final String name,
@@ -50,8 +50,8 @@ public final class DrugController {
     }
 
     /**
-     * allow a user to delete a drug
-     * @param formula the formula of the drug to delete
+     * Allow a user to delete a drug.
+     * @param formula The formula of the drug to delete.
      */
     @DeleteMapping(path = "deleteDrug")
     public void deleteDrug(@RequestParam final String formula){
@@ -59,11 +59,11 @@ public final class DrugController {
     }
 
     /**
-     * allow a user to change a drugs formula name or description
-     * @param oldFormula the old formula
-     * @param newFormula the new formula
-     * @param name the new name
-     * @param description the new description
+     * Allow a user to change a drugs formula name or description.
+     * @param oldFormula The old formula.
+     * @param newFormula The new formula.
+     * @param name The new name.
+     * @param description The new description.
      */
     @PutMapping(path = "updateDrug")
     public void updateDrug(@RequestParam("updateDrug") final String oldFormula,

@@ -53,88 +53,88 @@ public final class Patient {
     }
 
     /**
-     * update a patients family doctor
-     * @param familyDoctor the patients new family doctor
+     * Setter for a patients family doctor.
+     * @param familyDoctor The patients new family doctor.
      */
     public void setFamilyDoctor(final Doctor familyDoctor) {
         this.familyDoctor = familyDoctor;
     }
 
     /**
-     * update a patients first name
-     * @param firstName the patients new first name
+     * Setter for a patients first name.
+     * @param firstName The patients new first name.
      */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * update a persons last name
-     * @param lastName the persons new last name
+     * Setter for a persons last name.
+     * @param lastName The persons new last name.
      */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * update a persons phone number
-     * @param phone the persons new phone number
+     * Setter for a persons phone number.
+     * @param phone The persons new phone number.
      */
     public void setPhone(final String phone) {
         this.phone = phone;
     }
 
     /**
-     * update a persons address
-     * @param address the persons new phone number
+     * Setter for a persons address.
+     * @param address The persons new phone number.
      */
     public void setAddress(final String address) {
         this.address = address;
     }
 
     /**
-     * getter for a patients ssn
-     * @return the patients ssn
+     * Getter for a patients ssn.
+     * @return the patients ssn.
      */
     public long getSsn() {
         return ssn;
     }
 
     /**
-     * getter for a patients family doctor
-     * @return the patients family doctor
+     * Getter for a patients family doctor.
+     * @return The patients family doctor.
      */
     public Doctor getFamilyDoctor() {
         return familyDoctor;
     }
 
     /**
-     * getter for a patients first name
-     * @return the patients first name
+     * Getter for a patients first name.
+     * @return The patients first name.
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * getter for a patients last name
-     * @return the patients last name
+     * Getter for a patients last name.
+     * @return The patients last name.
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * getter for a patients phone number
-     * @return the patients phone number
+     * Getter for a patients phone number.
+     * @return The patients phone number.
      */
     public String getPhone() {
         return phone;
     }
 
     /**
-     * getter for a patients address
-     * @return the patients address
+     * Getter for a patients address.
+     * @return The patients address.
      */
     public String getAddress() {
         return address;

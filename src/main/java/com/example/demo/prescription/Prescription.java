@@ -42,40 +42,40 @@ public final class Prescription {
     }
 
     /**
-     * setter for the drug amount
-     * @param amount the new amount of the drug
+     * Setter for the drug amount.
+     * @param amount The new amount of the drug.
      */
     public void setAmount(final long amount) {
         this.amount = amount;
     }
 
     /**
-     * getter for the prescription id
-     * @return the prescription id
+     * Getter fo r the prescription id.
+     * @return The prescription id.
      */
     public long getPresId() {
         return presId;
     }
 
     /**
-     * getter for the prescribed patient's ssn
-     * @return the patients ssn
+     * Getter for the prescribed patient's ssn.
+     * @return The patients ssn.
      */
     public long getPatientSsn() {
         return patientSsn;
     }
 
     /**
-     * getter for the doctor who prescribed's employee id
-     * @return the doctor's employee id
+     * Getter for the doctor who prescribed's employee id.
+     * @return The doctor's employee id.
      */
     public long getDoctorEmpId() {
         return doctorEmpId;
     }
 
     /**
-     * getter for the amount of a drug to take
-     * @return the amount of hte drug to take
+     * Getter for the amount of a drug to take.
+     * @return The amount of hte drug to take.
      */
     public long getAmount() {
         return amount;

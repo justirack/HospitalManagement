@@ -29,21 +29,38 @@ public final class PrescriptionController {
         this.prescriptionService = prescriptionService;
     }
 
+    /**
+     * Allow a user to get a list of all prescriptions in the database.
+     * @return The list of all prescriptions.
+     */
     @GetMapping(path = "getPrescriptions")
     public List<Prescription> getPrescriptions(){
         return prescriptionService.getPrescriptions();
     }
 
+    /**
+     * Allow a user to add a method to the database.
+     * @param presId The prescriptions id.
+     */
     @PostMapping("addPrescription")
     public void addPrescription(final long presId){
         prescriptionService.addPrescription(presId);
     }
 
+    /**
+     * Allow a user to delete a prescription from the repository.
+     * @param presId The prescriptions id.
+     */
     @DeleteMapping("{deletePresctption}")
     public void deletePrescription(@PathVariable("deletePresctption") final long presId){
         prescriptionService.deletePrescription(presId);
     }
 
+    /**
+     * Allow a user to update a prescription.
+     * @param presId The prescriptions id.
+     * @param amount The prescriptions new amount.
+     */
     @PutMapping("{updatePrescription}")
     public void updatePrescription(@PathVariable("updatePrescription") final long presId, final long amount){
         prescriptionService.updatePrescription(presId,amount);

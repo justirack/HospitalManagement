@@ -29,16 +29,16 @@ public final class PatientService {
     }
 
     /**
-     * a getter for a list of the patients in the database
-     * @return a list of all of the patients in the database
+     * A getter for a list of the patients in the database.
+     * @return A list of all of the patients in the database.
      */
     public List<Patient> getPatients(){
         return patientRepository.findAll();
     }
 
     /**
-     * a method to allow a user to add a new patient to the database
-     * @param patient teh patient to add to the database
+     * A method to allow a user to add a new patient to the database.
+     * @param patient The patient to add to the database.
      */
     public void addNewPatient(final Patient patient){
         //make sure this patient doesnt already exist in our database
@@ -49,8 +49,8 @@ public final class PatientService {
     }
 
     /**
-     * a method to allow a user to remove a patient from the database
-     * @param ssn the ssn of the patient to remove
+     * A method to allow a user to remove a patient from the database.
+     * @param ssn The ssn of the patient to remove.
      */
     public void removePatient(final long ssn){
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
@@ -60,10 +60,10 @@ public final class PatientService {
     }
 
     /**
-     * a method to allow a user to change a patient's name
-     * @param ssn the ssn of the patient to change
-     * @param firstName the new first name
-     * @param lastName the new last name
+     * A method to allow a user to change a patient's name.
+     * @param ssn The ssn of the patient to change.
+     * @param firstName The new first name.
+     * @param lastName The new last name.
      */
     public void changeName(@RequestParam final long ssn,
                            @RequestParam(required = false) final String firstName,
@@ -84,9 +84,9 @@ public final class PatientService {
     }
 
     /**
-     * a method to change a patient's family doctor
-     * @param ssn the ssn of the patient to change
-     * @param doctorId the employee id of the new family doctor
+     * A method to change a patient's family doctor.
+     * @param ssn The ssn of the patient to change.
+     * @param doctorId The employee id of the new family doctor.
      */
     public void changeFamilyDoctor(final long ssn, final Long doctorId){
         Patient patient = createPatient(ssn);
@@ -95,9 +95,9 @@ public final class PatientService {
     }
 
     /**
-     * a method to change the phone number of a patient
-     * @param ssn the ssn of the patient to change
-     * @param newPhone the new phone number
+     * A method to change the phone number of a patient.
+     * @param ssn The ssn of the patient to change.
+     * @param newPhone The new phone number.
      */
     public void changePhone(final long ssn, final String newPhone){
         Patient patient = createPatient(ssn);
@@ -108,9 +108,9 @@ public final class PatientService {
     }
 
     /**
-     * a method to change the address of a patient
-     * @param ssn the ssn of the patient to change
-     * @param newAddress the new address
+     * A method to change the address of a patient.
+     * @param ssn The ssn of the patient to change.
+     * @param newAddress The new address.
      */
     public void changeAddress(final long ssn, final String newAddress){
         Patient patient = createPatient(ssn);

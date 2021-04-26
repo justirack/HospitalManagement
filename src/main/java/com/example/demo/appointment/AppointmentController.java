@@ -30,8 +30,8 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to get a list of all appointments
-     * @return the list of all appointments
+     * Allow a user to get a list of all appointments.
+     * @return The list of all appointments.
      */
     @GetMapping("getAppointments")
     public List<Appointment> getAppointments(){
@@ -39,12 +39,12 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to book an appointment
-     * @param patientSsn the ssn of the patient booking the appointment
-     * @param doctorEmpId the empId of the doctor the appointment is being booked with
-     * @param time the time of the appointment
-     * @param date the date of the appointment
-     * @param room the room the appointment is in
+     * Allow a user to book an appointment.
+     * @param patientSsn The ssn of the patient booking the appointment.
+     * @param doctorEmpId The empId of the doctor the appointment is being booked with.
+     * @param time The time of the appointment.
+     * @param date The date of the appointment.
+     * @param room The room the appointment is in.
      */
     @PostMapping("bookAppointment")
     public void bookAppointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
@@ -53,8 +53,8 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to cancel an appointment
-     * @param appId the id of the appointment to cancel
+     * Allow a user to cancel an appointment.
+     * @param appId The id of the appointment to cancel.
      */
     @DeleteMapping("cancelAppointment")
     public void cancelAppointment(final long appId){
@@ -62,9 +62,9 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to change the date of an appointment
-     * @param appId the id of the appointment
-     * @param date the new date of the appointment
+     * Allow a user to change the date of an appointment.
+     * @param appId The id of the appointment.
+     * @param date The new date of the appointment.
      */
     @PutMapping("changeAppointmentDate")
     public void changeDate(final long appId, final LocalDate date){
@@ -72,9 +72,9 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to change the time of an appointment
-     * @param appId the id of the appointment
-     * @param time the new time of the appointment
+     * Allow a user to change the time of an appointment.
+     * @param appId The id of the appointment.
+     * @param time The new time of the appointment.
      */
     @PutMapping("changeAppointmentTime")
     public void changeTime(final long appId, final LocalTime time){
@@ -82,9 +82,9 @@ public final class AppointmentController {
     }
 
     /**
-     * allow a user to change the room of an appointment
-     * @param appId the id of the appointment
-     * @param room the new room of the appointment
+     * Allow a user to change the room of an appointment.
+     * @param appId The id of the appointment.
+     * @param room The new room of the appointment.
      */
     @PutMapping("changeAppointmentRoom")
     public void changeRoom(final long appId, final int room){

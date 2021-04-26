@@ -18,18 +18,35 @@ public final class PrescriptionService {
         this.prescriptionRepository = prescriptionRepository;
     }
 
+    /**
+     * Allow a user to get a list of prescriptions from the database.
+     * @return The list of prescription.
+     */
     public List<Prescription> getPrescriptions(){
         return prescriptionRepository.findAll();
     }
 
+    /**
+     * Allow a user to add a prescription to the database.
+     * @param presId The prescriptions id.
+     */
     public void addPrescription(final long presId){
         prescriptionRepository.save(findPrescription(presId));
     }
 
+    /**
+     * Allow a user to delete a prescription from the database.
+     * @param presId The prescriptions id;
+     */
     public void deletePrescription(final long presId){
         prescriptionRepository.delete(findPrescription(presId));
     }
 
+    /**
+     * Allow a user to update a prescriptions information.
+     * @param presId The prescriptions id.
+     * @param amount The prescriptions amount.
+     */
     public void updatePrescription(final long presId, final long amount){
         Prescription prescription = findPrescription(presId);
     }

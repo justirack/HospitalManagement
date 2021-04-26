@@ -41,56 +41,56 @@ public final class Doctor {
     }
 
     /**
-     * setter for a doctors first name
-     * @param firstName the new first name
+     * Setter for a doctors first name.
+     * @param firstName The new first name.
      */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * setter for a doctors last name
-     * @param lastName the new last name
+     * Setter for a doctors last name.
+     * @param lastName The new last name.
      */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * setter for a doctors phone
-     * @param phone the new phone number
+     * Setter for a doctors phone.
+     * @param phone The new phone number.
      */
     public void setPhone(final String phone) {
         this.phone = phone;
     }
 
     /**
-     * getter for a doctors employee id
-     * @return the doctors employee id
+     * Getter for a doctors employee id.
+     * @return The doctors employee id.
      */
     public long getEmpId() {
         return empId;
     }
 
     /**
-     * getter for a doctors first name
-     * @return the doctors first name
+     * Getter for a doctors first name.
+     * @return The doctors first name.
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * getter for a doctors last name
-     * @return the doctors last name
+     * Getter for a doctors last name.
+     * @return The doctors last name.
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * getter for a doctor's phone number
-     * @return the doctors phone number
+     * Getter for a doctor's phone number.
+     * @return The doctors phone number.
      */
     public String getPhone() {
         return phone;

@@ -23,17 +23,27 @@ public final class DoctorService {
     }
 
     /**
-     * getter for a list of all the doctors in the database
-     * @return a list of all the doctors
+     * Getter for a list of all the doctors in the database.
+     * @return A list of all the doctors.
      */
     public List<Doctor> getDoctors(){
         return doctorRepository.findAll();
     }
 
+    /**
+     * Allow a user to add a doctor to the database.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name.
+     * @param phone The doctors phone number.
+     */
     public void addDoctor(final String firstName, final String lastName, final String phone){
         doctorRepository.save(createDoctor(firstName,lastName,phone));
     }
 
+    /**
+     * Allow a user to remove a doctor from the database.
+     * @param empId The doctors employee id.
+     */
     public void removeDoctor(final long empId){
         //check to make sure the doctor exists, will throw an exception if not
         findDoctor(empId);
@@ -41,6 +51,11 @@ public final class DoctorService {
         doctorRepository.deleteById(empId);
     }
 
+    /**
+     * Allow a user to change a doctors first name.
+     * @param empId The doctors employee id.
+     * @param firstName The doctors new first name.
+     */
     public void changeFirstName(final long empId, final String firstName) {
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
@@ -48,6 +63,11 @@ public final class DoctorService {
         doctor.setFirstName(firstName);
     }
 
+    /**
+     * Allow a user to change a doctors last name.
+     * @param empId The doctors employee id.
+     * @param lastName The doctors new last name.
+     */
     public void changeLastName(final long empId, final String lastName){
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);
@@ -55,6 +75,11 @@ public final class DoctorService {
         doctor.setLastName(lastName);
     }
 
+    /**
+     * Allow a user to change a doctors phone number.
+     * @param empId The doctors employee id.
+     * @param phone The doctors new phone number.
+     */
     public void changePhone(final long empId, final String phone){
         //check to make sure the doctor exists, will throw an exception if not
         Doctor doctor = findDoctor(empId);

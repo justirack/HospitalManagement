@@ -23,18 +23,28 @@ public final class DrugService {
     }
 
     /**
-     * a method that will return a list of all the drugs in the database
-     * @return the list of all drugs
+     * A method that will return a list of all the drugs in the database.
+     * @return The list of all drugs.
      */
     public List<Drug> getDrugs(){
         return drugRepository.findAll();
     }
 
+    /**
+     * Allow a user to add a drug to the database.
+     * @param formula The drugs formula.
+     * @param name The drugs name.
+     * @param description The drugs description.
+     */
     public void addDrug(final String formula, final String name, final String description){
         Drug drug = createDrug(formula,name,description);
         drugRepository.save(drug);
     }
 
+    /**
+     * Allow a user to delete a drug from the database.
+     * @param formula The drugs formula.
+     */
     public void deleteDrug(final String formula){
         //make sure the drug exists, will throw an exception if not
         findDrug(formula);
@@ -42,6 +52,11 @@ public final class DrugService {
         drugRepository.deleteById(formula);
     }
 
+    /**
+     * Allow a user to change the formula of a drug.
+     * @param oldFormula The old formula.
+     * @param newFormula The new formula.
+     */
     public void changeFormula(final String oldFormula,final String newFormula){
         Drug drug = findDrug(oldFormula);
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
@@ -49,6 +64,11 @@ public final class DrugService {
         }
     }
 
+    /**
+     * Allow a user to change the name of a drug.
+     * @param formula The drugs formula.
+     * @param name The drugs name.
+     */
     public void changeName(final String formula, final String name){
         Drug drug = findDrug(formula);
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
@@ -56,6 +76,11 @@ public final class DrugService {
         }
     }
 
+    /**
+     * Allow a user to change the description of a drug
+     * @param formula The drugs formula.
+     * @param description The drugs description.
+     */
     public void changeDescription(final String formula, final String description){
         Drug drug = findDrug(formula);
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){

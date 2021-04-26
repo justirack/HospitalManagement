@@ -40,72 +40,72 @@ public final class Appointment {
     }
 
     /**
-     * setter for the appointments time
-     * @param time the appointments new time
+     * Setter for the appointments time.
+     * @param time The appointments new time.
      */
     public void setTime(final LocalTime time) {
         this.time = time;
     }
 
     /**
-     * setter for the appointments date
-     * @param date the appointments new date
+     * Setter for the appointments date.
+     * @param date The appointments new date.
      */
     public void setDate(final LocalDate date) {
         this.date = date;
     }
 
     /**
-     * setter for the appointments room
-     * @param room the appointments new room
+     * Setter for the appointments room.
+     * @param room The appointments new room.
      */
     public void setRoom(final int room) {
         this.room = room;
     }
 
     /**
-     * getter for the appointment id
-     * @return the appointment id
+     * Getter for the appointment id.
+     * @return The appointment id.
      */
     public long getAppId() {
         return appId;
     }
 
     /**
-     * getter for the patients ssn
-     * @return the patients ssn
+     * Getter for the patients ssn.
+     * @return The patients ssn.
      */
     public long getPatientSsn() {
         return patientSsn;
     }
 
     /**
-     * getter for the doctors employee id
-     * @return the doctors employee id
+     * Getter for the doctors employee id.
+     * @return The doctors employee id.
      */
     public long getDoctorEmpId() {
         return doctorEmpId;
     }
 
     /**
-     * getter for the appointments time
-     * @return the appointments time
+     * Getter for the appointments time.
+     * @return The appointments time.
      */
     public LocalTime getTime() {
         return time;
     }
 
     /**
-     * getter for the appointments data
-     * @return the appointments data
+     * Getter for the appointments data.
+     * @return The appointments data.
      */
     public LocalDate getDate() {
         return date;
     }
 
     /**
-     * getter for the appointments room
-     * @return the room the appointment is in
+     * Getter for the appointments room.
+     * @return The room the appointment is in.
      */
     public int getRoom() {
         return room;

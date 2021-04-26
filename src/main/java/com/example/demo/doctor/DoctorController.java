@@ -31,24 +31,41 @@ public final class DoctorController {
     }
 
     /**
-     * allow a user to get a list of all doctors in the database
-     * @return a list of all doctors in the database
+     * Allow a user to get a list of all doctors in the database.
+     * @return A list of all doctors in the database.
      */
     @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
         return doctorService.getDoctors();
     }
 
+    /**
+     * Allow a user to add a doctor to the database.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name.
+     * @param phone The doctors phone number.
+     */
     @PostMapping(path = "addDoctor")
     public void addDoctor(final String firstName, final String lastName, final String phone){
         doctorService.addDoctor(firstName,lastName,phone);
     }
 
+    /**
+     * Allow a user to delete a doctor from the repository.
+     * @param doctorId The id of the doctor to remove.
+     */
     @DeleteMapping(path = "{deleteDoctor}")
     public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
         doctorService.removeDoctor(doctorId);
     }
 
+    /**
+     * Allow a user to update a doctors information.
+     * @param id The doctors id.
+     * @param firstName The doctors first name.
+     * @param lastName The doctors last name
+     * @param phone The doctors phone number
+     */
     @PutMapping(path = "{updateDoctor}")
     public void updateDoctor(@PathVariable("updateDoctor") final long id,
                              @RequestParam final String firstName,
