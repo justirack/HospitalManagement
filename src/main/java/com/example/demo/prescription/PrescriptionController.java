@@ -23,11 +23,11 @@ import java.util.List;
 @RequestMapping(path = "prescription")
 public final class PrescriptionController {
     //create a permanent reference to prescriptionService
-    private final PrescriptionService prescriptionService;
+    private final PrescriptionService service;
 
     @Autowired
-    public PrescriptionController(PrescriptionService prescriptionService) {
-        this.prescriptionService = prescriptionService;
+    public PrescriptionController(PrescriptionService service) {
+        this.service = service;
     }
 
     /**
@@ -37,7 +37,7 @@ public final class PrescriptionController {
     @GetMapping(path = "getPrescriptions")
     public List<Prescription> getPrescriptions(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(prescriptionService.getPrescriptions());
+        return Collections.unmodifiableList(service.getPrescriptions());
     }
 
     /**
@@ -45,8 +45,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      */
     @PostMapping("addPrescription")
-    public void addPrescription(final long presId){
-        prescriptionService.addPrescription(presId);
+    public void add(final long presId){
+        service.add(presId);
     }
 
     /**
@@ -54,8 +54,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      */
     @DeleteMapping("{deletePresctption}")
-    public void deletePrescription(@PathVariable("deletePresctption") final long presId){
-        prescriptionService.deletePrescription(presId);
+    public void delete(@PathVariable("deletePresctption") final long presId){
+        service.delete(presId);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class PrescriptionController {
      * @param amount The prescriptions new amount.
      */
     @PutMapping("{updatePrescription}")
-    public void updatePrescription(@PathVariable("updatePrescription") final long presId, final long amount){
-        prescriptionService.updatePrescription(presId,amount);
+    public void update(@PathVariable("updatePrescription") final long presId, final long amount){
+        service.update(presId,amount);
     }
 }

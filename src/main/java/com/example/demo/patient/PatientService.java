@@ -42,7 +42,7 @@ public final class PatientService {
      * A method to allow a user to add a new patient to the database.
      * @param patient The patient to add to the database.
      */
-    public void addNewPatient(final Patient patient){
+    public void add(final Patient patient){
         //make sure this patient doesnt already exist in our database
         if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
             throw new IllegalStateException("A patient with this ssn already exists.");
@@ -54,7 +54,7 @@ public final class PatientService {
      * A method to allow a user to remove a patient from the database.
      * @param ssn The ssn of the patient to remove.
      */
-    public void removePatient(final long ssn){
+    public void remove(final long ssn){
         if (patientRepository.findPatientBySsn(ssn).isEmpty()){
             throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
         }

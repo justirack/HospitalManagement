@@ -48,7 +48,7 @@ public final class DrugController {
     @PostMapping(path = "addDrug")
     public void addDrug(@RequestParam final String formula, @RequestParam final String name,
                         @RequestParam final String description){
-        drugService.addDrug(formula,name,description);
+        drugService.add(formula,name,description);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class DrugController {
      */
     @DeleteMapping(path = "deleteDrug")
     public void deleteDrug(@RequestParam final String formula){
-        drugService.deleteDrug(formula);
+        drugService.delete(formula);
     }
 
     /**

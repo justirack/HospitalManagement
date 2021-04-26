@@ -13,10 +13,10 @@ import java.util.List;
 @Service
 public final class PrescriptionService {
     //create a permanent reference to the prescriptionRepository
-    private final PrescriptionRepository prescriptionRepository;
+    private final PrescriptionRepository repository;
 
     public PrescriptionService(PrescriptionRepository prescriptionRepository) {
-        this.prescriptionRepository = prescriptionRepository;
+        this.repository = prescriptionRepository;
     }
 
     /**
@@ -25,23 +25,23 @@ public final class PrescriptionService {
      */
     public List<Prescription> getPrescriptions(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(prescriptionRepository.findAll());
+        return Collections.unmodifiableList(repository.findAll());
     }
 
     /**
      * Allow a user to add a prescription to the database.
      * @param presId The prescriptions id.
      */
-    public void addPrescription(final long presId){
-        prescriptionRepository.save(findPrescription(presId));
+    public void add(final long presId){
+        repository.save(find(presId));
     }
 
     /**
      * Allow a user to delete a prescription from the database.
      * @param presId The prescriptions id;
      */
-    public void deletePrescription(final long presId){
-        prescriptionRepository.delete(findPrescription(presId));
+    public void delete(final long presId){
+        repository.delete(find(presId));
     }
 
     /**
@@ -49,12 +49,12 @@ public final class PrescriptionService {
      * @param presId The prescriptions id.
      * @param amount The prescriptions amount.
      */
-    public void updatePrescription(final long presId, final long amount){
-        Prescription prescription = findPrescription(presId);
+    public void update(final long presId, final long amount){
+        Prescription prescription = find(presId);
     }
 
-    private Prescription findPrescription(final long presId){
-        return prescriptionRepository.findById(presId).orElseThrow(() -> new IllegalStateException(
+    private Prescription find(final long presId){
+        return repository.findById(presId).orElseThrow(() -> new IllegalStateException(
                 "Prescription with id  " + presId + " not found."));
     }
 }

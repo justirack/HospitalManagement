@@ -23,11 +23,11 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "appointment")
 public final class AppointmentController {
-    private final AppointmentService appointmentService;
+    private final AppointmentService service;
 
     @Autowired
-    public AppointmentController(final AppointmentService appointmentService) {
-        this.appointmentService = appointmentService;
+    public AppointmentController(final AppointmentService service) {
+        this.service = service;
     }
 
     /**
@@ -36,7 +36,7 @@ public final class AppointmentController {
      */
     @GetMapping("getAppointments")
     public List<Appointment> getAppointments(){
-        return Collections.unmodifiableList(appointmentService.getAppointments());
+        return Collections.unmodifiableList(service.getAppointments());
     }
 
     /**
@@ -48,9 +48,9 @@ public final class AppointmentController {
      * @param room The room the appointment is in.
      */
     @PostMapping("bookAppointment")
-    public void bookAppointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                                final LocalDate date, final int room){
-        appointmentService.bookAppointment(patientSsn,doctorEmpId,time,date,room);
+    public void book(final long patientSsn, final long doctorEmpId, final LocalTime time,
+                     final LocalDate date, final int room){
+        service.book(patientSsn,doctorEmpId,time,date,room);
     }
 
     /**
@@ -58,8 +58,8 @@ public final class AppointmentController {
      * @param appId The id of the appointment to cancel.
      */
     @DeleteMapping("cancelAppointment")
-    public void cancelAppointment(final long appId){
-        appointmentService.cancelAppointment(appId);
+    public void cancel(final long appId){
+        service.cancel(appId);
     }
 
     /**
@@ -69,7 +69,7 @@ public final class AppointmentController {
      */
     @PutMapping("changeAppointmentDate")
     public void changeDate(final long appId, final LocalDate date){
-        appointmentService.changeDate(appId, date);
+        service.changeDate(appId, date);
     }
 
     /**
@@ -79,7 +79,7 @@ public final class AppointmentController {
      */
     @PutMapping("changeAppointmentTime")
     public void changeTime(final long appId, final LocalTime time){
-        appointmentService.changeTime(appId, time);
+        service.changeTime(appId, time);
     }
 
     /**
@@ -89,7 +89,7 @@ public final class AppointmentController {
      */
     @PutMapping("changeAppointmentRoom")
     public void changeRoom(final long appId, final int room){
-        appointmentService.changeRoom(appId, room);
+        service.changeRoom(appId, room);
     }
 
 }

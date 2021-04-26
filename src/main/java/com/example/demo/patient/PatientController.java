@@ -49,7 +49,7 @@ public final class PatientController {
      */
     @PostMapping(path = "addPatient")
     public void addPatient(@RequestBody final Patient patient){
-        patientService.addNewPatient(patient);
+        patientService.add(patient);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class PatientController {
      */
     @DeleteMapping(path = "{deletePatient}")
     public void deletePatient(@PathVariable("deletePatient") final long ssn){
-        patientService.removePatient(ssn);
+        patientService.remove(ssn);
     }
 
     /**

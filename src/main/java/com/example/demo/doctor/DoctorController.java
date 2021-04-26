@@ -49,7 +49,7 @@ public final class DoctorController {
      */
     @PostMapping(path = "addDoctor")
     public void addDoctor(final String firstName, final String lastName, final String phone){
-        doctorService.addDoctor(firstName,lastName,phone);
+        doctorService.add(firstName,lastName,phone);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class DoctorController {
      */
     @DeleteMapping(path = "{deleteDoctor}")
     public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
-        doctorService.removeDoctor(doctorId);
+        doctorService.remove(doctorId);
     }
 
     /**

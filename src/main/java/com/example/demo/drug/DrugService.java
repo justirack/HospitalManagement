@@ -16,11 +16,11 @@ import java.util.Objects;
 public final class DrugService {
 
     //create a permanent reference to the drug repository
-    private final DrugRepository drugRepository;
+    private final DrugRepository repository;
 
     @Autowired
-    public DrugService(final DrugRepository drugRepository) {
-        this.drugRepository = drugRepository;
+    public DrugService(final DrugRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -29,7 +29,7 @@ public final class DrugService {
      */
     public List<Drug> getDrugs(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(drugRepository.findAll());
+        return Collections.unmodifiableList(repository.findAll());
     }
 
     /**
@@ -38,20 +38,20 @@ public final class DrugService {
      * @param name The drugs name.
      * @param description The drugs description.
      */
-    public void addDrug(final String formula, final String name, final String description){
-        Drug drug = createDrug(formula,name,description);
-        drugRepository.save(drug);
+    public void add(final String formula, final String name, final String description){
+        Drug drug = create(formula,name,description);
+        repository.save(drug);
     }
 
     /**
      * Allow a user to delete a drug from the database.
      * @param formula The drugs formula.
      */
-    public void deleteDrug(final String formula){
+    public void delete(final String formula){
         //make sure the drug exists, will throw an exception if not
-        findDrug(formula);
+        find(formula);
         //delete the drug from the database
-        drugRepository.deleteById(formula);
+        repository.deleteById(formula);
     }
 
     /**
@@ -60,7 +60,7 @@ public final class DrugService {
      * @param newFormula The new formula.
      */
     public void changeFormula(final String oldFormula,final String newFormula){
-        Drug drug = findDrug(oldFormula);
+        Drug drug = find(oldFormula);
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
             drug.setFormula(newFormula);
         }
@@ -72,7 +72,7 @@ public final class DrugService {
      * @param name The drugs name.
      */
     public void changeName(final String formula, final String name){
-        Drug drug = findDrug(formula);
+        Drug drug = find(formula);
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
         }
@@ -84,20 +84,20 @@ public final class DrugService {
      * @param description The drugs description.
      */
     public void changeDescription(final String formula, final String description){
-        Drug drug = findDrug(formula);
+        Drug drug = find(formula);
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){
             drug.setFormula(description);
         }
     }
 
     //a helper method to create a drug
-    private Drug createDrug(final String formula, final String name, final String description){
+    private Drug create(final String formula, final String name, final String description){
         return new Drug(formula, name, description);
     }
 
     //a helper method to find a drug in the database
-    private Drug findDrug(final String formula){
-        return drugRepository.findById(formula).orElseThrow(() -> new IllegalStateException(
+    private Drug find(final String formula){
+        return repository.findById(formula).orElseThrow(() -> new IllegalStateException(
                 "Formula with formula  " + formula + " not found."));
     }
 
