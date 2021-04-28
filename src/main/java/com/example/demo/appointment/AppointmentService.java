@@ -128,14 +128,19 @@ public final class AppointmentService {
         boolean isAvailable = false;
         //loop through all of the appointments
         for (Appointment appointment:appointments) {
-            //check if there is an appointment at the same date and time in the same room
-            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time) &&
-                    appointment.getRoom() == room)){
-                //make isAvailable
+            //if the current appointment does not conflict set isAvailable to false
+            if (!(appointment.getDate().equals(date)) || !(appointment.getTime().equals(time)) ||
+                    !(appointment.getRoom() == room)){
+                isAvailable = false;
+            }
+            //if the current appointment conflicts set isAvailable to true and break
+            else{
                 isAvailable = true;
+                break;
             }
         }
-        //return isAvailable, false by default
+
+        //return isAvailable
         return isAvailable;
     }
 
@@ -144,15 +149,22 @@ public final class AppointmentService {
         //get a list of all an individual doctors appointments
         final List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
 
+        boolean isAvailable = false;
         //go through the list and make sure there isn't one at the same data and time of the new appointment
         for (Appointment appointment:doctorAppointments) {
-            if (appointment.getDate().equals(date) && appointment.getTime().equals(time)){
-                //return false if there is an appointment at same data & time
-                return false;
+            //if the current appointment does not conflict set isAvailable to false
+            if (!(appointment.getDate().equals(date)) || !(appointment.getTime().equals(time))){
+                isAvailable = false;
             }
+            //if the current appointment conflicts set isAvailable to true and break
+            else{
+                isAvailable = true;
+                break;
+            }
+            break;
         }
-        //return true if no conflicting appointment
-        return true;
+        //return isAvailable
+        return isAvailable;
     }
 
     //a helper method to create an appointment
