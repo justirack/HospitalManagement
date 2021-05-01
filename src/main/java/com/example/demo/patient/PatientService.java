@@ -1,7 +1,5 @@
 package com.example.demo.patient;
 
-import com.example.demo.doctor.Doctor;
-import com.example.demo.doctor.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,15 +16,13 @@ import java.util.Objects;
 @Service
 public final class PatientService {
 
-    //create a permanent reference to the patient and doctor repositories
-    private final PatientRepository patientRepository;
-    private final DoctorRepository doctorRepository;
+    //create a permanent reference to the patient repository
+    private final PatientRepository repository;
 
-    //inject patientRepository and doctorRepository's beans into this class
+    //inject the patient repository into this class
     @Autowired
-    public PatientService(final PatientRepository patientRepository, final DoctorRepository doctorRepository) {
-        this.patientRepository = patientRepository;
-        this.doctorRepository = doctorRepository;
+    public PatientService(final PatientRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -35,19 +31,22 @@ public final class PatientService {
      */
     public List<Patient> getPatients(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(patientRepository.findAll());
+        return Collections.unmodifiableList(repository.findAll());
     }
 
+
     /**
-     * A method to allow a user to add a new patient to the database.
-     * @param patient The patient to add to the database.
+     * add a patient to the database
+     * @param doctorId the patients family doctor's id
+     * @param firstName the patients first name
+     * @param lastName the patients last name
+     * @param phone the patients phone number
+     * @param address the patients address
      */
-    public void add(final Patient patient){
-        //make sure this patient doesnt already exist in our database
-        if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
-            throw new IllegalStateException("A patient with this ssn already exists.");
-        }
-        patientRepository.save(patient);
+    public void add(final long doctorId, final String firstName, final String lastName,
+                    final String phone, final String address){
+        //create a new patient and save them to the database
+        repository.save(create(doctorId,firstName,lastName,phone,address));
     }
 
     /**
@@ -55,32 +54,37 @@ public final class PatientService {
      * @param ssn The ssn of the patient to remove.
      */
     public void remove(final long ssn){
-        if (patientRepository.findPatientBySsn(ssn).isEmpty()){
-            throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
-        }
-        patientRepository.deleteById(ssn);
+        //make sure the patient exists, exception will be thrown if not
+        find(ssn);
+        //delete the patient if no exception was thrown
+        repository.deleteById(ssn);
     }
 
     /**
      * A method to allow a user to change a patient's name.
      * @param ssn The ssn of the patient to change.
      * @param firstName The new first name.
-     * @param lastName The new last name.
      */
-    public void changeName(@RequestParam final long ssn,
-                           @RequestParam(required = false) final String firstName,
-                           @RequestParam(required = false) final String lastName)
+    public void changeFirstName(@RequestParam final long ssn,
+                                @RequestParam(required = false) final String firstName)
     {
-        //use the helper method to get the patient
-        final Patient patient = createPatient(ssn);
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
         //make sure firstName is not null, has length > 0 and is not the same as the current first name
         if (firstName != null && firstName .length()> 0 && !Objects.equals(patient.getFirstName(),firstName)){
+            //set the new first name
             patient.setFirstName(firstName);
         }
+    }
+
+    public void changeLastName(final long ssn, final String lastName){
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
         //make sure lastName is not null, has length > 0 and is not the same as the current last name
-        if (lastName != null && lastName.length() > 0 && !Objects.equals(patient.getLastName(),lastName)){
+        if (lastName != null && lastName.length()> 0 && !Objects.equals(patient.getLastName(),lastName)){
+            //set the new last name
             patient.setLastName(lastName);
         }
     }
@@ -91,9 +95,14 @@ public final class PatientService {
      * @param doctorId The employee id of the new family doctor.
      */
     public void changeFamilyDoctor(final long ssn, final Long doctorId){
-        final Patient patient = createPatient(ssn);
-        final Doctor doctor = createDoctor(doctorId);
-        //check if doctor exists in doctor repo
+        //get the patient from the database
+        final Patient patient = find(ssn);
+
+        //make sure doctorId is not null, has length > 0 and is not the same as the current doctor id
+        if (doctorId != null && doctorId >=0 && !Objects.equals(patient.getFamilyDoctorId(),doctorId)){
+            //set the patients new family doctor id
+            patient.setFamilyDoctor(doctorId);
+        }
     }
 
     /**
@@ -102,9 +111,12 @@ public final class PatientService {
      * @param newPhone The new phone number.
      */
     public void changePhone(final long ssn, final String newPhone){
-        final Patient patient = createPatient(ssn);
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
+        //make sure newPhone is not null, has length = 10 and is not the same as the current phone number
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
+            //set the new phone number
             patient.setPhone(newPhone);
         }
     }
@@ -115,26 +127,30 @@ public final class PatientService {
      * @param newAddress The new address.
      */
     public void changeAddress(final long ssn, final String newAddress){
-        final Patient patient = createPatient(ssn);
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
+        //make sure newAddress is not null, has length > 0 and is not the same as the current first name
         if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
+            //set the new address
             patient.setAddress(newAddress);
         }
     }
 
     //A helper method to check if the patient exists in our database
-    private Patient createPatient(final long ssn){
+    private Patient find(final long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
-        return patientRepository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
+        return repository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
                 "Patient with SSN " + ssn + " not found."));
     }
 
-    //a helper method to make sure a doctor exists
-    private Doctor createDoctor(final long id){
-        //create a temporary doctor by getting the doctor with the given id
-        //if no such doctor exists, throw an exception
-        return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(
-                "Doctor with id " + id + " not found."));
+    //helper method to create a new patient
+    private Patient create(final long doctorId, final String firstName, final String lastName,
+                           final String phone, final String address){
+        //create and return a new patient
+        return new Patient(doctorId,firstName,lastName,phone,address);
     }
+
+
 }

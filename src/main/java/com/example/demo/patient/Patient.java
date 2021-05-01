@@ -31,13 +31,9 @@ public final class Patient {
     @Type(type = "doctor")
     @ManyToOne(optional = false)
     private long familyDoctorId;
-    @Column(nullable = false)
     private String firstName;
-    @Column(nullable = false)
     private String lastName;
-    @Column(length = 10, nullable = false)
     private String phone;
-    @Column(nullable = false)
     private String address;
 
     public Patient(final long familyDoctorId, final String firstName, final String lastName,
@@ -56,7 +52,7 @@ public final class Patient {
      * Setter for a patients family doctor.
      * @param familyDoctorId The patients new family doctor.
      */
-    public void setFamilyDoctorId(final long familyDoctorId) {
+    public void setFamilyDoctor(final long familyDoctorId) {
         this.familyDoctorId = familyDoctorId;
     }
 

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,17 +46,18 @@ public final class PatientController {
     /**
      * Allow a user to add a new patient to the database.
      */
-    @PostMapping(path = "addPatient")
-    public void addPatient(@RequestBody final Patient patient){
-        patientService.add(patient);
+    @PostMapping(path = "add")
+    public void addPatient(final long doctorId, final String firstName, final String lastName,
+                           final String phone, final String address){
+        patientService.add(doctorId,firstName,lastName,phone,address);
     }
 
     /**
      * Allow a user to delete a person by their ssn.
      * @param ssn The person to deletes ssn.
      */
-    @DeleteMapping(path = "{deletePatient}")
-    public void deletePatient(@PathVariable("deletePatient") final long ssn){
+    @DeleteMapping(path = "{delete}")
+    public void deletePatient(@PathVariable("delete") final long ssn){
         patientService.remove(ssn);
     }
 
@@ -70,14 +70,15 @@ public final class PatientController {
      * @param phone The patients phone number.
      * @param address The patients address.
      */
-    @PutMapping(path = "{updatePatient}")
-    public void updatePatient(@PathVariable("updatePatient") final long ssn,
+    @PutMapping(path = "{update}")
+    public void updatePatient(@PathVariable("update") final long ssn,
                               @RequestParam(required = false) final String firstName,
                               @RequestParam(required = false) final String lastName,
                               @RequestParam(required = false) final Long DoctorId,
                               @RequestParam(required = false) final String phone,
                               @RequestParam(required = false) final String address){
-        patientService.changeName(ssn,firstName,lastName);
+        patientService.changeFirstName(ssn,firstName);
+        patientService.changeLastName(ssn,lastName);
         patientService.changeAddress(ssn,address);
         patientService.changeFamilyDoctor(ssn,DoctorId);
         patientService.changePhone(ssn, phone);
