@@ -17,8 +17,10 @@ import java.util.List;
 @Service
 public final class AppointmentService {
 
+    //create a permanent reference to the appointment repository
     private final AppointmentRepository repository;
 
+    //inject the appointment repository into this class
     @Autowired
     public AppointmentService(final AppointmentRepository repository) {
         this.repository = repository;

@@ -47,7 +47,7 @@ public final class AppointmentController {
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
-    @PostMapping("bookAppointment")
+    @PostMapping("book")
     public void book(final long patientSsn, final long doctorEmpId, final LocalTime time,
                      final LocalDate date, final int room){
         service.book(patientSsn,doctorEmpId,time,date,room);
@@ -57,7 +57,7 @@ public final class AppointmentController {
      * Allow a user to cancel an appointment.
      * @param appId The id of the appointment to cancel.
      */
-    @DeleteMapping("cancelAppointment")
+    @DeleteMapping("cancel")
     public void cancel(final long appId){
         service.cancel(appId);
     }
@@ -67,7 +67,7 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    @PutMapping("changeAppointmentDate")
+    @PutMapping("changeDate")
     public void changeDate(final long appId, final LocalDate date){
         service.changeDate(appId, date);
     }
@@ -77,7 +77,7 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param time The new time of the appointment.
      */
-    @PutMapping("changeAppointmentTime")
+    @PutMapping("changeTime")
     public void changeTime(final long appId, final LocalTime time){
         service.changeTime(appId, time);
     }
@@ -87,7 +87,7 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param room The new room of the appointment.
      */
-    @PutMapping("changeAppointmentRoom")
+    @PutMapping("changeRoom")
     public void changeRoom(final long appId, final int room){
         service.changeRoom(appId, room);
     }
