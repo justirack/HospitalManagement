@@ -61,23 +61,55 @@ public final class PatientController {
     }
 
     /**
-     * Allow a user to update a patients information.
+     * Allow a user to change their first name.
      * @param ssn The patients ssn.
-     * @param firstName The patients first name.
-     * @param lastName The patients last name.
-     * @param DoctorId The patients family doctors id.
-     * @param phone The patients phone number.
-     * @param address The patients address.
+     * @param firstName The patients new first name.
      */
-    @PutMapping(path = "update")
-    public void updatePatient(final long ssn, final String firstName, final String lastName,
-                              final Long DoctorId, final String phone, final String address){
+    @PutMapping(path = "ChangeFirstName")
+    public void changeFirstName(final long ssn, final String firstName){
         patientService.changeFirstName(ssn,firstName);
-        patientService.changeLastName(ssn,lastName);
-        patientService.changeAddress(ssn,address);
-        patientService.changeFamilyDoctor(ssn,DoctorId);
-        patientService.changePhone(ssn, phone);
     }
+
+    /**
+     * Allow a user to change their first name.
+     * @param ssn The patients ssn.
+     * @param lastName The patients new last name
+     */
+    @PutMapping(path = "changeLastName")
+    public void changeLastName(final long ssn, final String lastName){
+        patientService.changeLastName(ssn,lastName);
+    }
+
+    /**
+     * Allow a user to change their address.
+     * @param ssn The patients ssn.
+     * @param address The patients new address.
+     */
+    @PutMapping(path = "changeAddress")
+    public void changeAddress(final long ssn, final String address){
+        patientService.changeAddress(ssn,address);
+    }
+
+    /**
+     * Allow a user to change their family doctor.
+     * @param ssn The patients ssn.
+     * @param familyDocId The patients new family doctor's id.
+     */
+    @PutMapping(path = "changeDoctor")
+    public void changeFamilyDoctor(final long ssn, final long familyDocId){
+        patientService.changeFamilyDoctor(ssn,familyDocId);
+    }
+
+    /**
+     * Allow a user to change their phone number.
+     * @param ssn The patients ssn.
+     * @param phone The users new phone number.
+     */
+    @PutMapping(path = "changePhone")
+    public void changePhone(final long ssn, final String phone){
+        patientService.changePhone(ssn,phone);
+    }
+
 
 
 }
