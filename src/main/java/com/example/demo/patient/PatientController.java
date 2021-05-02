@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -70,13 +69,9 @@ public final class PatientController {
      * @param phone The patients phone number.
      * @param address The patients address.
      */
-    @PutMapping(path = "{update}")
-    public void updatePatient(@PathVariable("update") final long ssn,
-                              @RequestParam(required = false) final String firstName,
-                              @RequestParam(required = false) final String lastName,
-                              @RequestParam(required = false) final Long DoctorId,
-                              @RequestParam(required = false) final String phone,
-                              @RequestParam(required = false) final String address){
+    @PutMapping(path = "update")
+    public void updatePatient(final long ssn, final String firstName, final String lastName,
+                              final Long DoctorId, final String phone, final String address){
         patientService.changeFirstName(ssn,firstName);
         patientService.changeLastName(ssn,lastName);
         patientService.changeAddress(ssn,address);

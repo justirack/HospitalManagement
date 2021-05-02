@@ -3,6 +3,7 @@ package com.example.demo.appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,8 +58,8 @@ public final class AppointmentController {
      * Allow a user to cancel an appointment.
      * @param appId The id of the appointment to cancel.
      */
-    @DeleteMapping("cancel")
-    public void cancel(final long appId){
+    @DeleteMapping(path = "{cancel}")
+    public void cancel(@PathVariable("cancel") final long appId){
         service.cancel(appId);
     }
 

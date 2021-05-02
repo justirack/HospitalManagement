@@ -63,8 +63,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      * @param amount The prescriptions new amount.
      */
-    @PutMapping("{update}")
-    public void update(@PathVariable("update") final long presId, final long amount){
+    @PutMapping("update")
+    public void update(final long presId, final long amount){
         service.update(presId,amount);
     }
 }
