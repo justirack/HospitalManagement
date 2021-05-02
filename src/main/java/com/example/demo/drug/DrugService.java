@@ -60,7 +60,10 @@ public final class DrugService {
      * @param newFormula The new formula.
      */
     public void changeFormula(final String oldFormula,final String newFormula){
+        //make sure the drug exists in the database
         final Drug drug = find(oldFormula);
+
+        //make sure the formula is not null, not a blank string and not the same as the current formula
         if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
             drug.setFormula(newFormula);
         }
@@ -72,7 +75,10 @@ public final class DrugService {
      * @param name The drugs name.
      */
     public void changeName(final String formula, final String name){
+        //make sure the drug exists in the database
         final Drug drug = find(formula);
+
+        //make sure the name is not null, not a blank string and not the same as the current name
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
         }
@@ -84,8 +90,11 @@ public final class DrugService {
      * @param description The drugs description.
      */
     public void changeDescription(final String formula, final String description){
+        //make sure the drug exists in the database
         final Drug drug = find(formula);
-        if (description != null && description.length() > 0 && !Objects.equals(description, drug.getName())){
+
+        //make sure the description is not null, not a blank string and not the same as the current description
+        if (description != null && description.length() > 0 && !Objects.equals(description, drug.getDescription())){
             drug.setFormula(description);
         }
     }
