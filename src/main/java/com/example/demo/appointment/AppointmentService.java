@@ -127,23 +127,14 @@ public final class AppointmentService {
         //get a list of all the appointments
         final List<Appointment> appointments =  getAppointments();
 
-        boolean isAvailable = false;
-        //loop through all of the appointments
         for (Appointment appointment:appointments) {
-            //if the current appointment does not conflict set isAvailable to false
-            if (!(appointment.getDate().equals(date)) || !(appointment.getTime().equals(time)) ||
-                    !(appointment.getRoom() == room)){
-                isAvailable = false;
-            }
-            //if the current appointment conflicts set isAvailable to true and break
-            else{
-                isAvailable = true;
-                break;
+            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time) && appointment.getRoom() != room)){
+                return true;
             }
         }
+        return false;
 
-        //return isAvailable
-        return isAvailable;
+
     }
 
     //helper method to make sure a doctor is available at a certain date and time
@@ -151,22 +142,12 @@ public final class AppointmentService {
         //get a list of all an individual doctors appointments
         final List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
 
-        boolean isAvailable = false;
-        //go through the list and make sure there isn't one at the same data and time of the new appointment
         for (Appointment appointment:doctorAppointments) {
-            //if the current appointment does not conflict set isAvailable to false
-            if (!(appointment.getDate().equals(date)) || !(appointment.getTime().equals(time))){
-                isAvailable = false;
+            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time))){
+                return true;
             }
-            //if the current appointment conflicts set isAvailable to true and break
-            else{
-                isAvailable = true;
-                break;
-            }
-            break;
         }
-        //return isAvailable
-        return isAvailable;
+        return false;
     }
 
     //a helper method to create an appointment
