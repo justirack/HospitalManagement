@@ -1,9 +1,11 @@
 package com.example.demo.prescription;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class acts as an in-between for the prescriptionController and the prescriptionRepository.
@@ -15,8 +17,10 @@ public final class PrescriptionService {
     //create a permanent reference to the prescriptionRepository
     private final PrescriptionRepository repository;
 
-    public PrescriptionService(PrescriptionRepository prescriptionRepository) {
-        this.repository = prescriptionRepository;
+    //inject the prescriptionRepository into this class
+    @Autowired
+    public PrescriptionService(PrescriptionRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -51,8 +55,14 @@ public final class PrescriptionService {
      */
     public void update(final long presId, final long amount){
         Prescription prescription = find(presId);
+
+        //make sure the amount is greater than 0 and not the same as the current amount
+        if (amount >= 0 && !Objects.equals(prescription.getAmount(),amount)){
+            prescription.setAmount(amount);
+        }
     }
 
+    //helper method to find a prescription in the database
     private Prescription find(final long presId){
         return repository.findById(presId).orElseThrow(() -> new IllegalStateException(
                 "Prescription with id  " + presId + " not found."));
