@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -23,12 +22,12 @@ import java.util.List;
 @RequestMapping(path = "doctor")
 public final class DoctorController {
     //create a permanent reference to doctorService
-    private final DoctorService doctorService;
+    private final DoctorService service;
 
     //inject doctorService's bean into this class' bean
     @Autowired
-    public DoctorController(final DoctorService doctorService){
-        this.doctorService = doctorService;
+    public DoctorController(final DoctorService service){
+        this.service = service;
     }
 
     /**
@@ -38,7 +37,7 @@ public final class DoctorController {
     @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(doctorService.getDoctors());
+        return Collections.unmodifiableList(service.getDoctors());
     }
 
     /**
@@ -49,7 +48,7 @@ public final class DoctorController {
      */
     @PostMapping(path = "add")
     public void addDoctor(final String firstName, final String lastName, final String phone){
-        doctorService.add(firstName,lastName,phone);
+        service.add(firstName,lastName,phone);
     }
 
     /**
@@ -58,7 +57,7 @@ public final class DoctorController {
      */
     @DeleteMapping(path = "{delete}")
     public void deleteDoctor(@PathVariable("delete") final long doctorId){
-        doctorService.remove(doctorId);
+        service.remove(doctorId);
     }
 
     /**
@@ -68,7 +67,7 @@ public final class DoctorController {
      */
     @PutMapping(path = "changeFirstName")
     public void changeFirstName(final long id, final String firstName){
-        doctorService.changeFirstName(id,firstName);
+        service.changeFirstName(id,firstName);
     }
 
     /**
@@ -78,7 +77,7 @@ public final class DoctorController {
      */
     @PutMapping(path = "changeLastName")
     public void changeLastName(final long id, final String lastName){
-        doctorService.changeLastName(id,lastName);
+        service.changeLastName(id,lastName);
     }
 
     /**
@@ -88,7 +87,7 @@ public final class DoctorController {
      */
     @PutMapping(path = "changePhone")
     public void changePhone(final long id, final String phone){
-        doctorService.changePhone(id,phone);
+        service.changePhone(id,phone);
     }
 
 }

@@ -23,12 +23,12 @@ import java.util.List;
 public final class PatientController {
 
     //create a permanent reference to patient service
-    private final PatientService patientService;
+    private final PatientService service;
 
     //inject patientService's bean into this class' bean
     @Autowired
-    public PatientController(final PatientService patientService) {
-        this.patientService = patientService;
+    public PatientController(final PatientService service) {
+        this.service = service;
     }
 
 
@@ -39,7 +39,7 @@ public final class PatientController {
     @GetMapping(path = "getPatients")
     public List<Patient> getPatients(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(patientService.getPatients());
+        return Collections.unmodifiableList(service.getPatients());
     }
 
     /**
@@ -48,7 +48,7 @@ public final class PatientController {
     @PostMapping(path = "add")
     public void addPatient(final long doctorId, final String firstName, final String lastName,
                            final String phone, final String address){
-        patientService.add(doctorId,firstName,lastName,phone,address);
+        service.add(doctorId,firstName,lastName,phone,address);
     }
 
     /**
@@ -57,7 +57,7 @@ public final class PatientController {
      */
     @DeleteMapping(path = "{delete}")
     public void deletePatient(@PathVariable("delete") final long ssn){
-        patientService.remove(ssn);
+        service.remove(ssn);
     }
 
     /**
@@ -67,7 +67,7 @@ public final class PatientController {
      */
     @PutMapping(path = "ChangeFirstName")
     public void changeFirstName(final long ssn, final String firstName){
-        patientService.changeFirstName(ssn,firstName);
+        service.changeFirstName(ssn,firstName);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class PatientController {
      */
     @PutMapping(path = "changeLastName")
     public void changeLastName(final long ssn, final String lastName){
-        patientService.changeLastName(ssn,lastName);
+        service.changeLastName(ssn,lastName);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class PatientController {
      */
     @PutMapping(path = "changeAddress")
     public void changeAddress(final long ssn, final String address){
-        patientService.changeAddress(ssn,address);
+        service.changeAddress(ssn,address);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class PatientController {
      */
     @PutMapping(path = "changeDoctor")
     public void changeFamilyDoctor(final long ssn, final long familyDocId){
-        patientService.changeFamilyDoctor(ssn,familyDocId);
+        service.changeFamilyDoctor(ssn,familyDocId);
     }
 
     /**
@@ -107,7 +107,7 @@ public final class PatientController {
      */
     @PutMapping(path = "changePhone")
     public void changePhone(final long ssn, final String phone){
-        patientService.changePhone(ssn,phone);
+        service.changePhone(ssn,phone);
     }
 
 
