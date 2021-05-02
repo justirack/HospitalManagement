@@ -60,16 +60,29 @@ public final class DrugController {
     }
 
     /**
-     * Allow a user to change a drugs formula name or description.
-     * @param oldFormula The old formula.
-     * @param newFormula The new formula.
-     * @param name The new name.
-     * @param description The new description.
+     * Allow a user to change a formula.
+     * @param oldFormula The drugs old formula.
+     * @param newFormula The drugs new formula.
      */
-    @PutMapping(path = "update")
-    public void updateDrug(final String oldFormula, final String newFormula, final String name, final String description){
-        service.changeFormula(oldFormula, newFormula);
-        service.changeName(oldFormula, name);
-        service.changeDescription(oldFormula, description);
+    public void changeFormula(final String oldFormula, final String newFormula){
+        service.changeFormula(oldFormula,newFormula);
+    }
+
+    /**
+     * Allow a user to change a drugs name.
+     * @param formula The drugs formula.
+     * @param name The drugs new name.
+     */
+    public void changeName(final String formula, final String name){
+        service.changeName(formula,name);
+    }
+
+    /**
+     * Allow a user to change a drugs description.
+     * @param formula The drugs formula.
+     * @param description The drugs new description.
+     */
+    public void changeDescription(final String formula, final String description){
+        service.changeDescription(formula,description);
     }
 }
