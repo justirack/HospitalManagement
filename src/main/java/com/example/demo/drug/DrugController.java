@@ -64,6 +64,7 @@ public final class DrugController {
      * @param oldFormula The drugs old formula.
      * @param newFormula The drugs new formula.
      */
+    @PutMapping(path = "changeFormula")
     public void changeFormula(final String oldFormula, final String newFormula){
         service.changeFormula(oldFormula,newFormula);
     }
@@ -73,6 +74,7 @@ public final class DrugController {
      * @param formula The drugs formula.
      * @param name The drugs new name.
      */
+    @PutMapping(path = "changeName")
     public void changeName(final String formula, final String name){
         service.changeName(formula,name);
     }
@@ -82,6 +84,7 @@ public final class DrugController {
      * @param formula The drugs formula.
      * @param description The drugs new description.
      */
+    @PutMapping(path = "changeDescription")
     public void changeDescription(final String formula, final String description){
         service.changeDescription(formula,description);
     }
