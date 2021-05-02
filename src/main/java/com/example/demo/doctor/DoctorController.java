@@ -62,20 +62,33 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a user to update a doctors information.
+     * Allow a doctor to change their first name.
      * @param id The doctors id.
-     * @param firstName The doctors first name.
-     * @param lastName The doctors last name
-     * @param phone The doctors phone number
+     * @param firstName The doctors new first name.
      */
-    @PutMapping(path = "{update}")
-    public void updateDoctor(@PathVariable("update") final long id, final String firstName,
-                             final String lastName, final String phone){
-        doctorService.changeFirstName(id, firstName);
+    @PutMapping(path = "changeFirstName")
+    public void changeFirstName(final long id, final String firstName){
+        doctorService.changeFirstName(id,firstName);
+    }
+
+    /**
+     * Allow a doctor to change their last name.
+     * @param id The doctors id.
+     * @param lastName The doctors new last name.
+     */
+    @PutMapping(path = "changeLastName")
+    public void changeLastName(final long id, final String lastName){
         doctorService.changeLastName(id,lastName);
-        doctorService.changePhone(id, phone);
+    }
 
-
+    /**
+     * Allow a doctor to change their phone number.
+     * @param id The doctors id.
+     * @param phone The doctors new phone number.
+     */
+    @PutMapping(path = "changePhone")
+    public void changePhone(final long id, final String phone){
+        doctorService.changePhone(id,phone);
     }
 
 }
