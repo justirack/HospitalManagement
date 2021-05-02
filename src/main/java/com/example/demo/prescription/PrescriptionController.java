@@ -44,7 +44,7 @@ public final class PrescriptionController {
      * Allow a user to add a method to the database.
      * @param presId The prescriptions id.
      */
-    @PostMapping("addPrescription")
+    @PostMapping("add")
     public void add(final long presId){
         service.add(presId);
     }
@@ -53,8 +53,8 @@ public final class PrescriptionController {
      * Allow a user to delete a prescription from the repository.
      * @param presId The prescriptions id.
      */
-    @DeleteMapping("{deletePresctption}")
-    public void delete(@PathVariable("deletePresctption") final long presId){
+    @DeleteMapping("{delete}")
+    public void delete(@PathVariable("delete") final long presId){
         service.delete(presId);
     }
 
@@ -63,8 +63,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      * @param amount The prescriptions new amount.
      */
-    @PutMapping("{updatePrescription}")
-    public void update(@PathVariable("updatePrescription") final long presId, final long amount){
+    @PutMapping("{update}")
+    public void update(@PathVariable("update") final long presId, final long amount){
         service.update(presId,amount);
     }
 }

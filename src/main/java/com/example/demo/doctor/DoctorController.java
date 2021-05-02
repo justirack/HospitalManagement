@@ -47,7 +47,7 @@ public final class DoctorController {
      * @param lastName The doctors last name.
      * @param phone The doctors phone number.
      */
-    @PostMapping(path = "addDoctor")
+    @PostMapping(path = "add")
     public void addDoctor(final String firstName, final String lastName, final String phone){
         doctorService.add(firstName,lastName,phone);
     }
@@ -56,8 +56,8 @@ public final class DoctorController {
      * Allow a user to delete a doctor from the repository.
      * @param doctorId The id of the doctor to remove.
      */
-    @DeleteMapping(path = "{deleteDoctor}")
-    public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
+    @DeleteMapping(path = "{delete}")
+    public void deleteDoctor(@PathVariable("delete") final long doctorId){
         doctorService.remove(doctorId);
     }
 
@@ -68,11 +68,9 @@ public final class DoctorController {
      * @param lastName The doctors last name
      * @param phone The doctors phone number
      */
-    @PutMapping(path = "{updateDoctor}")
-    public void updateDoctor(@PathVariable("updateDoctor") final long id,
-                             @RequestParam final String firstName,
-                             @RequestParam final String lastName,
-                             @RequestParam final String phone){
+    @PutMapping(path = "{update}")
+    public void updateDoctor(@PathVariable("update") final long id, final String firstName,
+                             final String lastName, final String phone){
         doctorService.changeFirstName(id, firstName);
         doctorService.changeLastName(id,lastName);
         doctorService.changePhone(id, phone);
