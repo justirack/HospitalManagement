@@ -65,8 +65,7 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param firstName The new first name.
      */
-    public void changeFirstName(@RequestParam final long ssn,
-                                @RequestParam(required = false) final String firstName)
+    public void changeFirstName(final long ssn, final String firstName)
     {
         //get the patient from the database
         final Patient patient = find(ssn);

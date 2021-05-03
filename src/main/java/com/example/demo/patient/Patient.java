@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -28,8 +27,6 @@ public final class Patient {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
     @Column(name = "ssn",updatable = false)
     private long ssn;
-    @Type(type = "doctor")
-    @ManyToOne(optional = false)
     private long familyDoctorId;
     private String firstName;
     private String lastName;
