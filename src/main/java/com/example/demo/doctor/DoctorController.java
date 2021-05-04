@@ -40,6 +40,11 @@ public final class DoctorController {
         return Collections.unmodifiableList(service.getDoctors());
     }
 
+    /**
+     * Allow a user to get a single doctor from the database.
+     * @param empId The id of the doctor.
+     * @return The doctor.
+     */
     @GetMapping(path = "findDoctor/{empId}")
     public Doctor findDoctor(@PathVariable final long empId){
         return service.getDoctor(empId);

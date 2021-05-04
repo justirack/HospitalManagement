@@ -32,6 +32,11 @@ public final class DoctorService {
         return Collections.unmodifiableList(repository.findAll());
     }
 
+    /**
+     * Allow a user to get a single doctor from the database.
+     * @param empId The id of the doctor to get.
+     * @return The doctor.
+     */
     public Doctor getDoctor(final long empId){
         return find(empId);
     }
