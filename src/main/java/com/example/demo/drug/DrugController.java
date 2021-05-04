@@ -64,8 +64,8 @@ public final class DrugController {
      * @param id The drugs id.
      * @param newFormula The drugs new formula.
      */
-    @PutMapping(path = "changeFormula")
-    public void changeFormula(final long id, final String newFormula){
+    @PutMapping(path = "changeFormula/{id}/{newFormula}")
+    public void changeFormula(@PathVariable final long id, @PathVariable final String newFormula){
         service.changeFormula(id,newFormula);
     }
 
@@ -74,8 +74,8 @@ public final class DrugController {
      * @param id The drugs id.
      * @param name The drugs new name.
      */
-    @PutMapping(path = "changeName")
-    public void changeName(final long id, final String name){
+    @PutMapping(path = "changeName/{id}/{name}")
+    public void changeName(@PathVariable final long id, @PathVariable final String name){
         service.changeName(id,name);
     }
 
@@ -84,8 +84,8 @@ public final class DrugController {
      * @param id The drugs id.
      * @param description The drugs new description.
      */
-    @PutMapping(path = "changeDescription")
-    public void changeDescription(final long id, final String description){
+    @PutMapping(path = "changeDescription/{id}/{description}")
+    public void changeDescription(@PathVariable final long id, @PathVariable final String description){
         service.changeDescription(id,description);
     }
 }

@@ -65,8 +65,8 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param firstName The patients new first name.
      */
-    @PutMapping(path = "ChangeFirstName")
-    public void changeFirstName(final long ssn, final String firstName){
+    @PutMapping(path = "ChangeFirstName/{ssn}/{firstName}")
+    public void changeFirstName(@PathVariable final long ssn, @PathVariable final String firstName){
         service.changeFirstName(ssn,firstName);
     }
 
@@ -75,8 +75,8 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param lastName The patients new last name
      */
-    @PutMapping(path = "changeLastName")
-    public void changeLastName(final long ssn, final String lastName){
+    @PutMapping(path = "changeLastName/{ssn}/{lastName}")
+    public void changeLastName(@PathVariable final long ssn, @PathVariable final String lastName){
         service.changeLastName(ssn,lastName);
     }
 
@@ -85,8 +85,8 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param address The patients new address.
      */
-    @PutMapping(path = "changeAddress")
-    public void changeAddress(final long ssn, final String address){
+    @PutMapping(path = "changeAddress/{ssn}/{address}")
+    public void changeAddress(@PathVariable final long ssn, @PathVariable final String address){
         service.changeAddress(ssn,address);
     }
 
@@ -95,8 +95,8 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param familyDocId The patients new family doctor's id.
      */
-    @PutMapping(path = "changeDoctor")
-    public void changeFamilyDoctor(final long ssn, final long familyDocId){
+    @PutMapping(path = "changeDoctor/{ssn}/{familyDocId}")
+    public void changeFamilyDoctor(@PathVariable final long ssn, @PathVariable final long familyDocId){
         service.changeFamilyDoctor(ssn,familyDocId);
     }
 
@@ -105,8 +105,8 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param phone The users new phone number.
      */
-    @PutMapping(path = "changePhone")
-    public void changePhone(final long ssn, final String phone){
+    @PutMapping(path = "changePhone/{ssn}/{phone}")
+    public void changePhone(@PathVariable final long ssn, @PathVariable final String phone){
         service.changePhone(ssn,phone);
     }
 
