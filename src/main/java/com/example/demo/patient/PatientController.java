@@ -86,7 +86,7 @@ public final class PatientController {
      * @param ssn The patients ssn.
      * @param firstName The patients new first name.
      */
-    @PutMapping(path = "ChangeFirstName/{ssn}/{firstName}")
+    @PutMapping(path = "changeFirstName/{ssn}/{firstName}")
     public void changeFirstName(@PathVariable final long ssn, @PathVariable final String firstName){
         service.changeFirstName(ssn,firstName);
     }
