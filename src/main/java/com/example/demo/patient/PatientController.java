@@ -47,6 +47,16 @@ public final class PatientController {
     }
 
     /**
+     * Allow a user to get a single patient from the database.
+     * @param ssn The ssn of the patient.
+     * @return The patient.
+     */
+    @GetMapping(path = "getPatient/{ssn}")
+    public Patient getPatient(@PathVariable final long ssn){
+        return service.getPatient(ssn);
+    }
+
+    /**
      * Allow a user to add a new patient to the database.
      */
     @PostMapping(path = "add")

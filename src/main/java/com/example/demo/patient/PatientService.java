@@ -34,6 +34,14 @@ public final class PatientService {
         return Collections.unmodifiableList(repository.findAll());
     }
 
+    /**
+     * Allow a user to get a single patient from the database.
+     * @param ssn The ssn of the patient to find.
+     * @return The patient.
+     */
+    public Patient getPatient(final long ssn){
+        return find(ssn);
+    }
 
     /**
      * add a patient to the database
