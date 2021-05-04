@@ -41,6 +41,16 @@ public final class AppointmentController {
     }
 
     /**
+     * Allow a user to get one appointment from the database.
+     * @param appId The id of the appointment to get.
+     * @return The appointment.
+     */
+    @GetMapping("getAppointment/{appId}")
+    public Appointment getAppointment(@PathVariable final long appId){
+        return service.getAppointment(appId);
+    }
+
+    /**
      * Allow a user to book an appointment.
      * @param patientSsn The ssn of the patient booking the appointment.
      * @param doctorEmpId The empId of the doctor the appointment is being booked with.
