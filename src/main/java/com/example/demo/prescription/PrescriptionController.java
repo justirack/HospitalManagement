@@ -53,8 +53,8 @@ public final class PrescriptionController {
      * Allow a user to delete a prescription from the repository.
      * @param presId The prescriptions id.
      */
-    @DeleteMapping("{delete}")
-    public void delete(@PathVariable("delete") final long presId){
+    @DeleteMapping("delete/{presId}")
+    public void delete(@PathVariable final long presId){
         service.delete(presId);
     }
 

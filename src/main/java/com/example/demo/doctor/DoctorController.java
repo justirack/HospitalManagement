@@ -55,8 +55,8 @@ public final class DoctorController {
      * Allow a user to delete a doctor from the repository.
      * @param doctorId The id of the doctor to remove.
      */
-    @DeleteMapping(path = "{delete}")
-    public void deleteDoctor(@PathVariable("delete") final long doctorId){
+    @DeleteMapping(path = "delete/{doctorId}")
+    public void deleteDoctor(@PathVariable final long doctorId){
         service.remove(doctorId);
     }
 

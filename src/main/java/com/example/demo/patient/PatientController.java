@@ -55,8 +55,8 @@ public final class PatientController {
      * Allow a user to delete a person by their ssn.
      * @param ssn The person to deletes ssn.
      */
-    @DeleteMapping(path = "{delete}")
-    public void deletePatient(@PathVariable("delete") final long ssn){
+    @DeleteMapping(path = "delete/{ssn}")
+    public void deletePatient(@PathVariable final long ssn){
         service.remove(ssn);
     }
 
