@@ -33,6 +33,15 @@ public final class DrugService {
     }
 
     /**
+     * Allow a user to get a single drug from the database.
+     * @param id The id of the drug.
+     * @return The drug.
+     */
+    public Drug getDrug(final long id){
+        return find(id);
+    }
+
+    /**
      * Allow a user to add a drug to the database.
      * @param formula The drugs formula.
      * @param name The drugs name.

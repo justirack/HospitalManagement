@@ -40,6 +40,16 @@ public final class DrugController {
     }
 
     /**
+     * Allow a user to get a single drug from the database.
+     * @param id The id of the drug.
+     * @return The drug.
+     */
+    @GetMapping(path = "getDrug/{id}")
+    public Drug getDrug(@PathVariable final long id){
+        return service.getDrug(id);
+    }
+
+    /**
      * Allow a user to add a new drug to the system.
      * @param formula The drugs formula.
      * @param name The drugs name.
