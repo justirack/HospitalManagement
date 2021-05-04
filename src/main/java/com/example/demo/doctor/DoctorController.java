@@ -65,8 +65,8 @@ public final class DoctorController {
      * @param id The doctors id.
      * @param firstName The doctors new first name.
      */
-    @PutMapping(path = "changeFirstName")
-    public void changeFirstName(final long id, final String firstName){
+    @PutMapping(path = "changeFirstName/{id}/{firstName}")
+    public void changeFirstName(@PathVariable final long id, @PathVariable final String firstName){
         service.changeFirstName(id,firstName);
     }
 
@@ -75,8 +75,8 @@ public final class DoctorController {
      * @param id The doctors id.
      * @param lastName The doctors new last name.
      */
-    @PutMapping(path = "changeLastName")
-    public void changeLastName(final long id, final String lastName){
+    @PutMapping(path = "changeLastName/{id}/{lastName}")
+    public void changeLastName(@PathVariable final long id, @PathVariable final String lastName){
         service.changeLastName(id,lastName);
     }
 
@@ -85,8 +85,8 @@ public final class DoctorController {
      * @param id The doctors id.
      * @param phone The doctors new phone number.
      */
-    @PutMapping(path = "changePhone")
-    public void changePhone(final long id, final String phone){
+    @PutMapping(path = "changePhone/{id}/{phone}")
+    public void changePhone(@PathVariable final long id, @PathVariable final String phone){
         service.changePhone(id,phone);
     }
 

@@ -68,8 +68,8 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    @PutMapping("changeDate")
-    public void changeDate(final long appId, final LocalDate date){
+    @PutMapping("changeDate/{appId}/{date}")
+    public void changeDate(@PathVariable final long appId, @PathVariable final LocalDate date){
         service.changeDate(appId, date);
     }
 
@@ -78,8 +78,8 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param time The new time of the appointment.
      */
-    @PutMapping("changeTime")
-    public void changeTime(final long appId, final LocalTime time){
+    @PutMapping("changeTime/{appId}/{time}")
+    public void changeTime(@PathVariable final long appId, @PathVariable final LocalTime time){
         service.changeTime(appId, time);
     }
 
@@ -88,8 +88,8 @@ public final class AppointmentController {
      * @param appId The id of the appointment.
      * @param room The new room of the appointment.
      */
-    @PutMapping("changeRoom")
-    public void changeRoom(final long appId, final int room){
+    @PutMapping("changeRoom/{appId}/{room}")
+    public void changeRoom(@PathVariable final long appId, @PathVariable final int room){
         service.changeRoom(appId, room);
     }
 
