@@ -32,6 +32,10 @@ public final class DoctorService {
         return Collections.unmodifiableList(repository.findAll());
     }
 
+    public Doctor getDoctor(final long empId){
+        return find(empId);
+    }
+
     /**
      * Allow a user to add a doctor to the database.
      * @param firstName The doctors first name.

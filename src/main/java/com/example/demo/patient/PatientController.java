@@ -1,5 +1,6 @@
 package com.example.demo.patient;
 
+import com.example.demo.doctor.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -24,11 +26,13 @@ public final class PatientController {
 
     //create a permanent reference to patient service
     private final PatientService service;
+    private final DoctorService doctorService;
 
     //inject patientService's bean into this class' bean
     @Autowired
-    public PatientController(final PatientService service) {
+    public PatientController(final PatientService service, final DoctorService doctorService) {
         this.service = service;
+        this.doctorService = doctorService;
     }
 
 
@@ -46,9 +50,16 @@ public final class PatientController {
      * Allow a user to add a new patient to the database.
      */
     @PostMapping(path = "add")
-    public void addPatient(final long doctorId, final String firstName, final String lastName,
-                           final String phone, final String address){
-        service.add(doctorId,firstName,lastName,phone,address);
+    public void addPatient(@RequestParam final long doctorId,
+                           @RequestParam final String firstName,
+                           @RequestParam final String lastName,
+                           @RequestParam final String phone,
+                           @RequestParam final String address){
+        //make sure doctor's id exists, throws exception if not
+        if (doctorService.getDoctor(doctorId) != null){
+            service.add(doctorId,firstName,lastName,phone,address);
+        }
+
     }
 
     /**
