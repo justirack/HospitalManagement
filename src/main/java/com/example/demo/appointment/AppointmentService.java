@@ -36,6 +36,15 @@ public final class AppointmentService {
     }
 
     /**
+     * Get and return an appointment from the database.
+     * @param appId The id of the appointment.
+     * @return The appointment.
+     */
+    public Appointment getAppointment(final long appId){
+        return find(appId);
+    }
+
+    /**
      * Book a new appointment at the hospital.
      * @param patientSsn The patient who is booking the appointment.
      * @param doctorEmpId The doctor who is being booked with.
