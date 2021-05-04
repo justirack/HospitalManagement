@@ -33,6 +33,15 @@ public final class PrescriptionService {
     }
 
     /**
+     * Allow a user to get a single prescription from the database.
+     * @param presId The prescriptions id.
+     * @return the prescription.
+     */
+    public Prescription getPrescription(final long presId){
+        return find(presId);
+    }
+
+    /**
      * Allow a user to add a prescription to the database.
      * @param presId The prescriptions id.
      */

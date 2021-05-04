@@ -41,6 +41,16 @@ public final class PrescriptionController {
     }
 
     /**
+     * Allow a user to get a single prescription from the database.
+     * @param presId The prescriptions id.
+     * @return The prescription.
+     */
+    @GetMapping(path = "getPrescription/{presId}")
+    public Prescription getPrescription(@PathVariable final long presId){
+        return service.getPrescription(presId);
+    }
+
+    /**
      * Allow a user to add a method to the database.
      * @param presId The prescriptions id.
      */
