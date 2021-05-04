@@ -9,7 +9,7 @@ import java.util.Optional;
  * This interface will allow access to the database.
  * @author - Justin Rackley
  */
-public interface DrugRepository extends JpaRepository<Drug, String> {
+public interface DrugRepository extends JpaRepository<Drug, Long> {
     @Query("SELECT s FROM Drug s WHERE s.formula = ?1")
-    Optional<Drug> findDrugByFormula(Long ssn);
+    Optional<Drug> findDrugByFormula(Long id);
 }

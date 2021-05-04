@@ -45,38 +45,38 @@ public final class DrugService {
 
     /**
      * Allow a user to delete a drug from the database.
-     * @param formula The drugs formula.
+     * @param id The id of the drug to delete.
      */
-    public void delete(final String formula){
+    public void delete(final long id){
         //make sure the drug exists, will throw an exception if not
-        find(formula);
+        find(id);
         //delete the drug from the database
-        repository.deleteById(formula);
+        repository.deleteById(id);
     }
 
     /**
      * Allow a user to change the formula of a drug.
-     * @param oldFormula The old formula.
+     * @param id The old id.
      * @param newFormula The new formula.
      */
-    public void changeFormula(final String oldFormula,final String newFormula){
+    public void changeFormula(final long id,final String newFormula){
         //make sure the drug exists in the database
-        final Drug drug = find(oldFormula);
+        final Drug drug = find(id);
 
         //make sure the formula is not null, not a blank string and not the same as the current formula
-        if (oldFormula != null && oldFormula.length() > 0 && !Objects.equals(oldFormula,newFormula)){
+        if (newFormula != null && newFormula.length() > 0 && !Objects.equals(drug.getFormula(),newFormula)){
             drug.setFormula(newFormula);
         }
     }
 
     /**
      * Allow a user to change the name of a drug.
-     * @param formula The drugs formula.
+     * @param id The drugs id.
      * @param name The drugs name.
      */
-    public void changeName(final String formula, final String name){
+    public void changeName(final long id, final String name){
         //make sure the drug exists in the database
-        final Drug drug = find(formula);
+        final Drug drug = find(id);
 
         //make sure the name is not null, not a blank string and not the same as the current name
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
@@ -86,12 +86,12 @@ public final class DrugService {
 
     /**
      * Allow a user to change the description of a drug
-     * @param formula The drugs formula.
+     * @param id The drugs id.
      * @param description The drugs description.
      */
-    public void changeDescription(final String formula, final String description){
+    public void changeDescription(final long id, final String description){
         //make sure the drug exists in the database
-        final Drug drug = find(formula);
+        final Drug drug = find(id);
 
         //make sure the description is not null, not a blank string and not the same as the current description
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getDescription())){
@@ -105,9 +105,9 @@ public final class DrugService {
     }
 
     //a helper method to find a drug in the database
-    private Drug find(final String formula){
-        return repository.findById(formula).orElseThrow(() -> new IllegalStateException(
-                "Formula with formula  " + formula + " not found."));
+    private Drug find(final long id){
+        return repository.findById(id).orElseThrow(() -> new IllegalStateException(
+                "Formula with formula  " + id + " not found."));
     }
 
 }

@@ -2,7 +2,10 @@ package com.example.demo.drug;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +18,10 @@ import javax.persistence.Table;
 public final class Drug {
     //a drugs formula is its primary id
     @Id
+    //genereate id's in a sequence
+    @SequenceGenerator(name = "id",sequenceName = "id", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id")
+    private long id;
     @Column(nullable = false)
     private String formula;
     @Column(nullable = false)

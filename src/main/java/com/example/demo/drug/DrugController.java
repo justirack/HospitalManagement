@@ -52,40 +52,40 @@ public final class DrugController {
 
     /**
      * Allow a user to delete a drug.
-     * @param formula The formula of the drug to delete.
+     * @param id The id of the drug to delete.
      */
-    @DeleteMapping(path = "{delete}")
-    public void deleteDrug(@PathVariable("delete") final String formula){
-        service.delete(formula);
+    @DeleteMapping(path = "delete/{id}")
+    public void deleteDrug(@PathVariable final long id){
+        service.delete(id);
     }
 
     /**
      * Allow a user to change a formula.
-     * @param oldFormula The drugs old formula.
+     * @param id The drugs id.
      * @param newFormula The drugs new formula.
      */
     @PutMapping(path = "changeFormula")
-    public void changeFormula(final String oldFormula, final String newFormula){
-        service.changeFormula(oldFormula,newFormula);
+    public void changeFormula(final long id, final String newFormula){
+        service.changeFormula(id,newFormula);
     }
 
     /**
      * Allow a user to change a drugs name.
-     * @param formula The drugs formula.
+     * @param id The drugs id.
      * @param name The drugs new name.
      */
     @PutMapping(path = "changeName")
-    public void changeName(final String formula, final String name){
-        service.changeName(formula,name);
+    public void changeName(final long id, final String name){
+        service.changeName(id,name);
     }
 
     /**
      * Allow a user to change a drugs description.
-     * @param formula The drugs formula.
+     * @param id The drugs id.
      * @param description The drugs new description.
      */
     @PutMapping(path = "changeDescription")
-    public void changeDescription(final String formula, final String description){
-        service.changeDescription(formula,description);
+    public void changeDescription(final long id, final String description){
+        service.changeDescription(id,description);
     }
 }
