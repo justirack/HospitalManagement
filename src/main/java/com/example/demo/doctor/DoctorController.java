@@ -40,6 +40,11 @@ public final class DoctorController {
         return Collections.unmodifiableList(service.getDoctors());
     }
 
+    @GetMapping(path = "findDoctor/{empId}")
+    public Doctor findDoctor(@PathVariable final long empId){
+        return service.getDoctor(empId);
+    }
+
     /**
      * Allow a user to add a doctor to the database.
      * @param firstName The doctors first name.
