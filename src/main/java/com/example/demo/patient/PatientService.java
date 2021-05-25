@@ -2,7 +2,6 @@ package com.example.demo.patient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
@@ -148,6 +147,7 @@ public final class PatientService {
     private Patient find(final long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
+
         return repository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
                 "Patient with SSN " + ssn + " not found."));
     }
