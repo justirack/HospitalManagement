@@ -5,12 +5,12 @@ import java.util.Date;
 public class exceptionDetails {
     private Date timestamp;
     private String message;
-    private String details;
+    private String path;
 
-    public exceptionDetails(Date timestamp, String message, String details) {
+    public exceptionDetails(Date timestamp, String message, String path) {
         this.timestamp = timestamp;
         this.message = message;
-        this.details = details;
+        this.path = path;
     }
 
     public void setTimestamp(Date timestamp) {
@@ -21,8 +21,8 @@ public class exceptionDetails {
         this.message = message;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setDetails(String path) {
+        this.path = path;
     }
 
     public Date getTimestamp() {
@@ -33,7 +33,7 @@ public class exceptionDetails {
         return message;
     }
 
-    public String getDetails() {
-        return details;
+    public String getPath() {
+        return path;
     }
 }

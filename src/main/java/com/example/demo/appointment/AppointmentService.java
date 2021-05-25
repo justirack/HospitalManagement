@@ -142,8 +142,6 @@ public final class AppointmentService {
             }
         }
         return false;
-
-
     }
 
     //helper method to make sure a doctor is available at a certain date and time
