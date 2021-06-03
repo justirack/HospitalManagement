@@ -3,26 +3,24 @@ package com.example.demo.exception.ExceptionHandling;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.demo.exception.CustomException.exceptionDetails;
 
+@ControllerAdvice
 public class GlobalHandler {
 
     @ExceptionHandler(InvalidIdException.class)
-    public ResponseEntity<?> handleInvalidId(InvalidIdException exception, WebRequest request){
-        exceptionDetails details = new exceptionDetails(new Date(), exception.getMessage(), request.getDescription(false));
-
-        return new ResponseEntity(details, HttpStatus.BAD_REQUEST);
+    public final ResponseEntity<Object> handleInvalidId(InvalidIdException exception, WebRequest request){
+        String details = exception.getLocalizedMessage();
+        String message = "The ID you entered was invalid. Please enter a valid id and try again";
+        exceptionDetails exceptionDetails = new exceptionDetails(message,details);
+        return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<?> handleIllegalState(IllegalStateException exception, WebRequest request){
-        exceptionDetails exceptionDetails = new exceptionDetails(new Date(), exception.getMessage(), request.getDescription(false));
-
-        return new ResponseEntity(exceptionDetails, HttpStatus.BAD_REQUEST);
-    }
 }
