@@ -1,6 +1,7 @@
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -75,8 +76,13 @@ public final class DrugController {
      * @param newFormula The drugs new formula.
      */
     @PutMapping(path = "changeFormula/{id}/{newFormula}")
-    public void changeFormula(@PathVariable final long id, @PathVariable final String newFormula){
+    public HttpStatus changeFormula(@PathVariable final long id, @PathVariable final String newFormula){
         service.changeFormula(id,newFormula);
+
+        if (service.getDrug(id).getFormula().equals(newFormula)) {
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -85,8 +91,13 @@ public final class DrugController {
      * @param name The drugs new name.
      */
     @PutMapping(path = "changeName/{id}/{name}")
-    public void changeName(@PathVariable final long id, @PathVariable final String name){
+    public HttpStatus changeName(@PathVariable final long id, @PathVariable final String name){
         service.changeName(id,name);
+
+        if (service.getDrug(id).getName().equals(name)){
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -95,7 +106,12 @@ public final class DrugController {
      * @param description The drugs new description.
      */
     @PutMapping(path = "changeDescription/{id}/{description}")
-    public void changeDescription(@PathVariable final long id, @PathVariable final String description){
+    public HttpStatus changeDescription(@PathVariable final long id, @PathVariable final String description){
         service.changeDescription(id,description);
+
+        if (service.getDrug(id).getDescription().equals(description)){
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 }

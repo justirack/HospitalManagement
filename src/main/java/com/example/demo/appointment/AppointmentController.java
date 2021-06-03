@@ -1,6 +1,7 @@
 package com.example.demo.appointment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,9 +60,9 @@ public final class AppointmentController {
      * @param room The room the appointment is in.
      */
     @PostMapping("book")
-    public void book(final long patientSsn, final long doctorEmpId, final LocalTime time,
+    public HttpStatus book(final long patientSsn, final long doctorEmpId, final LocalTime time,
                      final LocalDate date, final int room){
-        service.book(patientSsn,doctorEmpId,time,date,room);
+        return service.book(patientSsn,doctorEmpId,time,date,room);
     }
 
     /**
@@ -79,8 +80,8 @@ public final class AppointmentController {
      * @param date The new date of the appointment.
      */
     @PutMapping("changeDate/{appId}/{date}")
-    public void changeDate(@PathVariable final long appId, @PathVariable final LocalDate date){
-        service.changeDate(appId, date);
+    public HttpStatus changeDate(@PathVariable final long appId, @PathVariable final LocalDate date){
+        return service.changeDate(appId, date);
     }
 
     /**
@@ -89,8 +90,8 @@ public final class AppointmentController {
      * @param time The new time of the appointment.
      */
     @PutMapping("changeTime/{appId}/{time}")
-    public void changeTime(@PathVariable final long appId, @PathVariable final LocalTime time){
-        service.changeTime(appId, time);
+    public HttpStatus changeTime(@PathVariable final long appId, @PathVariable final LocalTime time){
+        return service.changeTime(appId, time);
     }
 
     /**
@@ -99,8 +100,8 @@ public final class AppointmentController {
      * @param room The new room of the appointment.
      */
     @PutMapping("changeRoom/{appId}/{room}")
-    public void changeRoom(@PathVariable final long appId, @PathVariable final int room){
-        service.changeRoom(appId, room);
+    public HttpStatus changeRoom(@PathVariable final long appId, @PathVariable final int room){
+        return service.changeRoom(appId, room);
     }
 
 }

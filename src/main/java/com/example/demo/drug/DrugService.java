@@ -2,6 +2,7 @@ package com.example.demo.drug;
 
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -68,14 +69,16 @@ public final class DrugService {
      * @param id The old id.
      * @param newFormula The new formula.
      */
-    public void changeFormula(final long id,final String newFormula){
+    public HttpStatus changeFormula(final long id, final String newFormula){
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the formula is not null, not a blank string and not the same as the current formula
         if (newFormula != null && newFormula.length() > 0 && !Objects.equals(drug.getFormula(),newFormula)){
             drug.setFormula(newFormula);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -83,14 +86,16 @@ public final class DrugService {
      * @param id The drugs id.
      * @param name The drugs name.
      */
-    public void changeName(final long id, final String name){
+    public HttpStatus changeName(final long id, final String name){
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the name is not null, not a blank string and not the same as the current name
         if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -98,14 +103,16 @@ public final class DrugService {
      * @param id The drugs id.
      * @param description The drugs description.
      */
-    public void changeDescription(final long id, final String description){
+    public HttpStatus changeDescription(final long id, final String description){
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the description is not null, not a blank string and not the same as the current description
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getDescription())){
             drug.setFormula(description);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     //a helper method to find a drug in the database

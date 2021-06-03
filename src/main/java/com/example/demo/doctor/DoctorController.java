@@ -1,6 +1,7 @@
 package com.example.demo.doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,8 +77,8 @@ public final class DoctorController {
      * @param firstName The doctors new first name.
      */
     @PutMapping(path = "changeFirstName/{id}/{firstName}")
-    public void changeFirstName(@PathVariable final long id, @PathVariable final String firstName){
-        service.changeFirstName(id,firstName);
+    public HttpStatus changeFirstName(@PathVariable final long id, @PathVariable final String firstName){
+        return service.changeFirstName(id,firstName);
     }
 
     /**
@@ -86,8 +87,8 @@ public final class DoctorController {
      * @param lastName The doctors new last name.
      */
     @PutMapping(path = "changeLastName/{id}/{lastName}")
-    public void changeLastName(@PathVariable final long id, @PathVariable final String lastName){
-        service.changeLastName(id,lastName);
+    public HttpStatus changeLastName(@PathVariable final long id, @PathVariable final String lastName){
+         return service.changeLastName(id,lastName);
     }
 
     /**
@@ -96,8 +97,8 @@ public final class DoctorController {
      * @param phone The doctors new phone number.
      */
     @PutMapping(path = "changePhone/{id}/{phone}")
-    public void changePhone(@PathVariable final long id, @PathVariable final String phone){
-        service.changePhone(id,phone);
+    public HttpStatus changePhone(@PathVariable final long id, @PathVariable final String phone){
+        return service.changePhone(id,phone);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.demo.doctor;
 
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
@@ -69,11 +70,17 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param firstName The doctors new first name.
      */
-    public void changeFirstName(final long empId, final String firstName) {
+    public HttpStatus changeFirstName(final long empId, final String firstName) {
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors first name
         doctor.setFirstName(firstName);
+
+        //make sure the update worked before return OK
+        if (doctor.getFirstName().equals(firstName)){
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -81,11 +88,17 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param lastName The doctors new last name.
      */
-    public void changeLastName(final long empId, final String lastName){
+    public HttpStatus changeLastName(final long empId, final String lastName){
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors last name
         doctor.setLastName(lastName);
+
+        //make sure the update worked before returning OK
+        if (doctor.getLastName().equals(lastName)){
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -93,11 +106,16 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param phone The doctors new phone number.
      */
-    public void changePhone(final long empId, final String phone){
+    public HttpStatus changePhone(final long empId, final String phone){
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors phone
         doctor.setPhone(phone);
+
+        if (doctor.getPhone().equals(phone)) {
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
 
     //helper method to find a doctor in the database

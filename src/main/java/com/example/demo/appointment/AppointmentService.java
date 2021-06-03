@@ -2,6 +2,7 @@ package com.example.demo.appointment;
 
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -53,8 +54,8 @@ public final class AppointmentService {
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
-    public void book(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                     final LocalDate date, final int room){
+    public HttpStatus book(final long patientSsn, final long doctorEmpId, final LocalTime time,
+                           final LocalDate date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
         final boolean doctorAvailable = doctorAvailability(doctorEmpId, date, time);
         //check to make sure the room will be available at the given date and time
@@ -62,7 +63,9 @@ public final class AppointmentService {
         //if the doctor and room are available book the appointment
         if (doctorAvailable && roomAvailable) {
             repository.save(new Appointment(patientSsn,doctorEmpId,time,date,room));
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -81,7 +84,7 @@ public final class AppointmentService {
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    public void changeDate(final long appId, final LocalDate date){
+    public HttpStatus changeDate(final long appId, final LocalDate date){
         //make sure the appointment exists
         final Appointment appointment = find(appId);
 
@@ -91,7 +94,9 @@ public final class AppointmentService {
         //if the doctor is available set the new appointment date
         if (doctorAvailable) {
             appointment.setDate(date);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -99,7 +104,7 @@ public final class AppointmentService {
      * @param appId The id of the appointment.
      * @param time The new time of the appointment.
      */
-    public void changeTime(final long appId,final  LocalTime time){
+    public HttpStatus changeTime(final long appId,final  LocalTime time){
         //make sure the appointment exists
         final Appointment appointment = find(appId);
 
@@ -109,7 +114,9 @@ public final class AppointmentService {
         //if the doctor is available set the new appointment time
         if (doctorAvailable) {
             appointment.setTime(time);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -117,7 +124,7 @@ public final class AppointmentService {
      * @param appId The id of the appointment
      * @param room The new room for the appointment
      */
-    public void changeRoom(final long appId, final int room){
+    public HttpStatus changeRoom(final long appId, final int room){
         //make sure the appointment exists
         Appointment appointment = find(appId);
 
@@ -127,10 +134,9 @@ public final class AppointmentService {
         //if the room is available change it
         if (roomAvailable) {
             appointment.setRoom(room);
-            //maybe return true here if the room was successfully changed?
-            //how would I use that boolean value to tell the user if the room was changed or not?
-            //same thought for changing date and time
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     private boolean roomAvailability(final LocalDate date, final LocalTime time, final int room){
