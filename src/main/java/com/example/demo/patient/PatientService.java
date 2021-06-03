@@ -1,5 +1,6 @@
 package com.example.demo.patient;
 
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public final class PatientService {
     public void add(final long doctorId, final String firstName, final String lastName,
                     final String phone, final String address){
         //create a new patient and save them to the database
-        repository.save(create(doctorId,firstName,lastName,phone,address));
+        repository.save(new Patient(doctorId,firstName,lastName,phone,address));
     }
 
     /**
@@ -148,16 +149,8 @@ public final class PatientService {
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
 
-        return repository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
+        return repository.findPatientBySsn(ssn).orElseThrow(() -> new InvalidIdException(
                 "Patient with SSN " + ssn + " not found."));
     }
-
-    //helper method to create a new patient
-    private Patient create(final long doctorId, final String firstName, final String lastName,
-                           final String phone, final String address){
-        //create and return a new patient
-        return new Patient(doctorId,firstName,lastName,phone,address);
-    }
-
 
 }

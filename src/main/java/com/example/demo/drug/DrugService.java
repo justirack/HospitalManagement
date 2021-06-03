@@ -1,5 +1,6 @@
 package com.example.demo.drug;
 
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,7 +116,7 @@ public final class DrugService {
 
     //a helper method to find a drug in the database
     private Drug find(final long id){
-        return repository.findById(id).orElseThrow(() -> new IllegalStateException(
+        return repository.findById(id).orElseThrow(() -> new InvalidIdException(
                 "Formula with formula  " + id + " not found."));
     }
 

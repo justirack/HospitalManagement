@@ -1,5 +1,6 @@
 package com.example.demo.doctor;
 
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +106,7 @@ public final class DoctorService {
 
     //helper method to find a doctor in the database
     private Doctor find(final long empId){
-        return repository.findById(empId).orElseThrow(() -> new IllegalStateException(
+        return repository.findById(empId).orElseThrow(() -> new InvalidIdException(
                 "Doctor with id  " + empId + " not found."));
     }
 }

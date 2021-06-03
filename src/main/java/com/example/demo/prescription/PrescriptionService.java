@@ -1,5 +1,6 @@
 package com.example.demo.prescription;
 
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public final class PrescriptionService {
 
     //helper method to find a prescription in the database
     private Prescription find(final long presId){
-        return repository.findById(presId).orElseThrow(() -> new IllegalStateException(
+        return repository.findById(presId).orElseThrow(() -> new InvalidIdException(
                 "Prescription with id  " + presId + " not found."));
     }
 }
