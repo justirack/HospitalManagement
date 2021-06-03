@@ -1,7 +1,8 @@
 package com.example.demo.exception.CustomException;
 
-import org.springframework.http.HttpStatus;
-
+/**
+ * This class represents the details that will be sent to the user when an exception handled.
+ */
 public class exceptionDetails {
 
     private final String message;
