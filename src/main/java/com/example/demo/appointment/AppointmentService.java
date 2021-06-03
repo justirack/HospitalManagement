@@ -1,5 +1,6 @@
 package com.example.demo.appointment;
 
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -166,7 +167,7 @@ public final class AppointmentService {
     //a helper method to find an appointment in the repository
     private Appointment find(final long appId){
         //return an appointment with the given id, else throw an exception
-        return repository.findById(appId).orElseThrow(() -> new IllegalStateException(
+        return repository.findById(appId).orElseThrow(() -> new InvalidIdException(
                 "Appointment with id  " + appId + " not found."));
     }
 
