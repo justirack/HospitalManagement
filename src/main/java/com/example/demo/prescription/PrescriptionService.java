@@ -20,7 +20,7 @@ public final class PrescriptionService {
 
     //inject the prescriptionRepository into this class
     @Autowired
-    public PrescriptionService(PrescriptionRepository repository) {
+    public PrescriptionService(final PrescriptionRepository repository) {
         this.repository = repository;
     }
 
