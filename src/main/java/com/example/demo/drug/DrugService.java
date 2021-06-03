@@ -49,8 +49,7 @@ public final class DrugService {
      * @param description The drugs description.
      */
     public void add(final String formula, final String name, final String description){
-        final Drug drug = create(formula,name,description);
-        repository.save(drug);
+        repository.save(new Drug(formula,name,description));
     }
 
     /**
@@ -107,11 +106,6 @@ public final class DrugService {
         if (description != null && description.length() > 0 && !Objects.equals(description, drug.getDescription())){
             drug.setFormula(description);
         }
-    }
-
-    //a helper method to create a drug
-    private Drug create(final String formula, final String name, final String description){
-        return new Drug(formula, name, description);
     }
 
     //a helper method to find a drug in the database

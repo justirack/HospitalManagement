@@ -61,7 +61,7 @@ public final class AppointmentService {
         final boolean roomAvailable = roomAvailability(date, time, room);
         //if the doctor and room are available book the appointment
         if (doctorAvailable && roomAvailable) {
-            repository.save(create(patientSsn, doctorEmpId, time, date, room));
+            repository.save(new Appointment(patientSsn,doctorEmpId,time,date,room));
         }
     }
 
@@ -156,12 +156,6 @@ public final class AppointmentService {
             }
         }
         return false;
-    }
-
-    //a helper method to create an appointment
-    private Appointment create(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                               final LocalDate date, final int room){
-        return new Appointment(patientSsn,doctorEmpId,time,date,room);
     }
 
     //a helper method to find an appointment in the repository

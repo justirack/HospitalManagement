@@ -4,6 +4,7 @@ import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public final class DoctorService {
      * @param phone The doctors phone number.
      */
     public void add(final String firstName, final String lastName, final String phone){
-        repository.save(create(firstName,lastName,phone));
+        repository.save(new Doctor(firstName,lastName,phone));
     }
 
     /**
@@ -97,11 +98,6 @@ public final class DoctorService {
         final Doctor doctor = find(empId);
         //change the doctors phone
         doctor.setPhone(phone);
-    }
-
-    //helper method to create a new doctor
-    private Doctor create(final String firstName, final String lastName, final String phone){
-        return new Doctor(firstName,lastName,phone);
     }
 
     //helper method to find a doctor in the database
