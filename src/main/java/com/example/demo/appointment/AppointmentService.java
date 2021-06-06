@@ -54,11 +54,11 @@ public final class AppointmentService {
      */
     public HttpStatus book(final long patientSsn, final long doctorEmpId, final Date date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
-        final boolean doctorAvailable = doctorAvailability(doctorEmpId, date);
+        final boolean isdoctorAvailable = doctorAvailability(doctorEmpId, date);
         //check to make sure the room will be available at the given date and time
-        final boolean roomAvailable = roomAvailability(date, room);
+        final boolean isRoomAvailable = roomAvailability(date, room);
         //if the doctor and room are available book the appointment
-        if (doctorAvailable && roomAvailable) {
+        if (isdoctorAvailable && isRoomAvailable) {
             repository.save(new Appointment(patientSsn,doctorEmpId,date,room));
             return HttpStatus.OK;
         }
@@ -94,10 +94,10 @@ public final class AppointmentService {
         final Appointment appointment = find(appId);
 
         //make sure no conflict, assume same appointment time
-        final boolean doctorAvailable = doctorAvailability(appId,date);
+        final boolean isDoctorAvailable = doctorAvailability(appId,date);
 
         //if the doctor is available set the new appointment date
-        if (doctorAvailable) {
+        if (isDoctorAvailable) {
             appointment.setDate(date);
             return HttpStatus.OK;
         }
@@ -114,10 +114,10 @@ public final class AppointmentService {
         Appointment appointment = find(appId);
 
         //make sure no conflict
-        final boolean roomAvailable = roomAvailability(appointment.getDate(), room);
+        final boolean isRoomAvailable = roomAvailability(appointment.getDate(), room);
 
         //if the room is available change it
-        if (roomAvailable) {
+        if (isRoomAvailable) {
             appointment.setRoom(room);
             return HttpStatus.OK;
         }
