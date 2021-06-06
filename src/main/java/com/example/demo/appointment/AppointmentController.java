@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,14 +54,12 @@ public final class AppointmentController {
      * Allow a user to book an appointment.
      * @param patientSsn The ssn of the patient booking the appointment.
      * @param doctorEmpId The empId of the doctor the appointment is being booked with.
-     * @param time The time of the appointment.
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
     @PostMapping("book")
-    public HttpStatus book(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                     final LocalDate date, final int room){
-        return service.book(patientSsn,doctorEmpId,time,date,room);
+    public HttpStatus book(final long patientSsn, final long doctorEmpId, final Date date, final int room){
+        return service.book(patientSsn,doctorEmpId,date,room);
     }
 
     /**
@@ -80,18 +77,8 @@ public final class AppointmentController {
      * @param date The new date of the appointment.
      */
     @PutMapping("changeDate/{appId}/{date}")
-    public HttpStatus changeDate(@PathVariable final long appId, @PathVariable final LocalDate date){
+    public HttpStatus changeDate(@PathVariable final long appId, @PathVariable final Date date){
         return service.changeDate(appId, date);
-    }
-
-    /**
-     * Allow a user to change the time of an appointment.
-     * @param appId The id of the appointment.
-     * @param time The new time of the appointment.
-     */
-    @PutMapping("changeTime/{appId}/{time}")
-    public HttpStatus changeTime(@PathVariable final long appId, @PathVariable final LocalTime time){
-        return service.changeTime(appId, time);
     }
 
     /**

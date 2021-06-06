@@ -5,9 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,19 +49,17 @@ public final class AppointmentService {
      * Book a new appointment at the hospital.
      * @param patientSsn The patient who is booking the appointment.
      * @param doctorEmpId The doctor who is being booked with.
-     * @param time The time of the appointment.
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
-    public HttpStatus book(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                           final LocalDate date, final int room){
+    public HttpStatus book(final long patientSsn, final long doctorEmpId, final Date date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
-        final boolean doctorAvailable = doctorAvailability(doctorEmpId, date, time);
+        final boolean doctorAvailable = doctorAvailability(doctorEmpId, date);
         //check to make sure the room will be available at the given date and time
-        final boolean roomAvailable = roomAvailability(date, time, room);
+        final boolean roomAvailable = roomAvailability(date, room);
         //if the doctor and room are available book the appointment
         if (doctorAvailable && roomAvailable) {
-            repository.save(new Appointment(patientSsn,doctorEmpId,time,date,room));
+            repository.save(new Appointment(patientSsn,doctorEmpId,date,room));
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
@@ -92,36 +89,16 @@ public final class AppointmentService {
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    public HttpStatus changeDate(final long appId, final LocalDate date){
+    public HttpStatus changeDate(final long appId, final Date date){
         //make sure the appointment exists
         final Appointment appointment = find(appId);
 
         //make sure no conflict, assume same appointment time
-        final boolean doctorAvailable = doctorAvailability(appId,date,appointment.getTime());
+        final boolean doctorAvailable = doctorAvailability(appId,date);
 
         //if the doctor is available set the new appointment date
         if (doctorAvailable) {
             appointment.setDate(date);
-            return HttpStatus.OK;
-        }
-        return HttpStatus.BAD_REQUEST;
-    }
-
-    /**
-     * Change the time of an appointment.
-     * @param appId The id of the appointment.
-     * @param time The new time of the appointment.
-     */
-    public HttpStatus changeTime(final long appId,final  LocalTime time){
-        //make sure the appointment exists
-        final Appointment appointment = find(appId);
-
-        //make sure no conflict, assume same appointment data
-        final boolean doctorAvailable = doctorAvailability(appId,appointment.getDate(),time);
-
-        //if the doctor is available set the new appointment time
-        if (doctorAvailable) {
-            appointment.setTime(time);
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
@@ -137,7 +114,7 @@ public final class AppointmentService {
         Appointment appointment = find(appId);
 
         //make sure no conflict
-        final boolean roomAvailable = roomAvailability(appointment.getDate(), appointment.getTime(), room);
+        final boolean roomAvailable = roomAvailability(appointment.getDate(), room);
 
         //if the room is available change it
         if (roomAvailable) {
@@ -147,12 +124,12 @@ public final class AppointmentService {
         return HttpStatus.BAD_REQUEST;
     }
 
-    private boolean roomAvailability(final LocalDate date, final LocalTime time, final int room){
+    private boolean roomAvailability(final Date date,final int room){
         //get a list of all the appointments
         final List<Appointment> appointments =  getAppointments();
 
         for (Appointment appointment:appointments) {
-            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time) && appointment.getRoom() != room)){
+            if (!(appointment.getDate().equals(date) && appointment.getRoom() != room)){
                 return true;
             }
         }
@@ -160,17 +137,19 @@ public final class AppointmentService {
     }
 
     //helper method to make sure a doctor is available at a certain date and time
-    private boolean doctorAvailability(final long doctorEmpId, final LocalDate date, final LocalTime time){
+    private boolean doctorAvailability(final long doctorEmpId, final Date date){
         //get a list of all an individual doctors appointments
         final List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
 
         for (Appointment appointment:doctorAppointments) {
-            if (!(appointment.getDate().equals(date) && appointment.getTime().equals(time))){
+            if (!(appointment.getDate().equals(date))){
                 return true;
             }
         }
         return false;
     }
+
+
 
     //a helper method to find an appointment in the repository
     private Appointment find(final long appId){

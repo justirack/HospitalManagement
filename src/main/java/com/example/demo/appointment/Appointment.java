@@ -6,8 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.Date;
+
 /**
  * This class will represent an appointment in the Hospital Management System.
  * @author - Justin Rackley
@@ -23,15 +23,12 @@ public final class Appointment {
     private long doctorEmpId;
     //how to make these non-nullable without adding @Column annotation?
     //maybe @NotNull, not sure though
-    private LocalTime time;
-    private LocalDate date;
+    private Date date;
     private int room;
 
-    public Appointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                       final LocalDate date, final int room) {
+    public Appointment(final long patientSsn, final long doctorEmpId, final Date date, final int room) {
         this.patientSsn = patientSsn;
         this.doctorEmpId = doctorEmpId;
-        this.time = time;
         this.date = date;
         this.room = room;
     }
@@ -39,19 +36,12 @@ public final class Appointment {
     public Appointment() {
     }
 
-    /**
-     * Setter for the appointments time.
-     * @param time The appointments new time.
-     */
-    public void setTime(final LocalTime time) {
-        this.time = time;
-    }
 
     /**
      * Setter for the appointments date.
      * @param date The appointments new date.
      */
-    public void setDate(final LocalDate date) {
+    public void setDate(final Date date) {
         this.date = date;
     }
 
@@ -88,18 +78,10 @@ public final class Appointment {
     }
 
     /**
-     * Getter for the appointments time.
-     * @return The appointments time.
-     */
-    public LocalTime getTime() {
-        return time;
-    }
-
-    /**
      * Getter for the appointments data.
      * @return The appointments data.
      */
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
