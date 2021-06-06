@@ -129,7 +129,7 @@ public final class AppointmentService {
         final List<Appointment> appointments =  getAppointments();
 
         for (Appointment appointment:appointments) {
-            if (!(appointment.getDate().equals(date) && appointment.getRoom() != room)){
+            if (!(appointment.getDate().equals(date) && appointment.getRoom() == room)){
                 return true;
             }
         }
