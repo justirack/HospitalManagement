@@ -2,6 +2,7 @@ package com.example.demo.patient;
 
 import com.example.demo.doctor.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,8 +78,8 @@ public final class PatientController {
      * @param ssn The person to deletes ssn.
      */
     @DeleteMapping(path = "delete/{ssn}")
-    public void deletePatient(@PathVariable final long ssn){
-        service.remove(ssn);
+    public HttpStatus deletePatient(@PathVariable final long ssn){
+        return service.remove(ssn);
     }
 
     /**
@@ -87,8 +88,8 @@ public final class PatientController {
      * @param firstName The patients new first name.
      */
     @PutMapping(path = "changeFirstName/{ssn}/{firstName}")
-    public void changeFirstName(@PathVariable final long ssn, @PathVariable final String firstName){
-        service.changeFirstName(ssn,firstName);
+    public HttpStatus changeFirstName(@PathVariable final long ssn, @PathVariable final String firstName){
+        return service.changeFirstName(ssn,firstName);
     }
 
     /**
@@ -97,8 +98,8 @@ public final class PatientController {
      * @param lastName The patients new last name
      */
     @PutMapping(path = "changeLastName/{ssn}/{lastName}")
-    public void changeLastName(@PathVariable final long ssn, @PathVariable final String lastName){
-        service.changeLastName(ssn,lastName);
+    public HttpStatus changeLastName(@PathVariable final long ssn, @PathVariable final String lastName){
+        return service.changeLastName(ssn,lastName);
     }
 
     /**
@@ -107,8 +108,8 @@ public final class PatientController {
      * @param address The patients new address.
      */
     @PutMapping(path = "changeAddress/{ssn}/{address}")
-    public void changeAddress(@PathVariable final long ssn, @PathVariable final String address){
-        service.changeAddress(ssn,address);
+    public HttpStatus changeAddress(@PathVariable final long ssn, @PathVariable final String address){
+        return service.changeAddress(ssn,address);
     }
 
     /**
@@ -117,8 +118,8 @@ public final class PatientController {
      * @param familyDocId The patients new family doctor's id.
      */
     @PutMapping(path = "changeDoctor/{ssn}/{familyDocId}")
-    public void changeFamilyDoctor(@PathVariable final long ssn, @PathVariable final long familyDocId){
-        service.changeFamilyDoctor(ssn,familyDocId);
+    public HttpStatus changeFamilyDoctor(@PathVariable final long ssn, @PathVariable final long familyDocId){
+        return service.changeFamilyDoctor(ssn,familyDocId);
     }
 
     /**
@@ -127,8 +128,8 @@ public final class PatientController {
      * @param phone The users new phone number.
      */
     @PutMapping(path = "changePhone/{ssn}/{phone}")
-    public void changePhone(@PathVariable final long ssn, @PathVariable final String phone){
-        service.changePhone(ssn,phone);
+    public HttpStatus changePhone(@PathVariable final long ssn, @PathVariable final String phone){
+        return service.changePhone(ssn,phone);
     }
 
 

@@ -72,11 +72,19 @@ public final class AppointmentService {
      * Cancel an appointment.
      * @param appId The id of the appointment to cancel.
      */
-    public void cancel(final long appId){
+    public HttpStatus cancel(final long appId){
         //check to make sure the appointment exists, will throw an exception if it doesnt
         find(appId);
         //delete the appointment from the database
         repository.deleteById(appId);
+
+        try {
+            repository.findAppointmentById(appId);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**

@@ -57,11 +57,19 @@ public final class DrugService {
      * Allow a user to delete a drug from the database.
      * @param id The id of the drug to delete.
      */
-    public void delete(final long id){
+    public HttpStatus delete(final long id){
         //make sure the drug exists, will throw an exception if not
         find(id);
         //delete the drug from the database
         repository.deleteById(id);
+
+        try {
+            repository.findDrugByFormula(id);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**

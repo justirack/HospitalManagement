@@ -58,11 +58,19 @@ public final class DoctorService {
      * Allow a user to remove a doctor from the database.
      * @param empId The doctors employee id.
      */
-    public void remove(final long empId){
+    public HttpStatus remove(final long empId){
         //check to make sure the doctor exists, will throw an exception if not
         find(empId);
         //delete the doctor from the database
         repository.deleteById(empId);
+
+        try{
+            repository.findDoctorByEmpId(empId);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**

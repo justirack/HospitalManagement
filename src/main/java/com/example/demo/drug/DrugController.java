@@ -66,8 +66,8 @@ public final class DrugController {
      * @param id The id of the drug to delete.
      */
     @DeleteMapping(path = "delete/{id}")
-    public void deleteDrug(@PathVariable final long id){
-        service.delete(id);
+    public HttpStatus deleteDrug(@PathVariable final long id){
+        return service.delete(id);
     }
 
     /**
@@ -77,12 +77,7 @@ public final class DrugController {
      */
     @PutMapping(path = "changeFormula/{id}/{newFormula}")
     public HttpStatus changeFormula(@PathVariable final long id, @PathVariable final String newFormula){
-        service.changeFormula(id,newFormula);
-
-        if (service.getDrug(id).getFormula().equals(newFormula)) {
-            return HttpStatus.OK;
-        }
-        return HttpStatus.BAD_REQUEST;
+        return service.changeFormula(id,newFormula);
     }
 
     /**
@@ -92,12 +87,7 @@ public final class DrugController {
      */
     @PutMapping(path = "changeName/{id}/{name}")
     public HttpStatus changeName(@PathVariable final long id, @PathVariable final String name){
-        service.changeName(id,name);
-
-        if (service.getDrug(id).getName().equals(name)){
-            return HttpStatus.OK;
-        }
-        return HttpStatus.BAD_REQUEST;
+        return service.changeName(id,name);
     }
 
     /**
@@ -107,11 +97,6 @@ public final class DrugController {
      */
     @PutMapping(path = "changeDescription/{id}/{description}")
     public HttpStatus changeDescription(@PathVariable final long id, @PathVariable final String description){
-        service.changeDescription(id,description);
-
-        if (service.getDrug(id).getDescription().equals(description)){
-            return HttpStatus.OK;
-        }
-        return HttpStatus.BAD_REQUEST;
+        return service.changeDescription(id,description);
     }
 }

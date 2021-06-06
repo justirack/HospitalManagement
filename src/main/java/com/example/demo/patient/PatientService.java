@@ -2,6 +2,7 @@ package com.example.demo.patient;
 
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -52,7 +53,7 @@ public final class PatientService {
      * @param address the patients address
      */
     public void add(final long doctorId, final String firstName, final String lastName,
-                    final String phone, final String address){
+                          final String phone, final String address){
         //create a new patient and save them to the database
         repository.save(new Patient(doctorId,firstName,lastName,phone,address));
     }
@@ -61,11 +62,19 @@ public final class PatientService {
      * A method to allow a user to remove a patient from the database.
      * @param ssn The ssn of the patient to remove.
      */
-    public void remove(final long ssn){
+    public HttpStatus remove(final long ssn){
         //make sure the patient exists, exception will be thrown if not
         find(ssn);
         //delete the patient if no exception was thrown
         repository.deleteById(ssn);
+
+        try {
+            repository.findPatientBySsn(ssn);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**
@@ -73,7 +82,7 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param firstName The new first name.
      */
-    public void changeFirstName(final long ssn, final String firstName)
+    public HttpStatus changeFirstName(final long ssn, final String firstName)
     {
         //get the patient from the database
         final Patient patient = find(ssn);
@@ -82,10 +91,12 @@ public final class PatientService {
         if (firstName != null && firstName .length()> 0 && !Objects.equals(patient.getFirstName(),firstName)){
             //set the new first name
             patient.setFirstName(firstName);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
-    public void changeLastName(final long ssn, final String lastName){
+    public HttpStatus changeLastName(final long ssn, final String lastName){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -93,7 +104,9 @@ public final class PatientService {
         if (lastName != null && lastName.length()> 0 && !Objects.equals(patient.getLastName(),lastName)){
             //set the new last name
             patient.setLastName(lastName);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -101,7 +114,7 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param doctorId The employee id of the new family doctor.
      */
-    public void changeFamilyDoctor(final long ssn, final Long doctorId){
+    public HttpStatus changeFamilyDoctor(final long ssn, final Long doctorId){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -109,7 +122,9 @@ public final class PatientService {
         if (doctorId != null && doctorId >=0 && !Objects.equals(patient.getFamilyDoctorId(),doctorId)){
             //set the patients new family doctor id
             patient.setFamilyDoctor(doctorId);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -117,7 +132,7 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param newPhone The new phone number.
      */
-    public void changePhone(final long ssn, final String newPhone){
+    public HttpStatus changePhone(final long ssn, final String newPhone){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -125,7 +140,9 @@ public final class PatientService {
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
             //set the new phone number
             patient.setPhone(newPhone);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     /**
@@ -133,7 +150,7 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param newAddress The new address.
      */
-    public void changeAddress(final long ssn, final String newAddress){
+    public HttpStatus changeAddress(final long ssn, final String newAddress){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -141,7 +158,9 @@ public final class PatientService {
         if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
             //set the new address
             patient.setAddress(newAddress);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     //A helper method to check if the patient exists in our database

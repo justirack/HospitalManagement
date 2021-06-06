@@ -2,6 +2,7 @@ package com.example.demo.prescription;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,8 +56,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      */
     @PostMapping("add")
-    public void add(final long presId){
-        service.add(presId);
+    public HttpStatus add(final long presId){
+        return service.add(presId);
     }
 
     /**
@@ -64,8 +65,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      */
     @DeleteMapping("delete/{presId}")
-    public void delete(@PathVariable final long presId){
-        service.delete(presId);
+    public HttpStatus delete(@PathVariable final long presId){
+        return service.delete(presId);
     }
 
     /**
@@ -74,7 +75,7 @@ public final class PrescriptionController {
      * @param amount The prescriptions new amount.
      */
     @PutMapping("update/{presId}/{amount}")
-    public void changeAmount(@PathVariable final long presId, @PathVariable final long amount){
-        service.update(presId,amount);
+    public HttpStatus changeAmount(@PathVariable final long presId, @PathVariable final long amount){
+        return service.update(presId,amount);
     }
 }

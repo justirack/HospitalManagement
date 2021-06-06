@@ -70,8 +70,8 @@ public final class AppointmentController {
      * @param appId The id of the appointment to cancel.
      */
     @DeleteMapping(path = "cancel/{appId}")
-    public void cancel(@PathVariable final long appId){
-        service.cancel(appId);
+    public HttpStatus cancel(@PathVariable final long appId){
+        return service.cancel(appId);
     }
 
     /**

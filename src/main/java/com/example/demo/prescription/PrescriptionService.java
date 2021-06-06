@@ -2,6 +2,7 @@ package com.example.demo.prescription;
 
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -46,16 +47,32 @@ public final class PrescriptionService {
      * Allow a user to add a prescription to the database.
      * @param presId The prescriptions id.
      */
-    public void add(final long presId){
+    public HttpStatus add(final long presId){
         repository.save(find(presId));
+
+        try {
+            repository.findPrescriptionByPresId(presId);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**
      * Allow a user to delete a prescription from the database.
      * @param presId The prescriptions id;
      */
-    public void delete(final long presId){
+    public HttpStatus delete(final long presId){
         repository.delete(find(presId));
+
+        try {
+            repository.findPrescriptionByPresId(presId);
+        }
+        catch (InvalidIdException e){
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
     }
 
     /**
@@ -63,13 +80,15 @@ public final class PrescriptionService {
      * @param presId The prescriptions id.
      * @param amount The prescriptions amount.
      */
-    public void update(final long presId, final long amount){
+    public HttpStatus update(final long presId, final long amount){
         Prescription prescription = find(presId);
 
         //make sure the amount is greater than 0 and not the same as the current amount
         if (amount >= 0 && !Objects.equals(prescription.getAmount(),amount)){
             prescription.setAmount(amount);
+            return HttpStatus.OK;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 
     //helper method to find a prescription in the database

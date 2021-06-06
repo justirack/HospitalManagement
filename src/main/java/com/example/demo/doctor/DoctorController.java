@@ -67,8 +67,8 @@ public final class DoctorController {
      * @param doctorId The id of the doctor to remove.
      */
     @DeleteMapping(path = "delete/{doctorId}")
-    public void deleteDoctor(@PathVariable final long doctorId){
-        service.remove(doctorId);
+    public HttpStatus deleteDoctor(@PathVariable final long doctorId){
+        return service.remove(doctorId);
     }
 
     /**
