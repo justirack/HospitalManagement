@@ -1,5 +1,6 @@
 package com.example.demo.patient;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,12 +70,16 @@ public final class PatientService {
         repository.deleteById(ssn);
 
         try {
+            //try to find the patient in the database, they should not be there
             repository.findPatientBySsn(ssn);
         }
+        //catch the exception that should be thrown
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            //return OK since they are no longer there
+            return HttpStatus.OK;
         }
-        return HttpStatus.OK;
+        throw new FailedRequestException("The patient could not be deleted from the database." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -93,7 +98,8 @@ public final class PatientService {
             patient.setFirstName(firstName);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The patients first name could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     public HttpStatus changeLastName(final long ssn, final String lastName){
@@ -106,7 +112,8 @@ public final class PatientService {
             patient.setLastName(lastName);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The patients last name could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -124,7 +131,8 @@ public final class PatientService {
             patient.setFamilyDoctor(doctorId);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The patients family doctor could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -142,7 +150,8 @@ public final class PatientService {
             patient.setPhone(newPhone);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The patients phone number could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -160,7 +169,8 @@ public final class PatientService {
             patient.setAddress(newAddress);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The patients address could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     //A helper method to check if the patient exists in our database

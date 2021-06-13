@@ -1,5 +1,6 @@
 package com.example.demo.prescription;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,13 @@ public final class PrescriptionService {
         repository.save(find(presId));
 
         try {
+            //try to find th prescription in the repository, it should be there
             repository.findPrescriptionByPresId(presId);
         }
+        //catch the exception that will be thrown if its not there
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            throw new FailedRequestException("The prescription could not be added to the repository." +
+                    " Please make sure all information is correct and try again.");
         }
         return HttpStatus.OK;
     }
@@ -67,12 +71,16 @@ public final class PrescriptionService {
         repository.delete(find(presId));
 
         try {
+            //try to find the prescription in the repository, it should not be there
             repository.findPrescriptionByPresId(presId);
         }
+        //catch the exception that should be thrown
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            //return OK since the prescription is no longer there
+            return HttpStatus.OK;
         }
-        return HttpStatus.OK;
+        throw new FailedRequestException("The prescription could not be deleted from the repository." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -88,7 +96,8 @@ public final class PrescriptionService {
             prescription.setAmount(amount);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The amount could not be updated, please make sure the prescription id" +
+                " and amount are correct and try again.");
     }
 
     //helper method to find a prescription in the database

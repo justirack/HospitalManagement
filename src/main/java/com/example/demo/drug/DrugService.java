@@ -1,5 +1,6 @@
 package com.example.demo.drug;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,12 +65,16 @@ public final class DrugService {
         repository.deleteById(id);
 
         try {
+            //try to find the drug in the database, it should not be there
             repository.findDrugByFormula(id);
         }
+        //catch the exception that should be thrown
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            //return OK since the drug is no longer there
+            return HttpStatus.OK;
         }
-        return HttpStatus.OK;
+        throw new FailedRequestException("The drug could not be deleted from the database." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -77,16 +82,17 @@ public final class DrugService {
      * @param id The old id.
      * @param newFormula The new formula.
      */
-    public HttpStatus changeFormula(final long id, final String newFormula){
+    public HttpStatus changeFormula(final long id, final String newFormula) {
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the formula is not null, not a blank string and not the same as the current formula
-        if (newFormula != null && newFormula.length() > 0 && !Objects.equals(drug.getFormula(),newFormula)){
+        if (newFormula != null && newFormula.length() > 0 && !Objects.equals(drug.getFormula(), newFormula)) {
             drug.setFormula(newFormula);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The drugs formula could not be changed." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -103,7 +109,8 @@ public final class DrugService {
             drug.setFormula(name);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The drugs name could not be changed." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -120,7 +127,8 @@ public final class DrugService {
             drug.setFormula(description);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The drugs description could not be changed." +
+                " Please make sure all information is correct and try again.");
     }
 
     //a helper method to find a drug in the database

@@ -1,5 +1,6 @@
 package com.example.demo.appointment;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,15 +55,17 @@ public final class AppointmentService {
      */
     public HttpStatus book(final long patientSsn, final long doctorEmpId, final Date date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
-        final boolean isdoctorAvailable = doctorAvailability(doctorEmpId, date);
+        final boolean isDoctorAvailable = doctorAvailability(doctorEmpId, date);
         //check to make sure the room will be available at the given date and time
         final boolean isRoomAvailable = roomAvailability(date, room);
         //if the doctor and room are available book the appointment
-        if (isdoctorAvailable && isRoomAvailable) {
+        if (isDoctorAvailable && isRoomAvailable) {
             repository.save(new Appointment(patientSsn,doctorEmpId,date,room));
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        //throw an exception if either the doctor or room is unavailable
+        throw new FailedRequestException("Either the doctor or room requested at " + date +
+                ". Please try another date or time.");
     }
 
     /**
@@ -76,12 +79,17 @@ public final class AppointmentService {
         repository.deleteById(appId);
 
         try {
+            //try to find the appointment, it should not be there
             repository.findAppointmentById(appId);
         }
+        //catch the exception that should be thrown
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            //return OK since the appointment is not in the database
+            return HttpStatus.OK;
         }
-        return HttpStatus.OK;
+        //throw an exception if the appointment is still there
+        throw new FailedRequestException("The appointment could not be deleted. Please make sure all" +
+                " information is correct and try again.");
     }
 
     /**
@@ -96,12 +104,17 @@ public final class AppointmentService {
         //make sure no conflict, assume same appointment time
         final boolean isDoctorAvailable = doctorAvailability(appId,date);
 
-        //if the doctor is available set the new appointment date
-        if (isDoctorAvailable) {
+        //make sure the room is still available on the new date
+        final boolean isRoomAvailable = roomAvailability(date, appointment.getRoom());
+
+        //if the doctor and room are available, set the new appointment date
+        if (isDoctorAvailable && isRoomAvailable) {
             appointment.setDate(date);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        //throw an exception if the doctor or room is not available
+        throw new FailedRequestException("Either the doctor or room requested at " + date +
+                ". Please try another date or time.");
     }
 
     /**
@@ -121,7 +134,8 @@ public final class AppointmentService {
             appointment.setRoom(room);
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("Room " + room + " is not available at " + appointment.getDate() +
+                " please try to book another room or change your appointment date.");
     }
 
     private boolean roomAvailability(final Date date,final int room){
@@ -148,8 +162,6 @@ public final class AppointmentService {
         }
         return false;
     }
-
-
 
     //a helper method to find an appointment in the repository
     private Appointment find(final long appId){

@@ -1,5 +1,6 @@
 package com.example.demo.doctor;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
 import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,12 +66,16 @@ public final class DoctorService {
         repository.deleteById(empId);
 
         try{
+            //try to find the doctor in the database, it should not be there
             repository.findDoctorByEmpId(empId);
         }
+        //catch the exception that should be thrown
         catch (InvalidIdException e){
-            return HttpStatus.BAD_REQUEST;
+            //since the doctor was not there, return OK
+            return HttpStatus.OK;
         }
-        return HttpStatus.OK;
+        throw new FailedRequestException("The doctor could not be deleted from the database." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -84,11 +89,12 @@ public final class DoctorService {
         //change the doctors first name
         doctor.setFirstName(firstName);
 
-        //make sure the update worked before return OK
+        //make sure the update worked before returning OK
         if (doctor.getFirstName().equals(firstName)){
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The doctor's first name could not be updated. " +
+                "Please make sure all information is correct and try again.");
     }
 
     /**
@@ -106,7 +112,8 @@ public final class DoctorService {
         if (doctor.getLastName().equals(lastName)){
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The doctor's last name could not be updated. " +
+                "Please make sure all information is correct and try again.");
     }
 
     /**
@@ -123,7 +130,8 @@ public final class DoctorService {
         if (doctor.getPhone().equals(phone)) {
             return HttpStatus.OK;
         }
-        return HttpStatus.BAD_REQUEST;
+        throw new FailedRequestException("The doctor's phone number could not be updated. " +
+                "Please make sure all information is correct and try again.");
     }
 
     //helper method to find a doctor in the database
