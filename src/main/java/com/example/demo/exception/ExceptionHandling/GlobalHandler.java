@@ -2,6 +2,7 @@ package com.example.demo.exception.ExceptionHandling;
 
 import com.example.demo.exception.CustomException.ExceptionDetails;
 import com.example.demo.exception.CustomException.InvalidIdException;
+import com.example.demo.exception.CustomException.FailedRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,10 +26,26 @@ public class GlobalHandler {
         //set the error message that we will send to the user
         final String message = "The ID you entered was invalid. Please enter a valid id and try again";
         //set the status code of the error
-        final int statusCode = HttpStatus.NOT_FOUND.value();
+        final int statusCode = HttpStatus.BAD_REQUEST.value();
         //create an ExceptionDetails object to return
         final ExceptionDetails exceptionDetails = new ExceptionDetails(message,details, statusCode);
         //return the ExceptionDetails object and the status code
+        return new ResponseEntity<>(exceptionDetails,HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handler for FailedRequest exceptions.
+     * Same idea as handleInvalidId so read there for in-line comments.
+     * @param exception The exception to be handled.
+     * @return The handled Exception.
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(FailedRequestException.class)
+    public final ResponseEntity<Object> handleFailedRequest(FailedRequestException exception){
+        final String details = exception.getLocalizedMessage();
+        final String message = "Your request failed. Please make sure the information entered is correct";
+        final int statusCode = HttpStatus.BAD_REQUEST.value();
+        final ExceptionDetails exceptionDetails = new ExceptionDetails(message,details,statusCode);
         return new ResponseEntity<>(exceptionDetails,HttpStatus.BAD_REQUEST);
     }
 
