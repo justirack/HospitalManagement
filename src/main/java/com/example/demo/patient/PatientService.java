@@ -93,7 +93,7 @@ public final class PatientService {
         final Patient patient = find(ssn);
 
         //make sure firstName is not null, has length > 0 and is not the same as the current first name
-        if (firstName != null && firstName .length()> 0 && !Objects.equals(patient.getFirstName(),firstName)){
+        if (firstName != null && !firstName.isEmpty() && !Objects.equals(patient.getFirstName(),firstName)){
             //set the new first name
             patient.setFirstName(firstName);
             return HttpStatus.OK;
@@ -107,7 +107,7 @@ public final class PatientService {
         final Patient patient = find(ssn);
 
         //make sure lastName is not null, has length > 0 and is not the same as the current last name
-        if (lastName != null && lastName.length()> 0 && !Objects.equals(patient.getLastName(),lastName)){
+        if (lastName != null && !lastName.isEmpty() && !Objects.equals(patient.getLastName(),lastName)){
             //set the new last name
             patient.setLastName(lastName);
             return HttpStatus.OK;
@@ -164,7 +164,7 @@ public final class PatientService {
         final Patient patient = find(ssn);
 
         //make sure newAddress is not null, has length > 0 and is not the same as the current first name
-        if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
+        if (newAddress != null && !newAddress.isEmpty() && !Objects.equals(patient.getAddress(),newAddress)){
             //set the new address
             patient.setAddress(newAddress);
             return HttpStatus.OK;

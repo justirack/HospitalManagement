@@ -87,7 +87,7 @@ public final class DrugService {
         final Drug drug = find(id);
 
         //make sure the formula is not null, not a blank string and not the same as the current formula
-        if (newFormula != null && newFormula.length() > 0 && !Objects.equals(drug.getFormula(), newFormula)) {
+        if (newFormula != null && !newFormula.isEmpty() && !Objects.equals(drug.getFormula(), newFormula)) {
             drug.setFormula(newFormula);
             return HttpStatus.OK;
         }
@@ -105,7 +105,7 @@ public final class DrugService {
         final Drug drug = find(id);
 
         //make sure the name is not null, not a blank string and not the same as the current name
-        if (name != null && name.length() > 0 && !Objects.equals(name, drug.getName())){
+        if (name != null && !name.isEmpty() && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
             return HttpStatus.OK;
         }
@@ -123,7 +123,7 @@ public final class DrugService {
         final Drug drug = find(id);
 
         //make sure the description is not null, not a blank string and not the same as the current description
-        if (description != null && description.length() > 0 && !Objects.equals(description, drug.getDescription())){
+        if (description != null && !description.isEmpty() && !Objects.equals(description, drug.getDescription())){
             drug.setFormula(description);
             return HttpStatus.OK;
         }
