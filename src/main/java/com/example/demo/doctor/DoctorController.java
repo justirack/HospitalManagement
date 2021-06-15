@@ -1,13 +1,13 @@
 package com.example.demo.doctor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -23,12 +23,12 @@ import java.util.List;
 @RequestMapping(path = "doctor")
 public final class DoctorController {
     //create a permanent reference to doctorService
-    private final DoctorService doctorService;
+    private final DoctorService service;
 
     //inject doctorService's bean into this class' bean
     @Autowired
-    public DoctorController(final DoctorService doctorService){
-        this.doctorService = doctorService;
+    public DoctorController(final DoctorService service){
+        this.service = service;
     }
 
     /**
@@ -38,7 +38,17 @@ public final class DoctorController {
     @GetMapping(path = "getDoctors")
     public List<Doctor> getDoctors(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(doctorService.getDoctors());
+        return Collections.unmodifiableList(service.getDoctors());
+    }
+
+    /**
+     * Allow a user to get a single doctor from the database.
+     * @param empId The id of the doctor.
+     * @return The doctor.
+     */
+    @GetMapping(path = "findDoctor/{empId}")
+    public Doctor findDoctor(@PathVariable final long empId){
+        return service.getDoctor(empId);
     }
 
     /**
@@ -47,37 +57,48 @@ public final class DoctorController {
      * @param lastName The doctors last name.
      * @param phone The doctors phone number.
      */
-    @PostMapping(path = "addDoctor")
+    @PostMapping(path = "add")
     public void addDoctor(final String firstName, final String lastName, final String phone){
-        doctorService.addDoctor(firstName,lastName,phone);
+        service.add(firstName,lastName,phone);
     }
 
     /**
      * Allow a user to delete a doctor from the repository.
      * @param doctorId The id of the doctor to remove.
      */
-    @DeleteMapping(path = "{deleteDoctor}")
-    public void deleteDoctor(@PathVariable("deleteDoctor") final long doctorId){
-        doctorService.removeDoctor(doctorId);
+    @DeleteMapping(path = "delete/{doctorId}")
+    public HttpStatus deleteDoctor(@PathVariable final long doctorId){
+        return service.remove(doctorId);
     }
 
     /**
-     * Allow a user to update a doctors information.
+     * Allow a doctor to change their first name.
      * @param id The doctors id.
-     * @param firstName The doctors first name.
-     * @param lastName The doctors last name
-     * @param phone The doctors phone number
+     * @param firstName The doctors new first name.
      */
-    @PutMapping(path = "{updateDoctor}")
-    public void updateDoctor(@PathVariable("updateDoctor") final long id,
-                             @RequestParam final String firstName,
-                             @RequestParam final String lastName,
-                             @RequestParam final String phone){
-        doctorService.changeFirstName(id, firstName);
-        doctorService.changeLastName(id,lastName);
-        doctorService.changePhone(id, phone);
+    @PutMapping(path = "changeFirstName/{id}/{firstName}")
+    public HttpStatus changeFirstName(@PathVariable final long id, @PathVariable final String firstName){
+        return service.changeFirstName(id,firstName);
+    }
 
+    /**
+     * Allow a doctor to change their last name.
+     * @param id The doctors id.
+     * @param lastName The doctors new last name.
+     */
+    @PutMapping(path = "changeLastName/{id}/{lastName}")
+    public HttpStatus changeLastName(@PathVariable final long id, @PathVariable final String lastName){
+         return service.changeLastName(id,lastName);
+    }
 
+    /**
+     * Allow a doctor to change their phone number.
+     * @param id The doctors id.
+     * @param phone The doctors new phone number.
+     */
+    @PutMapping(path = "changePhone/{id}/{phone}")
+    public HttpStatus changePhone(@PathVariable final long id, @PathVariable final String phone){
+        return service.changePhone(id,phone);
     }
 
 }

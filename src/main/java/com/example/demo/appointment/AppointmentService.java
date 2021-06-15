@@ -1,11 +1,13 @@
 package com.example.demo.appointment;
 
+import com.example.demo.exception.CustomException.FailedRequestException;
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,11 +19,13 @@ import java.util.List;
 @Service
 public final class AppointmentService {
 
-    private final AppointmentRepository appointmentRepository;
+    //create a permanent reference to the appointment repository
+    private final AppointmentRepository repository;
 
+    //inject the appointment repository into this class
     @Autowired
-    public AppointmentService(final AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
+    public AppointmentService(final AppointmentRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -30,38 +34,62 @@ public final class AppointmentService {
      */
     public List<Appointment> getAppointments(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(appointmentRepository.findAll());
+        return Collections.unmodifiableList(repository.findAll());
+    }
+
+    /**
+     * Get and return an appointment from the database.
+     * @param appId The id of the appointment.
+     * @return The appointment.
+     */
+    public Appointment getAppointment(final long appId){
+        return find(appId);
     }
 
     /**
      * Book a new appointment at the hospital.
      * @param patientSsn The patient who is booking the appointment.
      * @param doctorEmpId The doctor who is being booked with.
-     * @param time The time of the appointment.
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
-    public void bookAppointment(final long patientSsn, final long doctorEmpId, final LocalTime time,
-                                final LocalDate date, final int room){
+    public HttpStatus book(final long patientSsn, final long doctorEmpId, final Date date, final int room){
         //check to make sure the doctor doesnt have another appointment at the same time
-        boolean doctorAvailable = doctorAvailability(doctorEmpId, date, time);
+        final boolean isDoctorAvailable = doctorAvailability(doctorEmpId, date);
         //check to make sure the room will be available at the given date and time
-        boolean roomAvailable = roomAvailability(date, time, room);
+        final boolean isRoomAvailable = roomAvailability(date, room);
         //if the doctor and room are available book the appointment
-        if (doctorAvailable && roomAvailable) {
-            appointmentRepository.save(createAppointment(patientSsn, doctorEmpId, time, date, room));
+        if (isDoctorAvailable && isRoomAvailable) {
+            repository.save(new Appointment(patientSsn,doctorEmpId,date,room));
+            return HttpStatus.OK;
         }
+        //throw an exception if either the doctor or room is unavailable
+        throw new FailedRequestException("Either the doctor or room requested at " + date +
+                ". Please try another date or time.");
     }
 
     /**
      * Cancel an appointment.
      * @param appId The id of the appointment to cancel.
      */
-    public void cancelAppointment(final long appId){
+    public HttpStatus cancel(final long appId){
         //check to make sure the appointment exists, will throw an exception if it doesnt
-        findAppointment(appId);
+        find(appId);
         //delete the appointment from the database
-        appointmentRepository.deleteById(appId);
+        repository.deleteById(appId);
+
+        try {
+            //try to find the appointment, it should not be there
+            repository.findAppointmentById(appId);
+        }
+        //catch the exception that should be thrown
+        catch (InvalidIdException e){
+            //return OK since the appointment is not in the database
+            return HttpStatus.OK;
+        }
+        //throw an exception if the appointment is still there
+        throw new FailedRequestException("The appointment could not be deleted. Please make sure all" +
+                " information is correct and try again.");
     }
 
     /**
@@ -69,35 +97,24 @@ public final class AppointmentService {
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    public void changeDate(final long appId, final LocalDate date){
+    public HttpStatus changeDate(final long appId, final Date date){
         //make sure the appointment exists
-        Appointment appointment = findAppointment(appId);
+        final Appointment appointment = find(appId);
 
         //make sure no conflict, assume same appointment time
-        boolean doctorAvailable = doctorAvailability(appId,date,appointment.getTime());
+        final boolean isDoctorAvailable = doctorAvailability(appId,date);
 
-        //if the doctor is available set the new appointment date
-        if (doctorAvailable) {
+        //make sure the room is still available on the new date
+        final boolean isRoomAvailable = roomAvailability(date, appointment.getRoom());
+
+        //if the doctor and room are available, set the new appointment date
+        if (isDoctorAvailable && isRoomAvailable) {
             appointment.setDate(date);
+            return HttpStatus.OK;
         }
-    }
-
-    /**
-     * Change the time of an appointment.
-     * @param appId The id of the appointment.
-     * @param time The new time of the appointment.
-     */
-    public void changeTime(final long appId,final  LocalTime time){
-        //make sure the appointment exists
-        Appointment appointment = findAppointment(appId);
-
-        //make sure no conflict, assume same appointment data
-        boolean doctorAvailable = doctorAvailability(appId,appointment.getDate(),time);
-
-        //if the doctor is available set the new appointment time
-        if (doctorAvailable) {
-            appointment.setTime(time);
-        }
+        //throw an exception if the doctor or room is not available
+        throw new FailedRequestException("Either the doctor or room requested at " + date +
+                ". Please try another date or time.");
     }
 
     /**
@@ -105,65 +122,51 @@ public final class AppointmentService {
      * @param appId The id of the appointment
      * @param room The new room for the appointment
      */
-    public void changeRoom(final long appId, final int room){
+    public HttpStatus changeRoom(final long appId, final int room){
         //make sure the appointment exists
-        Appointment appointment = findAppointment(appId);
+        Appointment appointment = find(appId);
 
         //make sure no conflict
-        boolean roomAvailable = roomAvailability(appointment.getDate(), appointment.getTime(), room);
+        final boolean isRoomAvailable = roomAvailability(appointment.getDate(), room);
 
         //if the room is available change it
-        if (roomAvailable) {
+        if (isRoomAvailable) {
             appointment.setRoom(room);
-            //maybe return true here if the room was successfully changed?
-            //how would I use that boolean value to tell the user if the room was changed or not?
-            //same thought for changing date and time
+            return HttpStatus.OK;
         }
+        throw new FailedRequestException("Room " + room + " is not available at " + appointment.getDate() +
+                " please try to book another room or change your appointment date.");
     }
 
-    private boolean roomAvailability(final LocalDate date, final LocalTime time, final int room){
+    private boolean roomAvailability(final Date date,final int room){
         //get a list of all the appointments
-        List<Appointment> appointments =  getAppointments();
+        final List<Appointment> appointments =  getAppointments();
 
-        //loop through all of the appointments
         for (Appointment appointment:appointments) {
-            //check if there is an appointment at the same date and time in the same room
-            if (appointment.getDate().equals(date) && appointment.getTime().equals(time) &&
-                    appointment.getRoom() == room){
-                //return false if there is
-                return false;
+            if (!(appointment.getDate().equals(date) && appointment.getRoom() == room)){
+                return true;
             }
         }
-        //else return true
-        return true;
+        return false;
     }
 
     //helper method to make sure a doctor is available at a certain date and time
-    private boolean doctorAvailability(final long doctorEmpId, final LocalDate date, final LocalTime time){
+    private boolean doctorAvailability(final long doctorEmpId, final Date date){
         //get a list of all an individual doctors appointments
-        List<Appointment> doctorAppointments = appointmentRepository.findDoctorsAppointments(doctorEmpId);
+        final List<Appointment> doctorAppointments = repository.findDoctorsAppointments(doctorEmpId);
 
-        //go through the list and make sure there isn't one at the same data and time of the new appointment
         for (Appointment appointment:doctorAppointments) {
-            if (appointment.getDate().equals(date) && appointment.getTime().equals(time)){
-                //return false if there is an appointment at same data & time
-                return false;
+            if (!(appointment.getDate().equals(date))){
+                return true;
             }
         }
-        //return true if no conflicting appointment
-        return true;
-    }
-
-    //a helper method to create an appointment
-    private Appointment createAppointment(final long patientSsn,final long doctorEmpId, final LocalTime time,
-                                          final LocalDate date, final int room){
-        return new Appointment(patientSsn,doctorEmpId,time,date,room);
+        return false;
     }
 
     //a helper method to find an appointment in the repository
-    private Appointment findAppointment(final long appId){
+    private Appointment find(final long appId){
         //return an appointment with the given id, else throw an exception
-        return appointmentRepository.findById(appId).orElseThrow(() -> new IllegalStateException(
+        return repository.findById(appId).orElseThrow(() -> new InvalidIdException(
                 "Appointment with id  " + appId + " not found."));
     }
 

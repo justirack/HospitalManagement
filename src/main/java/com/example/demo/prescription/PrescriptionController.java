@@ -2,6 +2,7 @@ package com.example.demo.prescription;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,11 +24,11 @@ import java.util.List;
 @RequestMapping(path = "prescription")
 public final class PrescriptionController {
     //create a permanent reference to prescriptionService
-    private final PrescriptionService prescriptionService;
+    private final PrescriptionService service;
 
     @Autowired
-    public PrescriptionController(PrescriptionService prescriptionService) {
-        this.prescriptionService = prescriptionService;
+    public PrescriptionController(PrescriptionService service) {
+        this.service = service;
     }
 
     /**
@@ -37,25 +38,35 @@ public final class PrescriptionController {
     @GetMapping(path = "getPrescriptions")
     public List<Prescription> getPrescriptions(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(prescriptionService.getPrescriptions());
+        return Collections.unmodifiableList(service.getPrescriptions());
+    }
+
+    /**
+     * Allow a user to get a single prescription from the database.
+     * @param presId The prescriptions id.
+     * @return The prescription.
+     */
+    @GetMapping(path = "getPrescription/{presId}")
+    public Prescription getPrescription(@PathVariable final long presId){
+        return service.getPrescription(presId);
     }
 
     /**
      * Allow a user to add a method to the database.
      * @param presId The prescriptions id.
      */
-    @PostMapping("addPrescription")
-    public void addPrescription(final long presId){
-        prescriptionService.addPrescription(presId);
+    @PostMapping("add")
+    public HttpStatus add(final long presId){
+        return service.add(presId);
     }
 
     /**
      * Allow a user to delete a prescription from the repository.
      * @param presId The prescriptions id.
      */
-    @DeleteMapping("{deletePresctption}")
-    public void deletePrescription(@PathVariable("deletePresctption") final long presId){
-        prescriptionService.deletePrescription(presId);
+    @DeleteMapping("delete/{presId}")
+    public HttpStatus delete(@PathVariable final long presId){
+        return service.delete(presId);
     }
 
     /**
@@ -63,8 +74,8 @@ public final class PrescriptionController {
      * @param presId The prescriptions id.
      * @param amount The prescriptions new amount.
      */
-    @PutMapping("{updatePrescription}")
-    public void updatePrescription(@PathVariable("updatePrescription") final long presId, final long amount){
-        prescriptionService.updatePrescription(presId,amount);
+    @PutMapping("update/{presId}/{amount}")
+    public HttpStatus changeAmount(@PathVariable final long presId, @PathVariable final long amount){
+        return service.update(presId,amount);
     }
 }

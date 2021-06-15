@@ -1,10 +1,10 @@
 package com.example.demo.patient;
 
-import com.example.demo.doctor.Doctor;
-import com.example.demo.doctor.DoctorRepository;
+import com.example.demo.exception.CustomException.FailedRequestException;
+import com.example.demo.exception.CustomException.InvalidIdException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,15 +18,13 @@ import java.util.Objects;
 @Service
 public final class PatientService {
 
-    //create a permanent reference to the patient and doctor repositories
-    private final PatientRepository patientRepository;
-    private final DoctorRepository doctorRepository;
+    //create a permanent reference to the patient repository
+    private final PatientRepository repository;
 
-    //inject patientRepository and doctorRepository's beans into this class
+    //inject the patient repository into this class
     @Autowired
-    public PatientService(final PatientRepository patientRepository, final DoctorRepository doctorRepository) {
-        this.patientRepository = patientRepository;
-        this.doctorRepository = doctorRepository;
+    public PatientService(final PatientRepository repository) {
+        this.repository = repository;
     }
 
     /**
@@ -35,54 +33,87 @@ public final class PatientService {
      */
     public List<Patient> getPatients(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(patientRepository.findAll());
+        return Collections.unmodifiableList(repository.findAll());
     }
 
     /**
-     * A method to allow a user to add a new patient to the database.
-     * @param patient The patient to add to the database.
+     * Allow a user to get a single patient from the database.
+     * @param ssn The ssn of the patient to find.
+     * @return The patient.
      */
-    public void addNewPatient(final Patient patient){
-        //make sure this patient doesnt already exist in our database
-        if (patientRepository.findPatientBySsn(patient.getSsn()).isPresent()){
-            throw new IllegalStateException("A patient with this ssn already exists.");
-        }
-        patientRepository.save(patient);
+    public Patient getPatient(final long ssn){
+        return find(ssn);
+    }
+
+    /**
+     * add a patient to the database
+     * @param doctorId the patients family doctor's id
+     * @param firstName the patients first name
+     * @param lastName the patients last name
+     * @param phone the patients phone number
+     * @param address the patients address
+     */
+    public void add(final long doctorId, final String firstName, final String lastName,
+                          final String phone, final String address){
+        //create a new patient and save them to the database
+        repository.save(new Patient(doctorId,firstName,lastName,phone,address));
     }
 
     /**
      * A method to allow a user to remove a patient from the database.
      * @param ssn The ssn of the patient to remove.
      */
-    public void removePatient(final long ssn){
-        if (patientRepository.findPatientBySsn(ssn).isEmpty()){
-            throw new IllegalStateException("The patient with SSN " + ssn + "does not exist.");
+    public HttpStatus remove(final long ssn){
+        //make sure the patient exists, exception will be thrown if not
+        find(ssn);
+        //delete the patient if no exception was thrown
+        repository.deleteById(ssn);
+
+        try {
+            //try to find the patient in the database, they should not be there
+            repository.findPatientBySsn(ssn);
         }
-        patientRepository.deleteById(ssn);
+        //catch the exception that should be thrown
+        catch (InvalidIdException e){
+            //return OK since they are no longer there
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The patient could not be deleted from the database." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
      * A method to allow a user to change a patient's name.
      * @param ssn The ssn of the patient to change.
      * @param firstName The new first name.
-     * @param lastName The new last name.
      */
-    public void changeName(@RequestParam final long ssn,
-                           @RequestParam(required = false) final String firstName,
-                           @RequestParam(required = false) final String lastName)
+    public HttpStatus changeFirstName(final long ssn, final String firstName)
     {
-        //use the helper method to get the patient
-        Patient patient = createPatient(ssn);
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
         //make sure firstName is not null, has length > 0 and is not the same as the current first name
-        if (firstName != null && firstName .length()> 0 && !Objects.equals(patient.getFirstName(),firstName)){
+        if (firstName != null && !firstName.isEmpty() && !Objects.equals(patient.getFirstName(),firstName)){
+            //set the new first name
             patient.setFirstName(firstName);
+            return HttpStatus.OK;
         }
+        throw new FailedRequestException("The patients first name could not be updated." +
+                " Please make sure all information is correct and try again.");
+    }
+
+    public HttpStatus changeLastName(final long ssn, final String lastName){
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
         //make sure lastName is not null, has length > 0 and is not the same as the current last name
-        if (lastName != null && lastName.length() > 0 && !Objects.equals(patient.getLastName(),lastName)){
+        if (lastName != null && !lastName.isEmpty() && !Objects.equals(patient.getLastName(),lastName)){
+            //set the new last name
             patient.setLastName(lastName);
+            return HttpStatus.OK;
         }
+        throw new FailedRequestException("The patients last name could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -90,10 +121,18 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param doctorId The employee id of the new family doctor.
      */
-    public void changeFamilyDoctor(final long ssn, final Long doctorId){
-        Patient patient = createPatient(ssn);
-        Doctor doctor = createDoctor(doctorId);
-        //check if doctor exists in doctor repo
+    public HttpStatus changeFamilyDoctor(final long ssn, final Long doctorId){
+        //get the patient from the database
+        final Patient patient = find(ssn);
+
+        //make sure doctorId is not null, has length > 0 and is not the same as the current doctor id
+        if (doctorId != null && doctorId >=0 && !Objects.equals(patient.getFamilyDoctorId(),doctorId)){
+            //set the patients new family doctor id
+            patient.setFamilyDoctor(doctorId);
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The patients family doctor could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -101,12 +140,18 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param newPhone The new phone number.
      */
-    public void changePhone(final long ssn, final String newPhone){
-        Patient patient = createPatient(ssn);
+    public HttpStatus changePhone(final long ssn, final String newPhone){
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
+        //make sure newPhone is not null, has length = 10 and is not the same as the current phone number
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
+            //set the new phone number
             patient.setPhone(newPhone);
+            return HttpStatus.OK;
         }
+        throw new FailedRequestException("The patients phone number could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     /**
@@ -114,27 +159,27 @@ public final class PatientService {
      * @param ssn The ssn of the patient to change.
      * @param newAddress The new address.
      */
-    public void changeAddress(final long ssn, final String newAddress){
-        Patient patient = createPatient(ssn);
+    public HttpStatus changeAddress(final long ssn, final String newAddress){
+        //get the patient from the database
+        final Patient patient = find(ssn);
 
-        if (newAddress != null && newAddress.length() > 0 && !Objects.equals(patient.getAddress(),newAddress)){
+        //make sure newAddress is not null, has length > 0 and is not the same as the current first name
+        if (newAddress != null && !newAddress.isEmpty() && !Objects.equals(patient.getAddress(),newAddress)){
+            //set the new address
             patient.setAddress(newAddress);
+            return HttpStatus.OK;
         }
+        throw new FailedRequestException("The patients address could not be updated." +
+                " Please make sure all information is correct and try again.");
     }
 
     //A helper method to check if the patient exists in our database
-    private Patient createPatient(final long ssn){
+    private Patient find(final long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
         //else throw an exception
-        return patientRepository.findPatientBySsn(ssn).orElseThrow(() -> new IllegalStateException(
+
+        return repository.findPatientBySsn(ssn).orElseThrow(() -> new InvalidIdException(
                 "Patient with SSN " + ssn + " not found."));
     }
 
-    //a helper method to make sure a doctor exists
-    private Doctor createDoctor(final long id){
-        //create a temporary doctor by getting the doctor with the given id
-        //if no such doctor exists, throw an exception
-        return doctorRepository.findById(id).orElseThrow(() -> new IllegalStateException(
-                "Doctor with id " + id + " not found."));
-    }
 }

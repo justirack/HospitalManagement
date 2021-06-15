@@ -1,12 +1,13 @@
 package com.example.demo.drug;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -22,11 +23,11 @@ import java.util.List;
 @RequestMapping("drug")
 public final class DrugController {
     //create a permanent reference to drugService
-    private final DrugService drugService;
+    private final DrugService service;
 
     @Autowired
-    public DrugController(final DrugService drugService) {
-        this.drugService = drugService;
+    public DrugController(final DrugService service) {
+        this.service = service;
     }
 
     /**
@@ -36,7 +37,17 @@ public final class DrugController {
     @GetMapping(path = "getDrugs")
     public List<Drug> getDrugs(){
         //make the returned collection unmodifiable
-        return Collections.unmodifiableList(drugService.getDrugs());
+        return Collections.unmodifiableList(service.getDrugs());
+    }
+
+    /**
+     * Allow a user to get a single drug from the database.
+     * @param id The id of the drug.
+     * @return The drug.
+     */
+    @GetMapping(path = "getDrug/{id}")
+    public Drug getDrug(@PathVariable final long id){
+        return service.getDrug(id);
     }
 
     /**
@@ -45,35 +56,47 @@ public final class DrugController {
      * @param name The drugs name.
      * @param description The drugs description.
      */
-    @PostMapping(path = "addDrug")
-    public void addDrug(@RequestParam final String formula, @RequestParam final String name,
-                        @RequestParam final String description){
-        drugService.addDrug(formula,name,description);
+    @PostMapping(path = "add")
+    public void addDrug(final String formula, final String name, final String description){
+        service.add(formula,name,description);
     }
 
     /**
      * Allow a user to delete a drug.
-     * @param formula The formula of the drug to delete.
+     * @param id The id of the drug to delete.
      */
-    @DeleteMapping(path = "deleteDrug")
-    public void deleteDrug(@RequestParam final String formula){
-        drugService.deleteDrug(formula);
+    @DeleteMapping(path = "delete/{id}")
+    public HttpStatus deleteDrug(@PathVariable final long id){
+        return service.delete(id);
     }
 
     /**
-     * Allow a user to change a drugs formula name or description.
-     * @param oldFormula The old formula.
-     * @param newFormula The new formula.
-     * @param name The new name.
-     * @param description The new description.
+     * Allow a user to change a formula.
+     * @param id The drugs id.
+     * @param newFormula The drugs new formula.
      */
-    @PutMapping(path = "updateDrug")
-    public void updateDrug(@RequestParam("updateDrug") final String oldFormula,
-                           @RequestParam final String newFormula,
-                           @RequestParam final String name,
-                           @RequestParam final String description){
-        drugService.changeFormula(oldFormula, newFormula);
-        drugService.changeName(oldFormula, name);
-        drugService.changeDescription(oldFormula, description);
+    @PutMapping(path = "changeFormula/{id}/{newFormula}")
+    public HttpStatus changeFormula(@PathVariable final long id, @PathVariable final String newFormula){
+        return service.changeFormula(id,newFormula);
+    }
+
+    /**
+     * Allow a user to change a drugs name.
+     * @param id The drugs id.
+     * @param name The drugs new name.
+     */
+    @PutMapping(path = "changeName/{id}/{name}")
+    public HttpStatus changeName(@PathVariable final long id, @PathVariable final String name){
+        return service.changeName(id,name);
+    }
+
+    /**
+     * Allow a user to change a drugs description.
+     * @param id The drugs id.
+     * @param description The drugs new description.
+     */
+    @PutMapping(path = "changeDescription/{id}/{description}")
+    public HttpStatus changeDescription(@PathVariable final long id, @PathVariable final String description){
+        return service.changeDescription(id,description);
     }
 }

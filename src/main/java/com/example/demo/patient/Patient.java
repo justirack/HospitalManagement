@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -28,21 +27,15 @@ public final class Patient {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ssn")
     @Column(name = "ssn",updatable = false)
     private long ssn;
-    @Type(type = "doctor")
-    @ManyToOne(optional = false)
-    private Doctor familyDoctor;
-    @Column(nullable = false)
+    private long familyDoctorId;
     private String firstName;
-    @Column(nullable = false)
     private String lastName;
-    @Column(length = 10, nullable = false)
     private String phone;
-    @Column(nullable = false)
     private String address;
 
-    public Patient(final Doctor familyDoctor, final String firstName, final String lastName,
+    public Patient(final long familyDoctorId, final String firstName, final String lastName,
                    final String phone, final String address) {
-        this.familyDoctor = familyDoctor;
+        this.familyDoctorId = familyDoctorId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -54,10 +47,10 @@ public final class Patient {
 
     /**
      * Setter for a patients family doctor.
-     * @param familyDoctor The patients new family doctor.
+     * @param familyDoctorId The patients new family doctor.
      */
-    public void setFamilyDoctor(final Doctor familyDoctor) {
-        this.familyDoctor = familyDoctor;
+    public void setFamilyDoctor(final long familyDoctorId) {
+        this.familyDoctorId = familyDoctorId;
     }
 
     /**
@@ -104,8 +97,8 @@ public final class Patient {
      * Getter for a patients family doctor.
      * @return The patients family doctor.
      */
-    public Doctor getFamilyDoctor() {
-        return familyDoctor;
+    public long getFamilyDoctorId() {
+        return familyDoctorId;
     }
 
     /**
