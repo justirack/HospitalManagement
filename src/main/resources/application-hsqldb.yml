@@ -1,0 +1,46 @@
+---
+
+# To run with this configuration, provide the following VM argument when
+# you run the application.
+#
+# -Dspring.profiles.active=hsqldb
+#
+# This configuration is designed to use the in-memory HSQLDB instead of a physical
+# database (like Postgresql). It allows for a slimmer development environment.
+#
+# To confirm that this configuration profile is used by the running application,
+# review the application log and ensure that the following is emitted.
+#
+# "The following profiles are active: hsqldb"
+#
+
+# The following section provides configuration for the web server embedded within
+# this application.
+server:
+  port: 8091
+  error:
+    include-message: always
+
+# The following section is configuration specific to the spring-boot (i.e. spring)
+# framework.
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: hospital-manager
+  # The jdbc (java database connectivity) connection url string required to connect
+  # to the sql database. We are using a HyperSQL in-memory database here.
+  datasource:
+    url: jdbc:hsqldb:mem:hospital
+    username: sa
+    password:
+  # The jpa (java persistence api) configuration. Hibernate is used as the
+  # implementation for this application's persistence layer.
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.HSQLDialect
+        format_sql: true
