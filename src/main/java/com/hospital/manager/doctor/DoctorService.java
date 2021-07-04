@@ -6,6 +6,7 @@ package com.hospital.manager.doctor;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,12 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
  * @author - Justin Rackley
  */
 @Service
+@RequiredArgsConstructor
 public final class DoctorService {
 
     //create a permanent reference to the doctor repository
     private final DoctorRepository repository;
 
-    //inject the repository bean into this class' bean
-    @Autowired
-    public DoctorService(final DoctorRepository repository) {
-        this.repository = repository;
-    }
 
     /**
      * Getter for a list of all the doctors in the database.
@@ -54,9 +51,10 @@ public final class DoctorService {
      * @param lastName The doctors last name.
      * @param phone The doctors phone number.
      */
-    public void add(final String firstName, final String lastName, final String phone){
+    public HttpStatus hire(final String firstName, final String lastName, final String phone){
      // FIXME
 //        repository.save(new Doctor(firstName,lastName,phone));
+        return HttpStatus.OK;
     }
 
     /**

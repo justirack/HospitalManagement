@@ -3,54 +3,83 @@
 */
 package com.hospital.manager.doctor;
 
-import java.util.Collections;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hospital.manager.appointment.Appointment;
+import com.hospital.manager.exception.CustomException.FailedRequestException;
+import com.hospital.manager.patient.Patient;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 /**
- * Create a class to help serve REST endpoints and perform CRUD operations.
- * This is the "API layer" that a user interacts with.
- * This class should be accessible by: 1.Management 2.Doctors(update method only).
+ * <p>
+ *     Represents teh REST endpoints that provide CRUD functionaluty for the
+ *     underlying {@link Doctor} objects by this service.
+ * </p>
  */
+@Slf4j
 @RestController
+@RequiredArgsConstructor
+@Api(tags = "doctor")
 @RequestMapping(path = "doctor")
 public final class DoctorController {
-    //create a permanent reference to doctorService
-    private final DoctorService service;
 
-    //inject doctorService's bean into this class' bean
-    @Autowired
-    public DoctorController(final DoctorService service){
-        this.service = service;
-    }
+    public List<DoctorResponsePayload> get(final RetrievalRequestPayload payload){
+        log.info("Attempting to find the doctor pertaining to request={}",payload);
 
-    /**
-     * Allow a user to get a list of all doctors in the database.
-     * @return A list of all doctors in the database.
-     */
-    @GetMapping(path = "getDoctors")
-    public List<Doctor> getDoctors(){
-        //make the returned collection unmodifiable
-        return Collections.unmodifiableList(service.getDoctors());
-    }
+        //return all doctors if the client does not supply an id
+        if (Objects.isNull(payload.getId())){
+            //create a list to add all of the doctors to in the form of DoctorResponsePayload
+            final List<DoctorResponsePayload> results = new ArrayList<>();
 
-    /**
-     * Allow a user to get a single doctor from the database.
-     * @param empId The id of the doctor.
-     * @return The doctor.
-     */
-    @GetMapping(path = "findDoctor/{empId}")
-    public Doctor findDoctor(@PathVariable final long empId){
-        return service.getDoctor(empId);
+            //get a list of all doctors from the database
+            final List<Doctor> doctors = service.getDoctors();
+
+            //log the number of doctors found
+            log.info("Found {} result(s). Returning them",doctors.size());
+
+            //loop and put all doctors into the ResponsePayload list
+            for (final Doctor doctor: doctors){
+                results.add(new DoctorResponsePayload(doctor));
+            }
+
+            //return the responsePayload list
+            return Collections.unmodifiableList(results);
+        }
+        //get the doctor with given id from the database
+        final Doctor doctor = service.getDoctor(payload.id);
+
+        //return the doctor as a single entry in a list
+        if (doctor != null){
+            final DoctorResponsePayload responsePayload = new DoctorResponsePayload(doctor);
+
+            log.info("returning appointment={}",responsePayload);
+
+            return Collections.unmodifiableList(List.of(responsePayload));
+        }
+        throw new FailedRequestException("Request Failed. The list of doctors or requested doctor could not be found.");
     }
 
     /**
@@ -60,8 +89,8 @@ public final class DoctorController {
      * @param phone The doctors phone number.
      */
     @PostMapping(path = "add")
-    public void addDoctor(final String firstName, final String lastName, final String phone){
-        service.add(firstName,lastName,phone);
+    public HttpStatus hire(final CreateRequestPayload payload){
+        return service.hire(payload.firstName, payload.firstName, payload.phone);
     }
 
     /**
@@ -102,4 +131,63 @@ public final class DoctorController {
     public HttpStatus changePhone(@PathVariable final long id, @PathVariable final String phone){
         return service.changePhone(id,phone);
     }
+
+
+    @ToString
+    @Getter(AccessLevel.PACKAGE)
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @ApiModel(description = "The request details supplied when hiring a new doctor.")
+    public static final class CreateRequestPayload{
+        private final String firstName;
+        private final String lastName;
+        private final String phone;
+        private final List<Appointment> appointments;
+        private final List<Patient> patients;
+    }
+
+    @Getter
+    @ToString
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @ApiModel(description = "The request details sipplied when retrieving a doctor's details.")
+    public static final class RetrievalRequestPayload{
+        @ApiModelProperty(
+                value = "The unique, database identifier for the doctor to retrieve" +
+                        " If null, return all doctors in the database",
+                required = false,
+                example = "1024",
+                position = 0)
+        private long id;
+    }
+
+    @ToString
+    @Getter
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    public static final class UpdateRequestResponsePayload{
+        private final String firstName;
+        private final String lastName;
+        private final String phone;
+        private final List<Appointment> appointments;
+        private final List<Patient> patients;
+    }
+
+    @ToString
+    @Getter(AccessLevel.PACKAGE)
+    public static final class DoctorResponsePayload{
+        private DoctorResponsePayload(final Doctor doctor){
+            firstName = doctor.getFirstName();
+            lastName = doctor.getLastName();
+            phone = doctor.getPhone();
+            appointments = doctor.getAppointments();
+            patients = doctor.getPatients();
+
+        }
+        private final String firstName;
+        private final String lastName;
+        private final String phone;
+        private final List<Appointment> appointments;
+        private final List<Patient> patients;
+    }
+
+    private final DoctorService service;
 }
