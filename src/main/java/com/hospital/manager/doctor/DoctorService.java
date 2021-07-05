@@ -52,9 +52,18 @@ public final class DoctorService {
      * @param phone The doctors phone number.
      */
     public HttpStatus hire(final String firstName, final String lastName, final String phone){
-     // FIXME
-//        repository.save(new Doctor(firstName,lastName,phone));
-        return HttpStatus.OK;
+        Doctor doctor = new Doctor();
+        repository.save(doctor);
+
+        doctor.setFirstName(firstName);
+        doctor.setLastName(lastName);
+        doctor.setPhone(phone);
+
+        if (repository.findDoctorByPhone(phone).isPresent()) {
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The new doctor could not be added to the database. Please ensure all information" +
+                " is correct and try again");
     }
 
     /**
