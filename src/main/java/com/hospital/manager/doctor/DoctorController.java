@@ -13,6 +13,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,6 +50,12 @@ import java.util.Objects;
 @RequestMapping(path = "doctor")
 public final class DoctorController {
 
+    @GetMapping
+    @ApiOperation("Retrieves a list of doctors or a single doctor.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "If the doctor(s) were retrieved successfully"),
+            @ApiResponse(code = 404, message = "If no doctor(s) correspond to the criteria supplied")
+    })
     public List<DoctorResponsePayload> get(final RetrievalRequestPayload payload){
         log.info("Attempting to find the doctor pertaining to request={}",payload);
 

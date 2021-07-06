@@ -30,23 +30,44 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 public final class Doctor {
+
+    /**
+     * The unique database identifier for this Doctor. This cannot be null,
+     * but it can be set to 0L if this object has never been persisted to the database
+     * yet.
+     */
     @Id
     @SequenceGenerator(name = "doctor_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "doctor_sequence")
     private long id;
 
+    /**
+     * The doctors first name. This cannot be null.
+     */
     @NonNull
     private String firstName;
 
+    /**
+     * The doctors last name. This cannot be null.
+     */
     @NonNull
     private String lastName;
 
+    /**
+     * The doctors phone number. This cannot be null.
+     */
     @NonNull
     private String phone;
 
+    /**
+     * A list of all of a doctors appointments. This cannot be null.
+     */
     @OneToMany
     private List<Appointment> appointments = new ArrayList<>();
 
+    /**
+     * A list of all of a doctors patients. This cannot be null.
+     */
     @OneToMany
     private List<Patient> patients = new ArrayList<>();
 }

@@ -16,8 +16,6 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
 
 /**
  * This class acts as an in-between for the {@link DoctorController} and the {@link DoctorRepository}.
- * This is called the "service layer".
- * @author - Justin Rackley
  */
 @Service
 @RequiredArgsConstructor
@@ -29,7 +27,7 @@ public final class DoctorService {
 
     /**
      * Getter for a list of all the {@link Doctor} in the database.
-     * @return A list of all the doctors.
+     * @return an unmodifiable list of all {@link Doctor} objects. This cannot be null.
      */
     public List<Doctor> getDoctors(){
         //make the returned collection unmodifiable

@@ -16,8 +16,7 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
 import lombok.RequiredArgsConstructor;
 
 /**
- * This class acts as an in-between for the appointmentController and the appointmentRepository.
- * This is called the "service layer".
+ * This class acts as an in-between for the {@link AppointmentController} and the {@link AppointmentRepository}.
  */
 @Service
 @RequiredArgsConstructor
