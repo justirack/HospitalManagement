@@ -35,7 +35,7 @@ import java.util.Objects;
 
 /**
  * <p>
- *     Represents teh REST endpoints that provide CRUD functionality for the
+ *     Represents the REST endpoints that provide CRUD functionality for the
  *     underlying {@link Doctor} objects by this service.
  * </p>
  */
