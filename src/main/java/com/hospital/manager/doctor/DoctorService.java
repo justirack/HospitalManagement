@@ -15,7 +15,7 @@ import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.InvalidIdException;
 
 /**
- * This class acts as an in-between for the doctorController and the doctorRepository.
+ * This class acts as an in-between for the {@link DoctorController} and the {@link DoctorRepository}.
  * This is called the "service layer".
  * @author - Justin Rackley
  */
