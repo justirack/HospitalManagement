@@ -28,7 +28,7 @@ public final class DoctorService {
 
 
     /**
-     * Getter for a list of all the doctors in the database.
+     * Getter for a list of all the {@link Doctor} in the database.
      * @return A list of all the doctors.
      */
     public List<Doctor> getDoctors(){
@@ -37,7 +37,7 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to get a single doctor from the database.
+     * Allow a user to get a single {@link Doctor} from the database.
      * @param empId The id of the doctor to get.
      * @return The doctor.
      */
@@ -46,18 +46,18 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to add a doctor to the database.
+     * Allow a user to add a {@link Doctor} to the database.
      * @param firstName The doctors first name.
      * @param lastName The doctors last name.
      * @param phone The doctors phone number.
      */
     public HttpStatus hire(final String firstName, final String lastName, final String phone){
-        Doctor doctor = new Doctor();
-        repository.save(doctor);
-
+        Doctor doctor = new Doctor(firstName,lastName,phone);
         doctor.setFirstName(firstName);
         doctor.setLastName(lastName);
         doctor.setPhone(phone);
+
+        repository.save(doctor);
 
         if (repository.findDoctorByPhone(phone).isPresent()) {
             return HttpStatus.OK;
@@ -67,7 +67,7 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to remove a doctor from the database.
+     * Allow a user to remove a {@link Doctor} from the database.
      * @param empId The doctors employee id.
      */
     public HttpStatus remove(final long empId){
@@ -90,7 +90,7 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to change a doctors first name.
+     * Allow a user to change a {@link Doctor} first name.
      * @param empId The doctors employee id.
      * @param firstName The doctors new first name.
      */
@@ -109,7 +109,7 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to change a doctors last name.
+     * Allow a user to change a {@link Doctor} last name.
      * @param empId The doctors employee id.
      * @param lastName The doctors new last name.
      */
@@ -128,7 +128,7 @@ public final class DoctorService {
     }
 
     /**
-     * Allow a user to change a doctors phone number.
+     * Allow a user to change a {@link Doctor} phone number.
      * @param empId The doctors employee id.
      * @param phone The doctors new phone number.
      */

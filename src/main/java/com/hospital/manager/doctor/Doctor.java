@@ -3,24 +3,22 @@
 */
 package com.hospital.manager.doctor;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.hospital.manager.appointment.Appointment;
+import com.hospital.manager.patient.Patient;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
-import com.hospital.manager.appointment.Appointment;
-import com.hospital.manager.patient.Patient;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents doctors in the hospital management system.
@@ -30,20 +28,20 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@RequiredArgsConstructor
 public final class Doctor {
     @Id
     @SequenceGenerator(name = "doctor_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "doctor_sequence")
     private long id;
 
-    @Column(nullable = false)
+    @NonNull
     private String firstName;
 
-    @Column(nullable = false)
+    @NonNull
     private String lastName;
 
-    @Column(nullable = false, length = 10)
+    @NonNull
     private String phone;
 
     @OneToMany

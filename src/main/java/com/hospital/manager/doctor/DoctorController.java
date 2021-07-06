@@ -35,7 +35,7 @@ import java.util.Objects;
 
 /**
  * <p>
- *     Represents teh REST endpoints that provide CRUD functionaluty for the
+ *     Represents teh REST endpoints that provide CRUD functionality for the
  *     underlying {@link Doctor} objects by this service.
  * </p>
  */
@@ -83,7 +83,7 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a user to add a doctor to the database.
+     * Allow a user to add a {@link Doctor} to the database.
      * @param firstName The doctors first name.
      * @param lastName The doctors last name.
      * @param phone The doctors phone number.
@@ -94,7 +94,7 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a user to delete a doctor from the repository.
+     * Allow a user to delete a {@link Doctor} from the repository.
      * @param doctorId The id of the doctor to remove.
      */
     @DeleteMapping(path = "delete/{doctorId}")
@@ -103,7 +103,7 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a doctor to change their first name.
+     * Allow a {@link Doctor} to change their first name.
      * @param id The doctors id.
      * @param firstName The doctors new first name.
      */
@@ -113,7 +113,7 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a doctor to change their last name.
+     * Allow a {@link Doctor} to change their last name.
      * @param id The doctors id.
      * @param lastName The doctors new last name.
      */
@@ -123,7 +123,7 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a doctor to change their phone number.
+     * Allow a {@link Doctor} to change their phone number.
      * @param id The doctors id.
      * @param phone The doctors new phone number.
      */
@@ -133,7 +133,12 @@ public final class DoctorController {
     }
 
 
-
+    /**
+     * <p>
+     *     Represents the payload that will be received from the client
+     *     when a new {@link Doctor} is to be hired.
+     * </p>
+     */
     @ToString
     @Getter(AccessLevel.PACKAGE)
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -146,11 +151,17 @@ public final class DoctorController {
         private final List<Patient> patients;
     }
 
+    /**
+     * <p>
+     *     Represents the payload that will be received from the client
+     *     when a {@link Doctor}'s information is requested.
+     * </p>
+     */
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
-    @ApiModel(description = "The request details sipplied when retrieving a doctor's details.")
+    @ApiModel(description = "The request details supplied when retrieving a doctor's details.")
     public static final class RetrievalRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the doctor to retrieve" +
@@ -161,6 +172,12 @@ public final class DoctorController {
         private long id;
     }
 
+    /**
+     * <p>
+     *     Represents the payload that will be received from the client
+     *     when a {@link Doctor}'s information is to be updated.
+     * </p>
+     */
     @ToString
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -172,6 +189,12 @@ public final class DoctorController {
         private final List<Patient> patients;
     }
 
+    /**
+     * <p>
+     *     Represents the payload that will be returned to the client
+     *     when they request a {@link Doctor}'s information.
+     * </p>
+     */
     @ToString
     @Getter(AccessLevel.PACKAGE)
     public static final class DoctorResponsePayload{
