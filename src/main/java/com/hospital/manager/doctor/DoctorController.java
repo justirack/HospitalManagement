@@ -19,6 +19,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,6 +50,15 @@ import java.util.Objects;
 @RequestMapping(path = "doctor")
 public final class DoctorController {
 
+    /**
+     * <p>
+     *     Allow the client to get the {@link Doctor} with a given id or a list of all
+     *     doctors if no id is supplied.
+     * </p>
+     *
+     * @param payload The payload containing the id of the doctor to return. Return a list of all doctors if null.
+     * @return The doctor with given id or the list of all doctors.
+     */
     @GetMapping
     @ApiOperation("Retrieves a list of doctors or a single doctor.")
     @ApiResponses({
@@ -93,10 +102,12 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a user to add a {@link Doctor} to the database.
-     * @param firstName The doctors first name.
-     * @param lastName The doctors last name.
-     * @param phone The doctors phone number.
+     * <p>
+     *     Allow a client to add a {@link Doctor} to the database.
+     * </p>
+     *
+     * @param payload The payload containing the new doctors information.
+     * @return The status indicating if the doctor was successfully added to the database.
      */
     @PostMapping(path = "add")
     public HttpStatus hire(final CreateRequestPayload payload){
@@ -104,48 +115,74 @@ public final class DoctorController {
     }
 
     /**
-     * Allow a user to delete a {@link Doctor} from the repository.
-     * @param doctorId The id of the doctor to remove.
+     * <p>
+     *     Allow a client to delete a {@link Doctor} from the database.
+     * </p>
+     *
+     * @param payload the payload containing the id of the doctor to delete from the database.
+     * @return The status indicating if the doctor was removed successfully.
      */
-    @DeleteMapping(path = "delete/{doctorId}")
-    public HttpStatus deleteDoctor(@PathVariable final long doctorId){
-        return service.remove(doctorId);
+    @DeleteMapping(path = "delete")
+    public HttpStatus deleteDoctor(final DeleteRequestPayload payload){
+        return service.remove(payload.id);
     }
 
     /**
-     * Allow a {@link Doctor} to change their first name.
-     * @param id The doctors id.
-     * @param firstName The doctors new first name.
+     * <p>
+     *     Allow a client to update the first name of a {@link Doctor}.
+     * </p>
+     *
+     * @param payload The payload containing the new information for the doctor.
+     * @return The status of if the doctors first name was updated successfully.
      */
-    @PutMapping(path = "changeFirstName/{id}/{firstName}")
-    public HttpStatus changeFirstName(@PathVariable final long id, @PathVariable final String firstName){
-        return service.changeFirstName(id,firstName);
+    @PutMapping(path = "changeFirstName")
+    public HttpStatus changeFirstName(final UpdateRequestPayload payload){
+        if (!Objects.isNull(payload.firstName)) {
+            return service.changeFirstName(payload.id, payload.firstName);
+        }
+        throw new FailedRequestException("The doctors first name could not be updated. Please make sure" +
+                " all information is correct and try again.");
     }
 
     /**
-     * Allow a {@link Doctor} to change their last name.
-     * @param id The doctors id.
-     * @param lastName The doctors new last name.
+     * <p>
+     *     Allow a client to update the last name of a {@link Doctor}.
+     * </p>
+     *
+     * @param payload The payload containing the new information for the doctor.
+     * @return The status of if the doctors last name was updated successfully.
      */
-    @PutMapping(path = "changeLastName/{id}/{lastName}")
-    public HttpStatus changeLastName(@PathVariable final long id, @PathVariable final String lastName){
-         return service.changeLastName(id,lastName);
+    @PutMapping(path = "changeLastName")
+    public HttpStatus changeLastName(final UpdateRequestPayload payload) {
+        if (!Objects.isNull(payload.lastName)) {
+            return service.changeLastName(payload.id, payload.lastName);
+        }
+        throw new FailedRequestException("The doctors last name could not be updated. Please make sure" +
+                " all information is correct and try again");
     }
 
     /**
-     * Allow a {@link Doctor} to change their phone number.
-     * @param id The doctors id.
-     * @param phone The doctors new phone number.
+     * <p>
+     *    Allow a client to update the phone of a {@link Doctor}.
+     * </p>
+     *
+     * @param payload The payload containing the new information for the doctor.
+     * @return The status of if the doctors phone number was updated successfully.
      */
-    @PutMapping(path = "changePhone/{id}/{phone}")
-    public HttpStatus changePhone(@PathVariable final long id, @PathVariable final String phone){
-        return service.changePhone(id,phone);
+    @PutMapping(path = "changePhone")
+    public HttpStatus changePhone(final UpdateRequestPayload payload){
+        if (!Objects.isNull(payload.phone)) {
+            return service.changePhone(payload.id, payload.phone);
+        }
+        throw new FailedRequestException("The doctors phone number could not be updated. Place make sure" +
+                " all information is correct and try again");
     }
+
 
 
     /**
      * <p>
-     *     Represents the payload that will be received from the client
+     *     Represents the payload that will be received from the client.
      *     when a new {@link Doctor} is to be hired.
      * </p>
      */
@@ -163,7 +200,26 @@ public final class DoctorController {
 
     /**
      * <p>
-     *     Represents the payload that will be received from the client
+     *     Represents a payload that will be received from the client.
+     *     when a {@link Doctor} is to be deleted from the database.
+     * </p>
+     */
+    @ToString
+    @Getter(AccessLevel.PACKAGE)
+    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @ApiModel(description = "The request details supplied when deleting a new doctor.")
+    public static final class DeleteRequestPayload{
+        @ApiModelProperty(
+                value = "The unique, database identifier for the doctor to retrieve" +
+                        " If null, return all doctors in the database",
+                required = true,
+                example = "1024")
+        private final long id;
+    }
+
+    /**
+     * <p>
+     *     Represents the payload that will be received from the client.
      *     when a {@link Doctor}'s information is requested.
      * </p>
      */
@@ -184,24 +240,28 @@ public final class DoctorController {
 
     /**
      * <p>
-     *     Represents the payload that will be received from the client
+     *     Represents the payload that will be received from the client.
      *     when a {@link Doctor}'s information is to be updated.
      * </p>
      */
     @ToString
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class UpdateRequestResponsePayload{
+    @ApiModel(description = "The request details received when attempting to update a doctor's information")
+    public static final class UpdateRequestPayload{
+        @NonNull
+        private final long id;
+        @NonNull
         private final String firstName;
+        @NonNull
         private final String lastName;
+        @NonNull
         private final String phone;
-        private final List<Appointment> appointments;
-        private final List<Patient> patients;
     }
 
     /**
      * <p>
-     *     Represents the payload that will be returned to the client
+     *     Represents the payload that will be returned to the client.
      *     when they request a {@link Doctor}'s information.
      * </p>
      */
