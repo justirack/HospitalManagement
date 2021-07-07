@@ -1,4 +1,4 @@
 # HospitalManagement
-My attempt at a spring boot application to manage a hospital system.<br>
-This is based off of a project done by Jacob LeBlanc<br>
-Requirements can be found at: https://github.com/JacobTLeBlanc/HospitalManagementSystem
+A Spring Boot application to mimic the backend of a hospital's internal system.<br>
+This is based off of a project done by <a href="https://github.com/JacobTLeBlanc">Jacob Leblanc</a><br>
+Requirements for this project can be found <a hred="https://github.com/JacobTLeBlanc/HospitalManagementSystem">here</a>
