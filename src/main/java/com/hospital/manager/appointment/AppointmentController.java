@@ -171,7 +171,7 @@ public final class AppointmentController
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(
         description = "The request details supplied when retrieving existing appointment details.")
-    public static final class RetrievalRequestPayload
+    private static final class RetrievalRequestPayload
     {
         @ApiModelProperty(
             value = "The unique, database identifier for the appointment to retrieve. "
@@ -187,7 +187,7 @@ public final class AppointmentController
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(
         description = "The request details supplied when creating (i.e. booking) a new appointment.")
-    public static final class CreateRequestPayload
+    private static final class CreateRequestPayload
     {
         private final long ssn;
         private final long doctorId;
@@ -200,7 +200,7 @@ public final class AppointmentController
     @JsonIgnoreProperties(ignoreUnknown = true)
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when deleting an appointment")
-    public static final class DeleteRequestPayload{
+    private static final class DeleteRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the appointment to delete. This cannot be null",
                 required = true,
@@ -212,7 +212,7 @@ public final class AppointmentController
     @ToString
     @Getter(AccessLevel.PACKAGE)
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-    public static final class UpdateRequestPayload
+    private static final class UpdateRequestPayload
     {
         private final long id;
         private final long ssn;
@@ -223,7 +223,7 @@ public final class AppointmentController
 
     @ToString
     @Getter(AccessLevel.PACKAGE)
-    public static final class AppointmentResponsePayload
+    private static final class AppointmentResponsePayload
     {
         private AppointmentResponsePayload(final Appointment appointment)
         {
