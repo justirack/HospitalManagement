@@ -190,7 +190,7 @@ public final class DoctorController {
     @Getter(AccessLevel.PACKAGE)
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when hiring a new doctor.")
-    public static final class CreateRequestPayload{
+    private static final class CreateRequestPayload{
         private final String firstName;
         private final String lastName;
         private final String phone;
@@ -208,7 +208,7 @@ public final class DoctorController {
     @Getter(AccessLevel.PACKAGE)
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when deleting a new doctor.")
-    public static final class DeleteRequestPayload{
+    private static final class DeleteRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the doctor to retrieve" +
                         " If null, return all doctors in the database",
@@ -228,7 +228,7 @@ public final class DoctorController {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @NoArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when retrieving a doctor's details.")
-    public static final class RetrievalRequestPayload{
+    private static final class RetrievalRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the doctor to retrieve" +
                         " If null, return all doctors in the database",
@@ -248,7 +248,7 @@ public final class DoctorController {
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details received when attempting to update a doctor's information")
-    public static final class UpdateRequestPayload{
+    private static final class UpdateRequestPayload{
         @NonNull
         private final long id;
         @NonNull
@@ -267,7 +267,7 @@ public final class DoctorController {
      */
     @ToString
     @Getter(AccessLevel.PACKAGE)
-    public static final class DoctorResponsePayload{
+    private static final class DoctorResponsePayload{
         private DoctorResponsePayload(final Doctor doctor){
             firstName = doctor.getFirstName();
             lastName = doctor.getLastName();
