@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -118,7 +119,7 @@ public final class AppointmentController
      * @return The status code indicating if the appointment was successfully booked.
      */
     @PostMapping
-    public HttpStatus create(final CreateRequestPayload payload)
+    public HttpStatus create(final CreateRequestPayload payload) throws Exception
     {
         return service.book(
             payload.getSsn(),
@@ -147,7 +148,7 @@ public final class AppointmentController
      * @return The status of if the appointment's date was changed successfully.
      */
     @PutMapping("changeDate")
-    public HttpStatus changeDate(final UpdateRequestPayload payload){
+    public HttpStatus changeDate(final UpdateRequestPayload payload) throws Exception{
         return service.changeDate(payload.getId(), FORMATTER.parse(payload.getDate()));
     }
 
@@ -183,7 +184,7 @@ public final class AppointmentController
     }
 
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(
         description = "The request details supplied when creating (i.e. booking) a new appointment.")
@@ -210,8 +211,10 @@ public final class AppointmentController
     }
 
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @ApiModel(description = "Update an appointment")
     private static final class UpdateRequestPayload
     {
         private final long id;
@@ -244,7 +247,6 @@ public final class AppointmentController
     }
 
     private final AppointmentService service;
-    private final Appointment appointment;
 
     // A date formatter used to produce string representations for the date objects
     // contained within this class. This formatter captures the date and time (

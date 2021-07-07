@@ -187,7 +187,7 @@ public final class DoctorController {
      * </p>
      */
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when hiring a new doctor.")
     private static final class CreateRequestPayload{
@@ -205,7 +205,7 @@ public final class DoctorController {
      * </p>
      */
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
     @ApiModel(description = "The request details supplied when deleting a new doctor.")
     private static final class DeleteRequestPayload{
