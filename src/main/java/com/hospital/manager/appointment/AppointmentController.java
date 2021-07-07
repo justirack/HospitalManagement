@@ -169,7 +169,7 @@ public final class AppointmentController
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @NoArgsConstructor
     @ApiModel(
         description = "The request details supplied when retrieving existing appointment details.")
     private static final class RetrievalRequestPayload
@@ -185,7 +185,7 @@ public final class AppointmentController
 
     @ToString
     @Getter
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor
     @ApiModel(
         description = "The request details supplied when creating (i.e. booking) a new appointment.")
     private static final class CreateRequestPayload
@@ -199,7 +199,7 @@ public final class AppointmentController
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @NoArgsConstructor
     @ApiModel(description = "The request details supplied when deleting an appointment")
     private static final class DeleteRequestPayload{
         @ApiModelProperty(
@@ -213,7 +213,7 @@ public final class AppointmentController
     @ToString
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor
     @ApiModel(description = "Update an appointment")
     private static final class UpdateRequestPayload
     {
@@ -225,7 +225,7 @@ public final class AppointmentController
     }
 
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private static final class AppointmentResponsePayload
     {
         private AppointmentResponsePayload(final Appointment appointment)

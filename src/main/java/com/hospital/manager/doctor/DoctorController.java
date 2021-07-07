@@ -69,7 +69,7 @@ public final class DoctorController {
         log.info("Attempting to find the doctor pertaining to request={}",payload);
 
         //return all doctors if the client does not supply an id
-        if (Objects.isNull(payload.getId())){
+        if (!Objects.isNull(payload.id)){
             //create a list to add all of the doctors to in the form of DoctorResponsePayload
             final List<DoctorResponsePayload> results = new ArrayList<>();
 
@@ -94,7 +94,7 @@ public final class DoctorController {
         if (doctor != null){
             final DoctorResponsePayload responsePayload = new DoctorResponsePayload(doctor);
 
-            log.info("returning appointment={}",responsePayload);
+            log.info("returning doctor={}",responsePayload);
 
             return Collections.unmodifiableList(List.of(responsePayload));
         }
@@ -111,7 +111,7 @@ public final class DoctorController {
      */
     @PostMapping(path = "add")
     public HttpStatus hire(final CreateRequestPayload payload){
-        return service.hire(payload.firstName, payload.firstName, payload.phone);
+        return service.hire(payload.firstName, payload.lastName, payload.phone);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class DoctorController {
      */
     @DeleteMapping(path = "delete")
     public HttpStatus deleteDoctor(final DeleteRequestPayload payload){
-        return service.remove(payload.id);
+        return service.remove(payload.getId());
     }
 
     /**
@@ -188,14 +188,14 @@ public final class DoctorController {
      */
     @ToString
     @Getter
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when hiring a new doctor.")
     private static final class CreateRequestPayload{
         private final String firstName;
         private final String lastName;
         private final String phone;
-        private final List<Appointment> appointments;
-        private final List<Patient> patients;
+//        private final List<Appointment> appointments;
+//        private final List<Patient> patients;
     }
 
     /**
@@ -206,7 +206,7 @@ public final class DoctorController {
      */
     @ToString
     @Getter
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when deleting a new doctor.")
     private static final class DeleteRequestPayload{
         @ApiModelProperty(
@@ -226,7 +226,7 @@ public final class DoctorController {
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    @NoArgsConstructor
     @ApiModel(description = "The request details supplied when retrieving a doctor's details.")
     private static final class RetrievalRequestPayload{
         @ApiModelProperty(
@@ -246,16 +246,12 @@ public final class DoctorController {
      */
     @ToString
     @Getter
-    @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+    @RequiredArgsConstructor
     @ApiModel(description = "The request details received when attempting to update a doctor's information")
     private static final class UpdateRequestPayload{
-        @NonNull
         private final long id;
-        @NonNull
         private final String firstName;
-        @NonNull
         private final String lastName;
-        @NonNull
         private final String phone;
     }
 
@@ -266,7 +262,7 @@ public final class DoctorController {
      * </p>
      */
     @ToString
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private static final class DoctorResponsePayload{
         private DoctorResponsePayload(final Doctor doctor){
             firstName = doctor.getFirstName();

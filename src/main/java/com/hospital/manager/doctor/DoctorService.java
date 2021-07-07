@@ -146,7 +146,7 @@ public final class DoctorService {
     //helper method to find a doctor in the database
     private Doctor find(final long empId){
         return repository.findById(empId).orElseThrow(() -> new InvalidIdException(
-                "Doctor with id  " + empId + " not found."));
+                "Doctor with id " + empId + " not found."));
     }
 }
 
