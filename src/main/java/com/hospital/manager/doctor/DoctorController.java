@@ -69,7 +69,7 @@ public final class DoctorController {
         log.info("Attempting to find the doctor pertaining to request={}",payload);
 
         //return all doctors if the client does not supply an id
-        if (!Objects.isNull(payload.id)){
+        if (Objects.isNull(payload.getId())){
             //create a list to add all of the doctors to in the form of DoctorResponsePayload
             final List<DoctorResponsePayload> results = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public final class DoctorController {
             return Collections.unmodifiableList(results);
         }
         //get the doctor with given id from the database
-        final Doctor doctor = service.getDoctor(payload.id);
+        final Doctor doctor = service.getDoctor(payload.getId());
 
         //return the doctor as a single entry in a list
         if (doctor != null){
@@ -226,7 +226,7 @@ public final class DoctorController {
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @NoArgsConstructor
+    @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when retrieving a doctor's details.")
     private static final class RetrievalRequestPayload{
         @ApiModelProperty(
