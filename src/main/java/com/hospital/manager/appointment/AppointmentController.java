@@ -5,6 +5,7 @@ package com.hospital.manager.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.NotFoundException;
 
 import io.swagger.annotations.Api;
@@ -140,26 +141,27 @@ public final class AppointmentController
 
     /**
      * <p>
-     *    Allow a client to change the date of an {@link Appointment}.
-     * </p>>
-     * @param payload The payload containing the appointment's if and its new date.
-     * @return The status of if the appointment's date was changed successfully.
+     *     Allow a client to update an {@link Appointment} room or date.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The appointments new information.
      */
-    @PutMapping("changeDate")
-    public HttpStatus changeDate(final UpdateRequestPayload payload) throws Exception{
-        return service.changeDate(payload.getId(), FORMATTER.parse(payload.getDate()));
-    }
+    @PutMapping
+    public AppointmentResponsePayload update(final UpdateRequestPayload payload){
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
-    /**
-     * <p>
-     *     Allow a client to change the date of an {@link Appointment}.
-     * </p>>
-     * @param payload The payload containing the appointment's if and its new room number.
-     * @return The status of if the appointment's room was changed successfully.
-     */
-    @PutMapping("changeRoom")
-    public HttpStatus changeRoom(final UpdateRequestPayload payload){
-        return service.changeRoom(payload.getId(),payload.getRoom());
+        if (payload.getDate() != null){
+            status = service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
+        }
+        if (payload.getRoom() != null){
+            status = service.changeRoom(payload.getId(),payload.getRoom());
+        }
+        if (status.equals(HttpStatus.OK)){
+            Appointment appointment = service.getAppointment(payload.getId());
+            return new AppointmentResponsePayload(appointment);
+        }
+        throw new FailedRequestException("One or more pieces of information could not be updated. " +
+                "Please make sure all information is correct and try again");
     }
 
 
