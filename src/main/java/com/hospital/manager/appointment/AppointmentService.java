@@ -114,7 +114,7 @@ public final class AppointmentService
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    public HttpStatus changeDate(final long appId, final Date date){
+    public void changeDate(final long appId, final Date date){
         //make sure the appointment exists
         final Appointment appointment = find(appId);
 
@@ -127,7 +127,7 @@ public final class AppointmentService
         //if the doctor and room are available, set the new appointment date
         if (isDoctorAvailable && isRoomAvailable) {
             appointment.setDate(date);
-            return HttpStatus.OK;
+            return;
         }
         //throw an exception if the doctor or room is not available
         throw new FailedRequestException("Either the doctor or room requested at " + date +
@@ -139,7 +139,7 @@ public final class AppointmentService
      * @param appId The id of the appointment
      * @param room The new room for the appointment
      */
-    public HttpStatus changeRoom(final long appId, final int room){
+    public void changeRoom(final long appId, final int room){
         //make sure the appointment exists
         Appointment appointment = find(appId);
 
@@ -149,7 +149,7 @@ public final class AppointmentService
         //if the room is available change it
         if (isRoomAvailable) {
             appointment.setRoom(room);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("Room " + room + " is not available at " + appointment.getDate() +
                 " please try to book another room or change your appointment date.");

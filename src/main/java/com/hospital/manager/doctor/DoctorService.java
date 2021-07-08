@@ -96,7 +96,7 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param firstName The doctors new first name.
      */
-    public HttpStatus changeFirstName(final long empId, final String firstName) {
+    public void changeFirstName(final long empId, final String firstName) {
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors first name
@@ -104,7 +104,7 @@ public final class DoctorService {
 
         //make sure the update worked before returning OK
         if (doctor.getFirstName().equals(firstName)){
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The doctor's first name could not be updated. " +
                 "Please make sure all information is correct and try again.");
@@ -115,7 +115,7 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param lastName The doctors new last name.
      */
-    public HttpStatus changeLastName(final long empId, final String lastName){
+    public void changeLastName(final long empId, final String lastName){
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors last name
@@ -123,7 +123,7 @@ public final class DoctorService {
 
         //make sure the update worked before returning OK
         if (doctor.getLastName().equals(lastName)){
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The doctor's last name could not be updated. " +
                 "Please make sure all information is correct and try again.");
@@ -134,7 +134,7 @@ public final class DoctorService {
      * @param empId The doctors employee id.
      * @param phone The doctors new phone number.
      */
-    public HttpStatus changePhone(final long empId, final String phone){
+    public void changePhone(final long empId, final String phone){
         //make sure the new phone number is the correct length
         if (phone.length() != 10){
             throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
@@ -146,7 +146,7 @@ public final class DoctorService {
         doctor.setPhone(phone);
 
         if (doctor.getPhone().equals(phone)) {
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The doctor's phone number could not be updated. " +
                 "Please make sure all information is correct and try again.");

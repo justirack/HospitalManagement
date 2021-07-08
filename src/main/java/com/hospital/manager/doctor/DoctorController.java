@@ -110,30 +110,22 @@ public final class DoctorController {
      */
     @PutMapping(path = "update")
     public DoctorResponsePayload update (final UpdateRequestPayload payload){
-        boolean isSuccessful = false;
 
         //if new information is not null, change it and update isSuccessful
         if (payload.getFirstName() != null){
             service.changeFirstName(payload.getId(),payload.getFirstName());
-            isSuccessful = true;
         }
         if (payload.getLastName() != null){
             service.changeLastName(payload.getId(),payload.getLastName());
-            isSuccessful = true;
         }
         if (payload.getPhone() != null){
             service.changePhone(payload.getId(),payload.getPhone());
-            isSuccessful = true;
         }
 
         //return the patients new information
-        if (isSuccessful){
-            Doctor doctor = service.getDoctor(payload.getId());
-            return new DoctorResponsePayload(doctor);
-        }
-        //Throw exception if nothing was updated
-        throw new FailedRequestException("All provided information is the same as current information on file. " +
-                "Please provide new information and try again");
+        Doctor doctor = service.getDoctor(payload.getId());
+        return new DoctorResponsePayload(doctor);
+
     }
 
     /**

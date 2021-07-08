@@ -119,26 +119,19 @@ public final class AppointmentController
      */
     @PutMapping
     public AppointmentResponsePayload update(final UpdateRequestPayload payload){
-        boolean isSuccessful = false;
 
         //if new information is not null, change it and update isSuccessful
         if (payload.getDate() != null){
             service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
-            isSuccessful = true;
         }
         if (isSuccessful.getRoom() != null){
             service.changeRoom(payload.getId(),payload.getRoom());
-            isSuccessful = true;
         }
 
         //return the patients new information
-        if (isSuccessful){
-            Appointment appointment = service.getAppointment(payload.getId());
-            return new AppointmentResponsePayload(appointment);
-        }
-        //Throw exception if nothing was updated
-        throw new FailedRequestException("All provided information is the same as current information on file. " +
-                "Please provide new information and try again");
+        Appointment appointment = service.getAppointment(payload.getId());
+        return new AppointmentResponsePayload(appointment);
+
     }
 
     /**

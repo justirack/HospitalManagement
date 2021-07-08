@@ -96,34 +96,28 @@ public final class PatientController {
      */
     @PutMapping(path = "update")
     public PatientResponsePayload update (final UpdateRequestPayload payload){
-        boolean isSuccessful = false;
 
         //if new information is not null, change it and update isSuccessful
         if (payload.getFirstName() != null){
-            isSuccessful = service.changeFirstName(payload.getId(), payload.getFirstName());
+            service.changeFirstName(payload.getId(), payload.getFirstName());
         }
         if (payload.getLastName() != null){
-            isSuccessful = service.changeLastName(payload.getId(), payload.getLastName());
+            service.changeLastName(payload.getId(), payload.getLastName());
         }
         if (payload.getPhone() != null){
-            isSuccessful = service.changePhone(payload.getId(), payload.getPhone());
+            service.changePhone(payload.getId(), payload.getPhone());
         }
         if (payload.getAddress() != null){
-            isSuccessful = service.changeAddress(payload.getId(), payload.getAddress());
+            service.changeAddress(payload.getId(), payload.getAddress());
         }
         if (payload.getDoctorId() != null) {
             isSuccessful = service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
         }
 
-        //return the patients new information
-        if (isSuccessful){
-            Patient patient = service.getPatient(payload.getId());
-            return new PatientResponsePayload(patient);
+        //return the patients information
+        Patient patient = service.getPatient(payload.getId());
+        return new PatientResponsePayload(patient);
 
-        }
-        //throw exception if nothing was updated
-        throw new FailedRequestException("All provided information is the same as current information on file. " +
-                "Please provide new information and try again");
     }
 
     /**

@@ -117,10 +117,9 @@ public final class PatientService {
      *     A method to change the first name of a {@link Patient}.
      * </p>>
      * @param ssn The ssn of the patient.
-     * @param firstName The patients first name;
-     * @return The status of if the patient's first name was successfully changed.
+     * @param firstName The patients first name.
      */
-    public HttpStatus changeFirstName(final Long ssn, final String firstName)
+    public void changeFirstName(final Long ssn, final String firstName)
     {
         //get the patient from the database
         final Patient patient = find(ssn);
@@ -129,7 +128,7 @@ public final class PatientService {
         if (firstName != null && !firstName.isEmpty() && !Objects.equals(patient.getFirstName(),firstName)){
             //set the new first name
             patient.setFirstName(firstName);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients first name could not be updated." +
                 " Please make sure all information is correct and try again.");
@@ -140,10 +139,9 @@ public final class PatientService {
      *     A method to change the last name of a {@link Patient}.
      * </p>
      * @param ssn The ssn of the patient.
-     * @param lastName The patients new last name
-     * @return The status of if the patient's last name was successfully changed.
+     * @param lastName The patients new last name.
      */
-    public HttpStatus changeLastName(final Long ssn, final String lastName){
+    public void changeLastName(final Long ssn, final String lastName){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -151,7 +149,7 @@ public final class PatientService {
         if (lastName != null && !lastName.isEmpty() && !Objects.equals(patient.getLastName(),lastName)){
             //set the new last name
             patient.setLastName(lastName);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients last name could not be updated." +
                 " Please make sure all information is correct and try again.");
@@ -162,8 +160,7 @@ public final class PatientService {
      *     A method to change the {@link Doctor} of a {@link Patient}.
      * </p>
      * @param ssn The patients ssn.
-     * @param doctorId The new doctors id
-     * @return @return The status of if the patient's doctor was successfully changed.
+     * @param doctorId The new doctors id.
      */
     public HttpStatus changeFamilyDoctor(final Long ssn, final Long doctorId){
         //get the patient from the database
@@ -174,7 +171,7 @@ public final class PatientService {
         if ((!Objects.equals(patient.getDoctor().getId(),doctor.getId()))){
             //set the patients new family doctor id
             patient.setDoctor(doctorService.getDoctor(doctorId));
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients family doctor could not be updated." +
                 " Please make sure all information is correct and try again.");
@@ -187,9 +184,8 @@ public final class PatientService {
      * </p>
      * @param ssn the patients ssn.
      * @param newPhone the patients new phone number.
-     * @return @return The status of if the patient's phone number was successfully changed.
      */
-    public HttpStatus changePhone(final Long ssn, final String newPhone){
+    public void changePhone(final Long ssn, final String newPhone){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -197,7 +193,7 @@ public final class PatientService {
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
             //set the new phone number
             patient.setPhone(newPhone);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients phone number could not be updated." +
                 " Please make sure all information is correct and try again.");
@@ -209,9 +205,8 @@ public final class PatientService {
      * </p>
      * @param ssn The patients ssn.
      * @param newAddress The patients new address.
-     * @return The status of if the patient's address was successfully changed.
      */
-    public HttpStatus changeAddress(final Long ssn, final String newAddress){
+    public void changeAddress(final Long ssn, final String newAddress){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -219,7 +214,7 @@ public final class PatientService {
         if (newAddress != null && !newAddress.isEmpty() && !Objects.equals(patient.getAddress(),newAddress)){
             //set the new address
             patient.setAddress(newAddress);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients address could not be updated." +
                 " Please make sure all information is correct and try again.");
