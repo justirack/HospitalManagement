@@ -3,7 +3,7 @@
 */
 package com.hospital.manager.exception.ExceptionHandling;
 
-import com.hospital.manager.exception.CustomException.AppointmentNotFoundException;
+import com.hospital.manager.exception.CustomException.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -64,8 +64,8 @@ public class GlobalHandler {
      * @return The handled exception.
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(AppointmentNotFoundException.class)
-    public final ResponseEntity<Object> handleAppointmentNotFound(AppointmentNotFoundException exception){
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<Object> handleNotFound(NotFoundException exception){
         final String details = exception.getLocalizedMessage();
         final String message = "The request to get your appointment details or a list of all appointments failed. " +
                 "Please make sure all information is correct and try again";

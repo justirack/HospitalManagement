@@ -5,7 +5,7 @@ package com.hospital.manager.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.hospital.manager.exception.CustomException.AppointmentNotFoundException;
+import com.hospital.manager.exception.CustomException.NotFoundException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -14,8 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -107,7 +105,7 @@ public final class AppointmentController
 
         // No appointment was found, return an empty list for now.
         // TODO: we should return a 404 Not Found in this case.
-        throw new AppointmentNotFoundException("Unable to load appointment(s)");
+        throw new NotFoundException("Unable to load appointment(s)");
     }
 
     /**
