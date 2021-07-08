@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -126,55 +125,26 @@ public final class DoctorController {
         return service.remove(payload.getId());
     }
 
-    /**
-     * <p>
-     *     Allow a client to update the first name of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors first name was updated successfully.
-     */
-    @PutMapping(path = "changeFirstName")
-    public HttpStatus changeFirstName(final UpdateRequestPayload payload){
-        if (!Objects.isNull(payload.firstName)) {
-            return service.changeFirstName(payload.id, payload.firstName);
-        }
-        throw new FailedRequestException("The doctors first name could not be updated. Please make sure" +
-                " all information is correct and try again.");
-    }
+    @PutMapping(path = "update")
+    public DoctorResponsePayload update (final UpdateRequestPayload payload){
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
-    /**
-     * <p>
-     *     Allow a client to update the last name of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors last name was updated successfully.
-     */
-    @PutMapping(path = "changeLastName")
-    public HttpStatus changeLastName(final UpdateRequestPayload payload) {
-        if (!Objects.isNull(payload.lastName)) {
-            return service.changeLastName(payload.id, payload.lastName);
+        if (payload.getFirstName() != null){
+            status = service.changeFirstName(payload.getId(),payload.getFirstName());
         }
-        throw new FailedRequestException("The doctors last name could not be updated. Please make sure" +
-                " all information is correct and try again");
-    }
+        if (payload.getLastName() != null){
+            status = service.changeLastName(payload.getId(),payload.getLastName());
+        }
+        if (payload.getPhone() != null){
+            status = service.changePhone(payload.getId(),payload.getPhone());
+        }
 
-    /**
-     * <p>
-     *    Allow a client to update the phone of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors phone number was updated successfully.
-     */
-    @PutMapping(path = "changePhone")
-    public HttpStatus changePhone(final UpdateRequestPayload payload){
-        if (!Objects.isNull(payload.phone)) {
-            return service.changePhone(payload.id, payload.phone);
+        if (status.equals(HttpStatus.OK)){
+            Doctor doctor = service.getDoctor(payload.getId());
+            return new DoctorResponsePayload(doctor);
         }
-        throw new FailedRequestException("The doctors phone number could not be updated. Place make sure" +
-                " all information is correct and try again");
+        throw new FailedRequestException("One or more pieces of information could not be updated. " +
+                "Please make sure all information is correct and try again");
     }
 
 
