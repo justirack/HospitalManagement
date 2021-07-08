@@ -48,6 +48,11 @@ import java.util.List;
 @RequestMapping(path = "patient")
 public final class PatientController {
 
+    /**
+     * Allow a client to get an {@link Patient} or a list of patients.
+     * @param payload The payload containing the information about the patient to return.
+     * @return The patient(s).
+     */
     @GetMapping(path = "get")
     @ApiOperation("Retrieves a single patient or a list of patients")
     @ApiResponses({
@@ -80,6 +85,11 @@ public final class PatientController {
                 " information is correct and try again");
     }
 
+    /**
+     * Allow the client to update a {@link Patient} information.
+     * @param payload The information about the patient to update.
+     * @return The patients new information.
+     */
     @PutMapping(path = "update")
     public PatientResponsePayload update (final UpdateRequestPayload payload){
         HttpStatus status = HttpStatus.NOT_FOUND;
@@ -109,6 +119,11 @@ public final class PatientController {
                 "Please make sure all information is correct and try again.");
     }
 
+    /**
+     * Allow a client to add a new {@link Patient} to the database.
+     * @param payload The payload containing the new patient's information.
+     * @return The status of if the patient was successfully added.
+     */
     @PostMapping(path = "add")
     public HttpStatus add(final CreateRequestPayload payload){
         return service.add(
@@ -120,6 +135,11 @@ public final class PatientController {
         );
     }
 
+    /**
+     * Allow a client to remove a {@link Patient} from the database.
+     * @param payload The payload containing the id of the patient to delete.
+     * @return The status of if the patient was sucessfully removed
+     */
     @DeleteMapping(path = "delete")
     public HttpStatus remove(final DeleteRequestPayload payload){
         return service.remove(payload.getId());

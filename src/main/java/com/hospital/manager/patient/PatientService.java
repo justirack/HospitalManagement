@@ -19,9 +19,9 @@ import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.InvalidIdException;
 
 /**
- * This class acts as an in-between for the patientController and the patientRepository.
- * This is called the "service layer".
- * @author - Justin Rackley
+ * <p>
+ *     This class acts as an in-between for the {@link PatientController} and the {@link PatientRepository}.
+ * </p>>
  */
 @Service
 @RequiredArgsConstructor
@@ -31,8 +31,10 @@ public final class PatientService {
     private final DoctorService doctorService;
 
     /**
-     * A getter for a list of the patients in the database.
-     * @return A list of all of the patients in the database.
+     * <p>
+     *     A method that will return a list of all {@link Patient} in the database to the client.
+     * </p>
+     * @return An unmodifiable list of patients.
      */
     public List<Patient> getPatients(){
         //make the returned collection unmodifiable
@@ -40,23 +42,28 @@ public final class PatientService {
     }
 
     /**
-     * Allow a user to get a single patient from the database.
-     * @param ssn The ssn of the patient to find.
-     * @return The patient.
+     * <p>
+     *     A method that will return a specific {@link Patient} to the client.
+     * </p>
+     * @param ssn The patient to return's ssn.
+     * @return The Patient.
      */
-    public Patient getPatient(final long ssn){
+    public Patient getPatient(final Long ssn){
         return find(ssn);
     }
 
     /**
-     * add a patient to the database
-     * @param doctorId the patients family doctor's id
-     * @param firstName the patients first name
-     * @param lastName the patients last name
-     * @param phone the patients phone number
-     * @param address the patients address
+     * <p>
+     *     A method that will add a new {@link Patient} to the database.
+     * </p>
+     * @param doctorId The id of the patient's doctor.
+     * @param firstName The patients first name.
+     * @param lastName The patients last name.
+     * @param phone The patients phone number.
+     * @param address The patients address.
+     * @return The status of if the patient was successfully added to the database.
      */
-    public HttpStatus add(final long doctorId, final String firstName, final String lastName,
+    public HttpStatus add(final Long doctorId, final String firstName, final String lastName,
                           final String phone, final String address){
         Patient patient = new Patient();
 
@@ -76,10 +83,13 @@ public final class PatientService {
     }
 
     /**
-     * A method to allow a user to remove a patient from the database.
+     * <p>
+     *     A method that will remove a {@link Patient} from the database.
+     * </p>
      * @param ssn The ssn of the patient to remove.
+     * @return The status of if the patient was successfully removed to the database.
      */
-    public HttpStatus remove(final long ssn){
+    public HttpStatus remove(final Long ssn){
         //make sure the patient exists, exception will be thrown if not
         find(ssn);
         //delete the patient if no exception was thrown
@@ -99,11 +109,14 @@ public final class PatientService {
     }
 
     /**
-     * A method to allow a user to change a patient's name.
-     * @param ssn The ssn of the patient to change.
-     * @param firstName The new first name.
+     * <p>
+     *     A method to change the first name of a {@link Patient}.
+     * </p>>
+     * @param ssn The ssn of the patient.
+     * @param firstName The patients first name;
+     * @return The status of if the patient's first name was successfully changed.
      */
-    public HttpStatus changeFirstName(final long ssn, final String firstName)
+    public HttpStatus changeFirstName(final Long ssn, final String firstName)
     {
         //get the patient from the database
         final Patient patient = find(ssn);
@@ -118,7 +131,15 @@ public final class PatientService {
                 " Please make sure all information is correct and try again.");
     }
 
-    public HttpStatus changeLastName(final long ssn, final String lastName){
+    /**
+     * <p>
+     *     A method to change the last name of a {@link Patient}.
+     * </p>
+     * @param ssn The ssn of the patient.
+     * @param lastName The patients new last name
+     * @return The status of if the patient's last name was successfully changed.
+     */
+    public HttpStatus changeLastName(final Long ssn, final String lastName){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -133,11 +154,14 @@ public final class PatientService {
     }
 
     /**
-     * A method to change a patient's family doctor.
-     * @param ssn The ssn of the patient to change.
-     * @param doctorId The employee id of the new family doctor.
+     * <p>
+     *     A method to change the {@link Doctor} of a {@link Patient}.
+     * </p>
+     * @param ssn The patients ssn.
+     * @param doctorId The new doctors id
+     * @return @return The status of if the patient's doctor was successfully changed.
      */
-    public HttpStatus changeFamilyDoctor(final long ssn, final Long doctorId){
+    public HttpStatus changeFamilyDoctor(final Long ssn, final Long doctorId){
         //get the patient from the database
         final Patient patient = find(ssn);
         final Doctor doctor = doctorService.getDoctor(doctorId);
@@ -154,11 +178,14 @@ public final class PatientService {
     }
 
     /**
-     * A method to change the phone number of a patient.
-     * @param ssn The ssn of the patient to change.
-     * @param newPhone The new phone number.
+     * <p>
+     *     A method to change the phone number of an {@link Patient}
+     * </p>
+     * @param ssn the patients ssn.
+     * @param newPhone the patients new phone number.
+     * @return @return The status of if the patient's phone number was successfully changed.
      */
-    public HttpStatus changePhone(final long ssn, final String newPhone){
+    public HttpStatus changePhone(final Long ssn, final String newPhone){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -173,11 +200,14 @@ public final class PatientService {
     }
 
     /**
-     * A method to change the address of a patient.
-     * @param ssn The ssn of the patient to change.
-     * @param newAddress The new address.
+     * <p>
+     *     A method to change the address of a {@link Patient}.
+     * </p>
+     * @param ssn The patients ssn.
+     * @param newAddress The patients new address.
+     * @return The status of if the patient's address was successfully changed.
      */
-    public HttpStatus changeAddress(final long ssn, final String newAddress){
+    public HttpStatus changeAddress(final Long ssn, final String newAddress){
         //get the patient from the database
         final Patient patient = find(ssn);
 
