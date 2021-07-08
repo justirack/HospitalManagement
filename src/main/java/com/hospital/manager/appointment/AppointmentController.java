@@ -190,6 +190,7 @@ public final class AppointmentController
     {
         private final long ssn;
         private final long doctorId;
+        @ApiModelProperty(value = "Please enter in the form yyyy-MM-dd hh:mm")
         private final String date;
         private final int room;
     }
