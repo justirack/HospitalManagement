@@ -7,11 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class AppointmentNotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
     final static long serialVersionUID = 1;
 
-    public AppointmentNotFoundException (String message){
+    public NotFoundException(String message){
         super(message);
     }
 }
