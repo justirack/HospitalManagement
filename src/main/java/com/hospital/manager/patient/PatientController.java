@@ -154,6 +154,7 @@ public final class PatientController {
     private static final class CreateRequestPayload{
         private final String firstName;
         private final String lastName;
+        @ApiModelProperty(value = "Must be 10 digits.")
         private final String phone;
         private final String address;
         private final Long docId;
@@ -166,7 +167,7 @@ public final class PatientController {
     private static final class RetrievalRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the patient to retrieve" +
-                        " If null, return all patients in the database",
+                        " If null, return all patients in the database.",
                 required = true,
                 example = "1024")
         private final Long id;
@@ -180,15 +181,15 @@ public final class PatientController {
     private static final class UpdateRequestPayload{
         @ApiModelProperty(value = "The patient's id",required = true)
         final Long id;
-        @ApiModelProperty(value = "The patient's new first name")
+        @ApiModelProperty(value = "The patient's new first name.")
         final String firstName;
-        @ApiModelProperty(value = "The patient's new last name")
+        @ApiModelProperty(value = "The patient's new last name.")
         final String lastName;
-        @ApiModelProperty(value = "The patient's new phone number")
+        @ApiModelProperty(value = "The patient's new phone number. Must be 10 digits.")
         final String phone;
-        @ApiModelProperty(value = "The patient's new address")
+        @ApiModelProperty(value = "The patient's new address.")
         final String address;
-        @ApiModelProperty(value = "The patient's new doctor's id")
+        @ApiModelProperty(value = "The patient's new doctor's id.")
         final Long doctorId;
     }
 

@@ -192,6 +192,7 @@ public final class DoctorController {
     private static final class CreateRequestPayload{
         private final String firstName;
         private final String lastName;
+        @ApiModelProperty(value = "Must be 10 digits.")
         private final String phone;
     }
 
@@ -247,6 +248,7 @@ public final class DoctorController {
         private final long id;
         private final String firstName;
         private final String lastName;
+        @ApiModelProperty(value = "Must be 10 digits.")
         private final String phone;
     }
 
