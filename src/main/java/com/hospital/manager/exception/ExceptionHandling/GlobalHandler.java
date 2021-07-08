@@ -3,6 +3,7 @@
 */
 package com.hospital.manager.exception.ExceptionHandling;
 
+import com.hospital.manager.exception.CustomException.AppointmentNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,7 +18,9 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
 public class GlobalHandler {
 
     /**
-     * Handler for InvalidId exceptions.
+     * <p>
+     *     Handler for InvalidId exceptions.
+     * </p>>
      * @param exception The exception to be handled.
      * @return The handled exception.
      */
@@ -37,8 +40,9 @@ public class GlobalHandler {
     }
 
     /**
-     * Handler for FailedRequest exceptions.
-     * Same idea as handleInvalidId so read there for in-line comments.
+     * <p>
+     *     Handler for FailedRequest exceptions.
+     * </p>>
      * @param exception The exception to be handled.
      * @return The handled Exception.
      */
@@ -46,14 +50,34 @@ public class GlobalHandler {
     @ExceptionHandler(FailedRequestException.class)
     public final ResponseEntity<Object> handleFailedRequest(FailedRequestException exception){
         final String details = exception.getLocalizedMessage();
-        final String message = "Your request failed. Please make sure the information entered is correct";
+        final String message = "Your request failed. Please make sure all information is correct and try again";
         final int statusCode = HttpStatus.BAD_REQUEST.value();
         final ExceptionDetails exceptionDetails = new ExceptionDetails(message,details,statusCode);
         return new ResponseEntity<>(exceptionDetails,HttpStatus.BAD_REQUEST);
     }
 
     /**
-     * Global handler for any other unhandled exception.
+     * <p>
+     *     Handler for AppointmentNotFound exceptions.
+     * </p>
+     * @param exception The exception to be handled
+     * @return The handled exception.
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(AppointmentNotFoundException.class)
+    public final ResponseEntity<Object> handleAppointmentNotFound(AppointmentNotFoundException exception){
+        final String details = exception.getLocalizedMessage();
+        final String message = "The request to get your appointment details or a list of all appointments failed. " +
+                "Please make sure all information is correct and try again";
+        final int statusCode = HttpStatus.NOT_FOUND.value();
+        final ExceptionDetails exceptionDetails = new ExceptionDetails(message,details,statusCode);
+        return new ResponseEntity<>(exceptionDetails,HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * <p>
+     *     Global handler for any other unhandled exception.
+     * </p>>
      * @param exception The exception to be handled.
      * @return The handled exception.
      */

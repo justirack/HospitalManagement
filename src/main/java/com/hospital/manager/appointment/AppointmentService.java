@@ -7,47 +7,43 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.InvalidIdException;
 
+import lombok.RequiredArgsConstructor;
+
 /**
- * This class acts as an in-between for the appointmentController and the appointmentRepository.
- * This is called the "service layer".
- * @author - Justin Rackley
+ * This class acts as an in-between for the {@link AppointmentController} and the {@link AppointmentRepository}.
  */
-
 @Service
-public final class AppointmentService {
-
+@RequiredArgsConstructor
+public final class AppointmentService
+{
     //create a permanent reference to the appointment repository
     private final AppointmentRepository repository;
 
-    //inject the appointment repository into this class
-    @Autowired
-    public AppointmentService(final AppointmentRepository repository) {
-        this.repository = repository;
-    }
-
     /**
-     * Get a list of all appointments at the hospital.
-     * @return The list of all appointments.
+     * Retrieves a list of all appointments at this hospital.
+     * 
+     * @return An unmodifiable list of all {@link Appointment} objects.
+     *         This cannot be null.
      */
-    public List<Appointment> getAppointments(){
-        //make the returned collection unmodifiable
+    public List<Appointment> getAppointments()
+    {
         return Collections.unmodifiableList(repository.findAll());
     }
 
     /**
      * Get and return an appointment from the database.
-     * @param appId The id of the appointment.
+     * @param id The id of the appointment.
      * @return The appointment.
      */
-    public Appointment getAppointment(final long appId){
-        return find(appId);
+    public Appointment getAppointment(final long id)
+    {
+        return find(id);
     }
 
     /**
@@ -181,5 +177,4 @@ public final class AppointmentService {
         return repository.findById(appId).orElseThrow(() -> new InvalidIdException(
                 "Appointment with id  " + appId + " not found."));
     }
-
 }
