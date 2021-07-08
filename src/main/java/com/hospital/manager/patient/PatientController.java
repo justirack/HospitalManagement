@@ -62,17 +62,20 @@ public final class PatientController {
     public List<PatientResponsePayload> get (RetrievalRequestPayload payload){
         log.info("Attempting to find patient pertaining to request={}",payload.getId());
 
+        //if no id is supplied return a list of all patients
         if (payload.getId() == null){
             final List<PatientResponsePayload> results = new ArrayList<>();
             final List<Patient> patients = service.getPatients();
 
             log.info("Found {} results, returning them",patients.size());
 
+            //add the patients to a list as PatientResponsePayloads
             for (Patient patient:patients) {
                 results.add(new PatientResponsePayload(patient));
             }
             return results;
         }
+        //get the patient with supplied id and return as item in a list of PatientResponsePayload
         final Patient patient = service.getPatient(payload.getId());
 
         if (patient != null){
@@ -81,8 +84,9 @@ public final class PatientController {
             final PatientResponsePayload results = new PatientResponsePayload(patient);
             return Collections.unmodifiableList(List.of(results));
         }
-        throw new NotFoundException("The patient you requested could not be found. Please Make sure all" +
-                " information is correct and try again");
+        //throw exception if id supplied does not correspond to an existing patient
+        throw new NotFoundException("Unable to load patient(s). Please make sure all information is correct " +
+                "and try again");
     }
 
     /**
@@ -94,6 +98,7 @@ public final class PatientController {
     public PatientResponsePayload update (final UpdateRequestPayload payload){
         boolean isSuccessful = false;
 
+        //if new information is not null, change it and update isSuccessful
         if (payload.getFirstName() != null){
             isSuccessful = service.changeFirstName(payload.getId(), payload.getFirstName());
         }
@@ -110,13 +115,15 @@ public final class PatientController {
             isSuccessful = service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
         }
 
+        //return the patients new information
         if (isSuccessful){
             Patient patient = service.getPatient(payload.getId());
             return new PatientResponsePayload(patient);
 
         }
-        throw new FailedRequestException("One or more pieces of information could not be updated. " +
-                "Please make sure all information is correct and try again.");
+        //throw exception if nothing was updated
+        throw new FailedRequestException("All provided information is the same as current information on file. " +
+                "Please provide new information and try again");
     }
 
     /**

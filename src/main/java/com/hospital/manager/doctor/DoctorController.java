@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.hospital.manager.appointment.Appointment;
 import com.hospital.manager.exception.CustomException.FailedRequestException;
+import com.hospital.manager.exception.CustomException.NotFoundException;
 import com.hospital.manager.patient.Patient;
 
 import io.swagger.annotations.Api;
@@ -96,7 +97,43 @@ public final class DoctorController {
             return Collections.unmodifiableList(List.of(responsePayload));
         }
         //Throw an exception if no id is supplied or the supplied id returns nothing.
-        throw new FailedRequestException("Request Failed. The list of doctors or requested doctor could not be found.");
+        throw new NotFoundException("Unable to load doctor(s). Please make sure all information is correct " +
+                "and try again");
+    }
+
+    /**
+     * <p>
+     *     Allow a client to update a {@link Doctor} information.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The doctors new information.
+     */
+    @PutMapping(path = "update")
+    public DoctorResponsePayload update (final UpdateRequestPayload payload){
+        boolean isSuccessful = false;
+
+        //if new information is not null, change it and update isSuccessful
+        if (payload.getFirstName() != null){
+            service.changeFirstName(payload.getId(),payload.getFirstName());
+            isSuccessful = true;
+        }
+        if (payload.getLastName() != null){
+            service.changeLastName(payload.getId(),payload.getLastName());
+            isSuccessful = true;
+        }
+        if (payload.getPhone() != null){
+            service.changePhone(payload.getId(),payload.getPhone());
+            isSuccessful = true;
+        }
+
+        //return the patients new information
+        if (isSuccessful){
+            Doctor doctor = service.getDoctor(payload.getId());
+            return new DoctorResponsePayload(doctor);
+        }
+        //Throw exception if nothing was updated
+        throw new FailedRequestException("All provided information is the same as current information on file. " +
+                "Please provide new information and try again");
     }
 
     /**
@@ -123,35 +160,6 @@ public final class DoctorController {
     @DeleteMapping(path = "delete")
     public HttpStatus deleteDoctor(final DeleteRequestPayload payload){
         return service.remove(payload.getId());
-    }
-
-    /**
-     * <p>
-     *     Allow a client to update a {@link Doctor} information.
-     * </p>
-     * @param payload The payload containing the new information.
-     * @return The doctors new information.
-     */
-    @PutMapping(path = "update")
-    public DoctorResponsePayload update (final UpdateRequestPayload payload){
-        boolean isSuccessful = false;
-
-        if (payload.getFirstName() != null){
-            isSuccessful = service.changeFirstName(payload.getId(),payload.getFirstName());
-        }
-        if (payload.getLastName() != null){
-            isSuccessful = service.changeLastName(payload.getId(),payload.getLastName());
-        }
-        if (payload.getPhone() != null){
-            isSuccessful = service.changePhone(payload.getId(),payload.getPhone());
-        }
-
-        if (isSuccessful){
-            Doctor doctor = service.getDoctor(payload.getId());
-            return new DoctorResponsePayload(doctor);
-        }
-        throw new FailedRequestException("One or more pieces of information could not be updated. " +
-                "Please make sure all information is correct and try again");
     }
 
 

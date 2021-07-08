@@ -106,7 +106,39 @@ public final class AppointmentController
 
         // No appointment was found, return an empty list for now.
         // TODO: we should return a 404 Not Found in this case.
-        throw new NotFoundException("Unable to load appointment(s)");
+        throw new NotFoundException("Unable to load appointment(s). Please make sure all information is correct " +
+                "and try again");
+    }
+
+    /**
+     * <p>
+     *     Allow a client to update an {@link Appointment} room or date.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The appointments new information.
+     */
+    @PutMapping
+    public AppointmentResponsePayload update(final UpdateRequestPayload payload){
+        boolean isSuccessful = false;
+
+        //if new information is not null, change it and update isSuccessful
+        if (payload.getDate() != null){
+            service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
+            isSuccessful = true;
+        }
+        if (isSuccessful.getRoom() != null){
+            service.changeRoom(payload.getId(),payload.getRoom());
+            isSuccessful = true;
+        }
+
+        //return the patients new information
+        if (isSuccessful){
+            Appointment appointment = service.getAppointment(payload.getId());
+            return new AppointmentResponsePayload(appointment);
+        }
+        //Throw exception if nothing was updated
+        throw new FailedRequestException("All provided information is the same as current information on file. " +
+                "Please provide new information and try again");
     }
 
     /**
@@ -137,31 +169,6 @@ public final class AppointmentController
     @DeleteMapping(path = "cancel")
     public HttpStatus cancel(final DeleteRequestPayload payload){
         return service.cancel(payload.id);
-    }
-
-    /**
-     * <p>
-     *     Allow a client to update an {@link Appointment} room or date.
-     * </p>
-     * @param payload The payload containing the new information.
-     * @return The appointments new information.
-     */
-    @PutMapping
-    public AppointmentResponsePayload update(final UpdateRequestPayload payload){
-        boolean isSuccessful = false;
-
-        if (payload.getDate() != null){
-            isSuccessful = service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
-        }
-        if (isSuccessful.getRoom() != null){
-            status = service.changeRoom(payload.getId(),payload.getRoom());
-        }
-        if (isSuccessful)){
-            Appointment appointment = service.getAppointment(payload.getId());
-            return new AppointmentResponsePayload(appointment);
-        }
-        throw new FailedRequestException("One or more pieces of information could not be updated. " +
-                "Please make sure all information is correct and try again");
     }
 
 
