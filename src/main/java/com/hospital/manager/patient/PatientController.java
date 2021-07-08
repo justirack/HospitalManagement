@@ -111,7 +111,7 @@ public final class PatientController {
             service.changeAddress(payload.getId(), payload.getAddress());
         }
         if (payload.getDoctorId() != null) {
-            isSuccessful = service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
+            service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
         }
 
         //return the patients information
@@ -153,11 +153,15 @@ public final class PatientController {
     @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when adding a new patient to the database.")
     private static final class CreateRequestPayload{
+        @ApiModelProperty(value = "The new patients first name.")
         private final String firstName;
+        @ApiModelProperty(value = "The new patients last name.")
         private final String lastName;
-        @ApiModelProperty(value = "Must be 10 digits.")
+        @ApiModelProperty(value = "The new patients phone number. Must be 10 digits.")
         private final String phone;
+        @ApiModelProperty(value = "The new patients address.")
         private final String address;
+        @ApiModelProperty(value = "The new patient's doctor's id.")
         private final Long docId;
     }
 

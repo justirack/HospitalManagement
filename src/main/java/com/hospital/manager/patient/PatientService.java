@@ -162,7 +162,7 @@ public final class PatientService {
      * @param ssn The patients ssn.
      * @param doctorId The new doctors id.
      */
-    public HttpStatus changeFamilyDoctor(final Long ssn, final Long doctorId){
+    public void changeFamilyDoctor(final Long ssn, final Long doctorId){
         //get the patient from the database
         final Patient patient = find(ssn);
         final Doctor doctor = doctorService.getDoctor(doctorId);

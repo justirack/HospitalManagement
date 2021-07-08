@@ -118,13 +118,13 @@ public final class AppointmentController
      * @return The appointments new information.
      */
     @PutMapping
-    public AppointmentResponsePayload update(final UpdateRequestPayload payload){
+    public AppointmentResponsePayload update(final UpdateRequestPayload payload) throws Exception{
 
         //if new information is not null, change it and update isSuccessful
         if (payload.getDate() != null){
             service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
         }
-        if (isSuccessful.getRoom() != null){
+        if (payload.getRoom() != null){
             service.changeRoom(payload.getId(),payload.getRoom());
         }
 
@@ -190,10 +190,13 @@ public final class AppointmentController
         description = "The request details supplied when creating (i.e. booking) a new appointment.")
     private static final class CreateRequestPayload
     {
+        @ApiModelProperty(value = "The booking patients ssn")
         private final long ssn;
+        @ApiModelProperty(value = "The attending doctors id")
         private final long doctorId;
-        @ApiModelProperty(value = "Please enter in the form yyyy-MM-dd hh:mm")
+        @ApiModelProperty(value = "The appointments date. Please enter in the form yyyy-MM-dd hh:mm")
         private final String date;
+        @ApiModelProperty(value = "The room for the appointment")
         private final int room;
     }
 
@@ -218,11 +221,16 @@ public final class AppointmentController
     @ApiModel(description = "Update an appointment")
     private static final class UpdateRequestPayload
     {
+        @ApiModelProperty(value = "The appointments id.", required = true)
         private final long id;
+        @ApiModelProperty(value = "The new patients ssn.")
         private final long ssn;
+        @ApiModelProperty(value = "The new doctors id.")
         private final long doctorId;
+        @ApiModelProperty(value = "The appointments new date.")
         private final String date;
-        private final int room;
+        @ApiModelProperty(value = "The appointments new room.")
+        private final Integer room;
     }
 
     @ToString

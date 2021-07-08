@@ -167,7 +167,9 @@ public final class DoctorController {
     @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when hiring a new doctor.")
     private static final class CreateRequestPayload{
+        @ApiModelProperty(value = "The new doctors first name.")
         private final String firstName;
+        @ApiModelProperty(value = "The new doctors last name.")
         private final String lastName;
         @ApiModelProperty(value = "Must be 10 digits.")
         private final String phone;
@@ -222,10 +224,13 @@ public final class DoctorController {
     @RequiredArgsConstructor
     @ApiModel(description = "The request details received when attempting to update a doctor's information")
     private static final class UpdateRequestPayload{
+        @ApiModelProperty(value = "The doctors id.",required = true)
         private final long id;
+        @ApiModelProperty(value = "The doctors new first name.")
         private final String firstName;
+        @ApiModelProperty(value = "The doctors new last name.")
         private final String lastName;
-        @ApiModelProperty(value = "Must be 10 digits.")
+        @ApiModelProperty(value = "The doctors new phone number. Must be 10 digits.")
         private final String phone;
     }
 
