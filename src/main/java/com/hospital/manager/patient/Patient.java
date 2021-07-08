@@ -3,8 +3,12 @@
 */
 package com.hospital.manager.patient;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.hospital.manager.appointment.Appointment;
+import com.hospital.manager.doctor.Doctor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,14 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
-import com.hospital.manager.appointment.Appointment;
-import com.hospital.manager.doctor.Doctor;
-
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents patients in the hospital management system.
@@ -43,7 +41,7 @@ public final class Patient {
     private String address;
 
     @ManyToOne
-    private Doctor familyDoctorId;
+    private Doctor doctor;
 
     @OneToMany
     private List<Appointment> appointments = new ArrayList<>();
