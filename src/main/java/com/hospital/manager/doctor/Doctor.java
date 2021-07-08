@@ -6,8 +6,8 @@ package com.hospital.manager.doctor;
 import com.hospital.manager.appointment.Appointment;
 import com.hospital.manager.patient.Patient;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,7 +28,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public final class Doctor {
 
     /**

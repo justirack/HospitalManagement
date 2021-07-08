@@ -50,7 +50,7 @@ public final class DoctorService {
      * @param phone The doctors phone number.
      */
     public HttpStatus hire(final String firstName, final String lastName, final String phone){
-        Doctor doctor = new Doctor(firstName,lastName,phone);
+        Doctor doctor = new Doctor();
         doctor.setFirstName(firstName);
         doctor.setLastName(lastName);
         doctor.setPhone(phone);

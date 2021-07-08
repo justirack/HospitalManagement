@@ -12,14 +12,12 @@ import com.hospital.manager.patient.Patient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.AccessLevel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -59,17 +57,17 @@ public final class DoctorController {
      * @param payload The payload containing the id of the doctor to return. Return a list of all doctors if null.
      * @return The doctor with given id or the list of all doctors.
      */
-    @GetMapping
+    @GetMapping(path = "get")
     @ApiOperation("Retrieves a list of doctors or a single doctor.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "If the doctor(s) were retrieved successfully"),
             @ApiResponse(code = 404, message = "If no doctor(s) correspond to the criteria supplied")
     })
     public List<DoctorResponsePayload> get(final RetrievalRequestPayload payload){
+        //FIXME payload.getID() is always null, forces this method to always return a list of all doctors
         log.info("Attempting to find the doctor pertaining to request={}",payload);
-
         //return all doctors if the client does not supply an id
-        if (Objects.isNull(payload.getId())){
+        if (payload.getId() == null){
             //create a list to add all of the doctors to in the form of DoctorResponsePayload
             final List<DoctorResponsePayload> results = new ArrayList<>();
 
@@ -98,6 +96,7 @@ public final class DoctorController {
 
             return Collections.unmodifiableList(List.of(responsePayload));
         }
+        //Throw an exception if no id is supplied or the supplied id returns nothing.
         throw new FailedRequestException("Request Failed. The list of doctors or requested doctor could not be found.");
     }
 
@@ -194,8 +193,6 @@ public final class DoctorController {
         private final String firstName;
         private final String lastName;
         private final String phone;
-//        private final List<Appointment> appointments;
-//        private final List<Patient> patients;
     }
 
     /**
@@ -214,7 +211,7 @@ public final class DoctorController {
                         " If null, return all doctors in the database",
                 required = true,
                 example = "1024")
-        private final long id;
+        private final Long id;
     }
 
     /**
@@ -226,16 +223,14 @@ public final class DoctorController {
     @Getter
     @ToString
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @RequiredArgsConstructor
+    @NoArgsConstructor
     @ApiModel(description = "The request details supplied when retrieving a doctor's details.")
     private static final class RetrievalRequestPayload{
         @ApiModelProperty(
                 value = "The unique, database identifier for the doctor to retrieve" +
                         " If null, return all doctors in the database",
-                required = false,
-                example = "1024",
-                position = 0)
-        private long id;
+                example = "1024")
+        private Long id;
     }
 
     /**
@@ -265,6 +260,7 @@ public final class DoctorController {
     @Getter
     private static final class DoctorResponsePayload{
         private DoctorResponsePayload(final Doctor doctor){
+            id = doctor.getId();
             firstName = doctor.getFirstName();
             lastName = doctor.getLastName();
             phone = doctor.getPhone();
@@ -272,6 +268,7 @@ public final class DoctorController {
             patients = doctor.getPatients();
 
         }
+        private final Long id;
         private final String firstName;
         private final String lastName;
         private final String phone;
