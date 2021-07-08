@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import com.hospital.manager.doctor.Doctor;
+import com.hospital.manager.doctor.DoctorRepository;
+import com.hospital.manager.doctor.DoctorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,16 +24,11 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
  * @author - Justin Rackley
  */
 @Service
+@RequiredArgsConstructor
 public final class PatientService {
 
-    //create a permanent reference to the patient repository
     private final PatientRepository repository;
-
-    //inject the patient repository into this class
-    @Autowired
-    public PatientService(final PatientRepository repository) {
-        this.repository = repository;
-    }
+    private final DoctorService doctorService;
 
     /**
      * A getter for a list of the patients in the database.
@@ -57,11 +56,23 @@ public final class PatientService {
      * @param phone the patients phone number
      * @param address the patients address
      */
-    public void add(final long doctorId, final String firstName, final String lastName,
+    public HttpStatus add(final long doctorId, final String firstName, final String lastName,
                           final String phone, final String address){
-        //create a new patient and save them to the database
-// FIXME
-//        repository.save(new Patient(doctorId,firstName,lastName,phone,address));
+        Patient patient = new Patient();
+
+        patient.setDoctor(doctorService.getDoctor(doctorId));
+        patient.setFirstName(firstName);
+        patient.setLastName(lastName);
+        patient.setPhone(phone);
+        patient.setAddress(address);
+
+        repository.save(patient);
+
+        if (repository.findPatientByPhone(phone).isPresent()){
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The new patient could not be added to the database. Please ensure all information" +
+                " is correct and try again");
     }
 
     /**
@@ -129,16 +140,17 @@ public final class PatientService {
     public HttpStatus changeFamilyDoctor(final long ssn, final Long doctorId){
         //get the patient from the database
         final Patient patient = find(ssn);
+        final Doctor doctor = doctorService.getDoctor(doctorId);
 
-        //make sure doctorId is not null, has length > 0 and is not the same as the current doctor id
-        if (doctorId != null && doctorId >=0 && !Objects.equals(patient.getFamilyDoctorId(),doctorId)){
+        //make sure doctorId is not null,  and is not the same as the current doctor id
+        if ((!Objects.equals(patient.getDoctor().getId(),doctor.getId()))){
             //set the patients new family doctor id
-// FIXME
-//            patient.setFamilyDoctorId(doctorId);
+            patient.setDoctor(doctorService.getDoctor(doctorId));
             return HttpStatus.OK;
         }
         throw new FailedRequestException("The patients family doctor could not be updated." +
                 " Please make sure all information is correct and try again.");
+
     }
 
     /**
