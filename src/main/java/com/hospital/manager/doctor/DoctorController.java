@@ -134,19 +134,19 @@ public final class DoctorController {
      */
     @PutMapping(path = "update")
     public DoctorResponsePayload update (final UpdateRequestPayload payload){
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        boolean isSuccessful = false;
 
         if (payload.getFirstName() != null){
-            status = service.changeFirstName(payload.getId(),payload.getFirstName());
+            isSuccessful = service.changeFirstName(payload.getId(),payload.getFirstName());
         }
         if (payload.getLastName() != null){
-            status = service.changeLastName(payload.getId(),payload.getLastName());
+            isSuccessful = service.changeLastName(payload.getId(),payload.getLastName());
         }
         if (payload.getPhone() != null){
-            status = service.changePhone(payload.getId(),payload.getPhone());
+            isSuccessful = service.changePhone(payload.getId(),payload.getPhone());
         }
 
-        if (status.equals(HttpStatus.OK)){
+        if (isSuccessful){
             Doctor doctor = service.getDoctor(payload.getId());
             return new DoctorResponsePayload(doctor);
         }

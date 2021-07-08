@@ -148,15 +148,15 @@ public final class AppointmentController
      */
     @PutMapping
     public AppointmentResponsePayload update(final UpdateRequestPayload payload){
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        boolean isSuccessful = false;
 
         if (payload.getDate() != null){
-            status = service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
+            isSuccessful = service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
         }
-        if (payload.getRoom() != null){
+        if (isSuccessful.getRoom() != null){
             status = service.changeRoom(payload.getId(),payload.getRoom());
         }
-        if (status.equals(HttpStatus.OK)){
+        if (isSuccessful)){
             Appointment appointment = service.getAppointment(payload.getId());
             return new AppointmentResponsePayload(appointment);
         }

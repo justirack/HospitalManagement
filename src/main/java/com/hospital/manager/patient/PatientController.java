@@ -92,25 +92,25 @@ public final class PatientController {
      */
     @PutMapping(path = "update")
     public PatientResponsePayload update (final UpdateRequestPayload payload){
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        boolean isSuccessful = false;
 
         if (payload.getFirstName() != null){
-            status = service.changeFirstName(payload.getId(), payload.getFirstName());
+            isSuccessful = service.changeFirstName(payload.getId(), payload.getFirstName());
         }
         if (payload.getLastName() != null){
-            status = service.changeLastName(payload.getId(), payload.getLastName());
+            isSuccessful = service.changeLastName(payload.getId(), payload.getLastName());
         }
         if (payload.getPhone() != null){
-            status = service.changePhone(payload.getId(), payload.getPhone());
+            isSuccessful = service.changePhone(payload.getId(), payload.getPhone());
         }
         if (payload.getAddress() != null){
-            status = service.changeAddress(payload.getId(), payload.getAddress());
+            isSuccessful = service.changeAddress(payload.getId(), payload.getAddress());
         }
         if (payload.getDoctorId() != null) {
-            status = service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
+            isSuccessful = service.changeFamilyDoctor(payload.getId(), payload.getDoctorId());
         }
 
-        if (status.equals(HttpStatus.OK)){
+        if (isSuccessful){
             Patient patient = service.getPatient(payload.getId());
             return new PatientResponsePayload(patient);
 
