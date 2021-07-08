@@ -50,10 +50,12 @@ public final class DoctorService {
      * @param phone The doctors phone number.
      */
     public HttpStatus hire(final String firstName, final String lastName, final String phone){
+        //make sure phone number is the correct length
         if (phone.length() != 10){
             throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
         }
 
+        //create new doctor and add new information
         Doctor doctor = new Doctor();
         doctor.setFirstName(firstName);
         doctor.setLastName(lastName);
@@ -61,6 +63,7 @@ public final class DoctorService {
 
         repository.save(doctor);
 
+        //make sure doctor was added, throw exception if not
         if (repository.findDoctorByPhone(phone).isPresent()) {
             return HttpStatus.OK;
         }

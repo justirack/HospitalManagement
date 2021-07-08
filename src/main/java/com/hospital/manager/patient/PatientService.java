@@ -65,12 +65,13 @@ public final class PatientService {
      */
     public HttpStatus add(final Long doctorId, final String firstName, final String lastName,
                           final String phone, final String address){
+        //make sure phone number is the correct length
         if (phone.length() != 10){
             throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
         }
 
         Patient patient = new Patient();
-
+        //set all of the patient information
         patient.setDoctor(doctorService.getDoctor(doctorId));
         patient.setFirstName(firstName);
         patient.setLastName(lastName);
@@ -79,6 +80,7 @@ public final class PatientService {
 
         repository.save(patient);
 
+        //make sure the patient was added, throw an exception if not
         if (repository.findPatientByPhone(phone).isPresent()){
             return HttpStatus.OK;
         }
