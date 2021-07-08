@@ -65,6 +65,10 @@ public final class PatientService {
      */
     public HttpStatus add(final Long doctorId, final String firstName, final String lastName,
                           final String phone, final String address){
+        if (phone.length() != 10){
+            throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
+        }
+
         Patient patient = new Patient();
 
         patient.setDoctor(doctorService.getDoctor(doctorId));

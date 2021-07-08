@@ -50,6 +50,10 @@ public final class DoctorService {
      * @param phone The doctors phone number.
      */
     public HttpStatus hire(final String firstName, final String lastName, final String phone){
+        if (phone.length() != 10){
+            throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
+        }
+
         Doctor doctor = new Doctor();
         doctor.setFirstName(firstName);
         doctor.setLastName(lastName);
@@ -131,6 +135,11 @@ public final class DoctorService {
      * @param phone The doctors new phone number.
      */
     public HttpStatus changePhone(final long empId, final String phone){
+        //make sure the new phone number is the correct length
+        if (phone.length() != 10){
+            throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
+        }
+
         //check to make sure the doctor exists, will throw an exception if not
         final Doctor doctor = find(empId);
         //change the doctors phone
