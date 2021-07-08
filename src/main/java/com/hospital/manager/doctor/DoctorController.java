@@ -125,6 +125,13 @@ public final class DoctorController {
         return service.remove(payload.getId());
     }
 
+    /**
+     * <p>
+     *     Allow a client to update a {@link Doctor} information.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The doctors new information.
+     */
     @PutMapping(path = "update")
     public DoctorResponsePayload update (final UpdateRequestPayload payload){
         HttpStatus status = HttpStatus.NOT_FOUND;
