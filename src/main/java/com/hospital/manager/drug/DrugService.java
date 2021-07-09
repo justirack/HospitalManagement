@@ -15,9 +15,9 @@ import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.InvalidIdException;
 
 /**
- * This class acts as an in-between for drugController and DrugRepository.
- * This is called the "service layer".
- * @author - Justin Rackley
+ * <p>
+ *     This class acts as an in-between for {@link DrugController} and {@link DrugRepository}.
+ * </p>
  */
 @Service
 public final class DrugService {
@@ -31,7 +31,9 @@ public final class DrugService {
     }
 
     /**
-     * A method that will return a list of all the drugs in the database.
+     * <p>
+     *     A method that will return a list of all the {@link Drug} in the database.
+     * </p>
      * @return The list of all drugs.
      */
     public List<Drug> getDrugs(){
@@ -40,7 +42,9 @@ public final class DrugService {
     }
 
     /**
-     * Allow a user to get a single drug from the database.
+     * <p>
+     *     Allow a user to get a single {@link Drug} from the database.
+     * </p>
      * @param id The id of the drug.
      * @return The drug.
      */
@@ -49,18 +53,32 @@ public final class DrugService {
     }
 
     /**
-     * Allow a user to add a drug to the database.
+     * <p>
+     *     Allow a user to add a {@link Drug} to the database.
+     * </p>
      * @param formula The drugs formula.
      * @param name The drugs name.
      * @param description The drugs description.
      */
-    public void add(final String formula, final String name, final String description){
-     // FIXME
-//        repository.save(new Drug(formula,name,description));
+    public HttpStatus add(final String formula, final String name, final String description){
+        Drug drug = new Drug();
+        drug.setFormula(formula);
+        drug.setName(name);
+        drug.setDescription(description);
+
+        repository.save(drug);
+
+        if (repository.findDrugByName(name).isPresent()){
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The new drug could not be added to the database. Please ensure all information" +
+                " is correct and try again");
     }
 
     /**
-     * Allow a user to delete a drug from the database.
+     * <p>
+     *     Allow a user to delete a {@link Drug} from the database.
+     * </p>>
      * @param id The id of the drug to delete.
      */
     public HttpStatus delete(final long id){
@@ -71,7 +89,7 @@ public final class DrugService {
 
         try {
             //try to find the drug in the database, it should not be there
-            repository.findDrugByFormula(id);
+            repository.findDrugById(id);
         }
         //catch the exception that should be thrown
         catch (InvalidIdException e){
@@ -83,54 +101,60 @@ public final class DrugService {
     }
 
     /**
-     * Allow a user to change the formula of a drug.
+     * <p>
+     *     Allow a user to change the formula of a {@link Drug}.
+     * </p>
      * @param id The old id.
      * @param newFormula The new formula.
      */
-    public HttpStatus changeFormula(final long id, final String newFormula) {
+    public void changeFormula(final long id, final String newFormula) {
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the formula is not null, not a blank string and not the same as the current formula
         if (newFormula != null && !newFormula.isEmpty() && !Objects.equals(drug.getFormula(), newFormula)) {
             drug.setFormula(newFormula);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The drugs formula could not be changed." +
                 " Please make sure all information is correct and try again.");
     }
 
     /**
-     * Allow a user to change the name of a drug.
+     * <p>
+     *     Allow a user to change the name of a {@link Drug}.
+     * </p>
      * @param id The drugs id.
      * @param name The drugs name.
      */
-    public HttpStatus changeName(final long id, final String name){
+    public void changeName(final long id, final String name){
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the name is not null, not a blank string and not the same as the current name
         if (name != null && !name.isEmpty() && !Objects.equals(name, drug.getName())){
             drug.setFormula(name);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The drugs name could not be changed." +
                 " Please make sure all information is correct and try again.");
     }
 
     /**
-     * Allow a user to change the description of a drug
+     * <p>
+     *     Allow a user to change the description of a {@link Drug}
+     * </p>
      * @param id The drugs id.
      * @param description The drugs description.
      */
-    public HttpStatus changeDescription(final long id, final String description){
+    public void changeDescription(final long id, final String description){
         //make sure the drug exists in the database
         final Drug drug = find(id);
 
         //make sure the description is not null, not a blank string and not the same as the current description
         if (description != null && !description.isEmpty() && !Objects.equals(description, drug.getDescription())){
             drug.setFormula(description);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The drugs description could not be changed." +
                 " Please make sure all information is correct and try again.");
