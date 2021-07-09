@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.hospital.manager.appointment.Appointment;
 import com.hospital.manager.exception.CustomException.FailedRequestException;
+import com.hospital.manager.exception.CustomException.NotFoundException;
 import com.hospital.manager.patient.Patient;
 
 import io.swagger.annotations.Api;
@@ -33,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -97,7 +97,35 @@ public final class DoctorController {
             return Collections.unmodifiableList(List.of(responsePayload));
         }
         //Throw an exception if no id is supplied or the supplied id returns nothing.
-        throw new FailedRequestException("Request Failed. The list of doctors or requested doctor could not be found.");
+        throw new NotFoundException("Unable to load doctor(s). Please make sure all information is correct " +
+                "and try again");
+    }
+
+    /**
+     * <p>
+     *     Allow a client to update a {@link Doctor} information.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The doctors new information.
+     */
+    @PutMapping(path = "update")
+    public DoctorResponsePayload update (final UpdateRequestPayload payload){
+
+        //if new information is not null, change it and update isSuccessful
+        if (payload.getFirstName() != null){
+            service.changeFirstName(payload.getId(),payload.getFirstName());
+        }
+        if (payload.getLastName() != null){
+            service.changeLastName(payload.getId(),payload.getLastName());
+        }
+        if (payload.getPhone() != null){
+            service.changePhone(payload.getId(),payload.getPhone());
+        }
+
+        //return the patients new information
+        Doctor doctor = service.getDoctor(payload.getId());
+        return new DoctorResponsePayload(doctor);
+
     }
 
     /**
@@ -126,57 +154,6 @@ public final class DoctorController {
         return service.remove(payload.getId());
     }
 
-    /**
-     * <p>
-     *     Allow a client to update the first name of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors first name was updated successfully.
-     */
-    @PutMapping(path = "changeFirstName")
-    public HttpStatus changeFirstName(final UpdateRequestPayload payload){
-        if (!Objects.isNull(payload.firstName)) {
-            return service.changeFirstName(payload.id, payload.firstName);
-        }
-        throw new FailedRequestException("The doctors first name could not be updated. Please make sure" +
-                " all information is correct and try again.");
-    }
-
-    /**
-     * <p>
-     *     Allow a client to update the last name of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors last name was updated successfully.
-     */
-    @PutMapping(path = "changeLastName")
-    public HttpStatus changeLastName(final UpdateRequestPayload payload) {
-        if (!Objects.isNull(payload.lastName)) {
-            return service.changeLastName(payload.id, payload.lastName);
-        }
-        throw new FailedRequestException("The doctors last name could not be updated. Please make sure" +
-                " all information is correct and try again");
-    }
-
-    /**
-     * <p>
-     *    Allow a client to update the phone of a {@link Doctor}.
-     * </p>
-     *
-     * @param payload The payload containing the new information for the doctor.
-     * @return The status of if the doctors phone number was updated successfully.
-     */
-    @PutMapping(path = "changePhone")
-    public HttpStatus changePhone(final UpdateRequestPayload payload){
-        if (!Objects.isNull(payload.phone)) {
-            return service.changePhone(payload.id, payload.phone);
-        }
-        throw new FailedRequestException("The doctors phone number could not be updated. Place make sure" +
-                " all information is correct and try again");
-    }
-
 
 
     /**
@@ -190,8 +167,11 @@ public final class DoctorController {
     @RequiredArgsConstructor
     @ApiModel(description = "The request details supplied when hiring a new doctor.")
     private static final class CreateRequestPayload{
+        @ApiModelProperty(value = "The new doctors first name.")
         private final String firstName;
+        @ApiModelProperty(value = "The new doctors last name.")
         private final String lastName;
+        @ApiModelProperty(value = "Must be 10 digits.")
         private final String phone;
     }
 
@@ -244,9 +224,13 @@ public final class DoctorController {
     @RequiredArgsConstructor
     @ApiModel(description = "The request details received when attempting to update a doctor's information")
     private static final class UpdateRequestPayload{
+        @ApiModelProperty(value = "The doctors id.",required = true)
         private final long id;
+        @ApiModelProperty(value = "The doctors new first name.")
         private final String firstName;
+        @ApiModelProperty(value = "The doctors new last name.")
         private final String lastName;
+        @ApiModelProperty(value = "The doctors new phone number. Must be 10 digits.")
         private final String phone;
     }
 

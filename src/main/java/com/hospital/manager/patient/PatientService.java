@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import com.hospital.manager.doctor.Doctor;
+import com.hospital.manager.doctor.DoctorRepository;
+import com.hospital.manager.doctor.DoctorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,25 +19,22 @@ import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.InvalidIdException;
 
 /**
- * This class acts as an in-between for the patientController and the patientRepository.
- * This is called the "service layer".
- * @author - Justin Rackley
+ * <p>
+ *     This class acts as an in-between for the {@link PatientController} and the {@link PatientRepository}.
+ * </p>>
  */
 @Service
+@RequiredArgsConstructor
 public final class PatientService {
 
-    //create a permanent reference to the patient repository
     private final PatientRepository repository;
-
-    //inject the patient repository into this class
-    @Autowired
-    public PatientService(final PatientRepository repository) {
-        this.repository = repository;
-    }
+    private final DoctorService doctorService;
 
     /**
-     * A getter for a list of the patients in the database.
-     * @return A list of all of the patients in the database.
+     * <p>
+     *     A method that will return a list of all {@link Patient} in the database to the client.
+     * </p>
+     * @return An unmodifiable list of patients.
      */
     public List<Patient> getPatients(){
         //make the returned collection unmodifiable
@@ -41,34 +42,60 @@ public final class PatientService {
     }
 
     /**
-     * Allow a user to get a single patient from the database.
-     * @param ssn The ssn of the patient to find.
-     * @return The patient.
+     * <p>
+     *     A method that will return a specific {@link Patient} to the client.
+     * </p>
+     * @param ssn The patient to return's ssn.
+     * @return The Patient.
      */
-    public Patient getPatient(final long ssn){
+    public Patient getPatient(final Long ssn){
         return find(ssn);
     }
 
     /**
-     * add a patient to the database
-     * @param doctorId the patients family doctor's id
-     * @param firstName the patients first name
-     * @param lastName the patients last name
-     * @param phone the patients phone number
-     * @param address the patients address
+     * <p>
+     *     A method that will add a new {@link Patient} to the database.
+     * </p>
+     * @param doctorId The id of the patient's doctor.
+     * @param firstName The patients first name.
+     * @param lastName The patients last name.
+     * @param phone The patients phone number.
+     * @param address The patients address.
+     * @return The status of if the patient was successfully added to the database.
      */
-    public void add(final long doctorId, final String firstName, final String lastName,
+    public HttpStatus add(final Long doctorId, final String firstName, final String lastName,
                           final String phone, final String address){
-        //create a new patient and save them to the database
-// FIXME
-//        repository.save(new Patient(doctorId,firstName,lastName,phone,address));
+        //make sure phone number is the correct length
+        if (phone.length() != 10){
+            throw new FailedRequestException("The phone number you enter must be 10 digits long. Please try again.");
+        }
+
+        Patient patient = new Patient();
+        //set all of the patient information
+        patient.setDoctor(doctorService.getDoctor(doctorId));
+        patient.setFirstName(firstName);
+        patient.setLastName(lastName);
+        patient.setPhone(phone);
+        patient.setAddress(address);
+
+        repository.save(patient);
+
+        //make sure the patient was added, throw an exception if not
+        if (repository.findPatientByPhone(phone).isPresent()){
+            return HttpStatus.OK;
+        }
+        throw new FailedRequestException("The new patient could not be added to the database. Please ensure all information" +
+                " is correct and try again");
     }
 
     /**
-     * A method to allow a user to remove a patient from the database.
+     * <p>
+     *     A method that will remove a {@link Patient} from the database.
+     * </p>
      * @param ssn The ssn of the patient to remove.
+     * @return The status of if the patient was successfully removed to the database.
      */
-    public HttpStatus remove(final long ssn){
+    public HttpStatus remove(final Long ssn){
         //make sure the patient exists, exception will be thrown if not
         find(ssn);
         //delete the patient if no exception was thrown
@@ -88,11 +115,13 @@ public final class PatientService {
     }
 
     /**
-     * A method to allow a user to change a patient's name.
-     * @param ssn The ssn of the patient to change.
-     * @param firstName The new first name.
+     * <p>
+     *     A method to change the first name of a {@link Patient}.
+     * </p>>
+     * @param ssn The ssn of the patient.
+     * @param firstName The patients first name.
      */
-    public HttpStatus changeFirstName(final long ssn, final String firstName)
+    public void changeFirstName(final Long ssn, final String firstName)
     {
         //get the patient from the database
         final Patient patient = find(ssn);
@@ -101,13 +130,20 @@ public final class PatientService {
         if (firstName != null && !firstName.isEmpty() && !Objects.equals(patient.getFirstName(),firstName)){
             //set the new first name
             patient.setFirstName(firstName);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients first name could not be updated." +
                 " Please make sure all information is correct and try again.");
     }
 
-    public HttpStatus changeLastName(final long ssn, final String lastName){
+    /**
+     * <p>
+     *     A method to change the last name of a {@link Patient}.
+     * </p>
+     * @param ssn The ssn of the patient.
+     * @param lastName The patients new last name.
+     */
+    public void changeLastName(final Long ssn, final String lastName){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -115,38 +151,43 @@ public final class PatientService {
         if (lastName != null && !lastName.isEmpty() && !Objects.equals(patient.getLastName(),lastName)){
             //set the new last name
             patient.setLastName(lastName);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients last name could not be updated." +
                 " Please make sure all information is correct and try again.");
     }
 
     /**
-     * A method to change a patient's family doctor.
-     * @param ssn The ssn of the patient to change.
-     * @param doctorId The employee id of the new family doctor.
+     * <p>
+     *     A method to change the {@link Doctor} of a {@link Patient}.
+     * </p>
+     * @param ssn The patients ssn.
+     * @param doctorId The new doctors id.
      */
-    public HttpStatus changeFamilyDoctor(final long ssn, final Long doctorId){
+    public void changeFamilyDoctor(final Long ssn, final Long doctorId){
         //get the patient from the database
         final Patient patient = find(ssn);
+        final Doctor doctor = doctorService.getDoctor(doctorId);
 
-        //make sure doctorId is not null, has length > 0 and is not the same as the current doctor id
-        if (doctorId != null && doctorId >=0 && !Objects.equals(patient.getFamilyDoctorId(),doctorId)){
+        //make sure doctorId is not null,  and is not the same as the current doctor id
+        if ((!Objects.equals(patient.getDoctor().getId(),doctor.getId()))){
             //set the patients new family doctor id
-// FIXME
-//            patient.setFamilyDoctorId(doctorId);
-            return HttpStatus.OK;
+            patient.setDoctor(doctorService.getDoctor(doctorId));
+            return;
         }
         throw new FailedRequestException("The patients family doctor could not be updated." +
                 " Please make sure all information is correct and try again.");
+
     }
 
     /**
-     * A method to change the phone number of a patient.
-     * @param ssn The ssn of the patient to change.
-     * @param newPhone The new phone number.
+     * <p>
+     *     A method to change the phone number of an {@link Patient}
+     * </p>
+     * @param ssn the patients ssn.
+     * @param newPhone the patients new phone number.
      */
-    public HttpStatus changePhone(final long ssn, final String newPhone){
+    public void changePhone(final Long ssn, final String newPhone){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -154,18 +195,20 @@ public final class PatientService {
         if (newPhone != null && newPhone.length() == 10 && !(Objects.equals(newPhone,patient.getPhone()))){
             //set the new phone number
             patient.setPhone(newPhone);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients phone number could not be updated." +
                 " Please make sure all information is correct and try again.");
     }
 
     /**
-     * A method to change the address of a patient.
-     * @param ssn The ssn of the patient to change.
-     * @param newAddress The new address.
+     * <p>
+     *     A method to change the address of a {@link Patient}.
+     * </p>
+     * @param ssn The patients ssn.
+     * @param newAddress The patients new address.
      */
-    public HttpStatus changeAddress(final long ssn, final String newAddress){
+    public void changeAddress(final Long ssn, final String newAddress){
         //get the patient from the database
         final Patient patient = find(ssn);
 
@@ -173,7 +216,7 @@ public final class PatientService {
         if (newAddress != null && !newAddress.isEmpty() && !Objects.equals(patient.getAddress(),newAddress)){
             //set the new address
             patient.setAddress(newAddress);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("The patients address could not be updated." +
                 " Please make sure all information is correct and try again.");

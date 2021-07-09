@@ -5,7 +5,8 @@ package com.hospital.manager.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.hospital.manager.exception.CustomException.AppointmentNotFoundException;
+import com.hospital.manager.exception.CustomException.FailedRequestException;
+import com.hospital.manager.exception.CustomException.NotFoundException;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
@@ -14,8 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -107,7 +106,32 @@ public final class AppointmentController
 
         // No appointment was found, return an empty list for now.
         // TODO: we should return a 404 Not Found in this case.
-        throw new AppointmentNotFoundException("Unable to load appointment(s)");
+        throw new NotFoundException("Unable to load appointment(s). Please make sure all information is correct " +
+                "and try again");
+    }
+
+    /**
+     * <p>
+     *     Allow a client to update an {@link Appointment} room or date.
+     * </p>
+     * @param payload The payload containing the new information.
+     * @return The appointments new information.
+     */
+    @PutMapping
+    public AppointmentResponsePayload update(final UpdateRequestPayload payload) throws Exception{
+
+        //if new information is not null, change it and update isSuccessful
+        if (payload.getDate() != null){
+            service.changeDate(payload.getId(),FORMATTER.parse(payload.getDate()));
+        }
+        if (payload.getRoom() != null){
+            service.changeRoom(payload.getId(),payload.getRoom());
+        }
+
+        //return the patients new information
+        Appointment appointment = service.getAppointment(payload.getId());
+        return new AppointmentResponsePayload(appointment);
+
     }
 
     /**
@@ -140,30 +164,6 @@ public final class AppointmentController
         return service.cancel(payload.id);
     }
 
-    /**
-     * <p>
-     *    Allow a client to change the date of an {@link Appointment}.
-     * </p>>
-     * @param payload The payload containing the appointment's if and its new date.
-     * @return The status of if the appointment's date was changed successfully.
-     */
-    @PutMapping("changeDate")
-    public HttpStatus changeDate(final UpdateRequestPayload payload) throws Exception{
-        return service.changeDate(payload.getId(), FORMATTER.parse(payload.getDate()));
-    }
-
-    /**
-     * <p>
-     *     Allow a client to change the date of an {@link Appointment}.
-     * </p>>
-     * @param payload The payload containing the appointment's if and its new room number.
-     * @return The status of if the appointment's room was changed successfully.
-     */
-    @PutMapping("changeRoom")
-    public HttpStatus changeRoom(final UpdateRequestPayload payload){
-        return service.changeRoom(payload.getId(),payload.getRoom());
-    }
-
 
 
     @Getter
@@ -190,9 +190,13 @@ public final class AppointmentController
         description = "The request details supplied when creating (i.e. booking) a new appointment.")
     private static final class CreateRequestPayload
     {
+        @ApiModelProperty(value = "The booking patients ssn")
         private final long ssn;
+        @ApiModelProperty(value = "The attending doctors id")
         private final long doctorId;
+        @ApiModelProperty(value = "The appointments date. Please enter in the form yyyy-MM-dd hh:mm")
         private final String date;
+        @ApiModelProperty(value = "The room for the appointment")
         private final int room;
     }
 
@@ -217,11 +221,16 @@ public final class AppointmentController
     @ApiModel(description = "Update an appointment")
     private static final class UpdateRequestPayload
     {
+        @ApiModelProperty(value = "The appointments id.", required = true)
         private final long id;
+        @ApiModelProperty(value = "The new patients ssn.")
         private final long ssn;
+        @ApiModelProperty(value = "The new doctors id.")
         private final long doctorId;
+        @ApiModelProperty(value = "The appointments new date.")
         private final String date;
-        private final int room;
+        @ApiModelProperty(value = "The appointments new room.")
+        private final Integer room;
     }
 
     @ToString

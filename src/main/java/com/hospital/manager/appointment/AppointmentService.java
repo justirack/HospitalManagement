@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.hospital.manager.doctor.DoctorService;
+import com.hospital.manager.patient.PatientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,8 @@ public final class AppointmentService
 {
     //create a permanent reference to the appointment repository
     private final AppointmentRepository repository;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     /**
      * Retrieves a list of all appointments at this hospital.
@@ -49,25 +53,30 @@ public final class AppointmentService
     /**
      * Book a new appointment at the hospital.
      * @param patientSsn The patient who is booking the appointment.
-     * @param doctorEmpId The doctor who is being booked with.
+     * @param doctorId The doctor who is being booked with.
      * @param date The date of the appointment.
      * @param room The room the appointment is in.
      */
     public HttpStatus book(
         final long patientSsn,
-        final long doctorEmpId,
+        final long doctorId,
         final Date date,
         final int room) {
         //check to make sure the doctor doesnt have another appointment at the same time
-        final boolean isDoctorAvailable = doctorAvailability(doctorEmpId, date);
+        final boolean isDoctorAvailable = doctorAvailability(doctorId, date);
 
         //check to make sure the room will be available at the given date and time
         final boolean isRoomAvailable = roomAvailability(date, room);
 
         //if the doctor and room are available book the appointment
         if (isDoctorAvailable && isRoomAvailable) {
-// FIXME
-//            repository.save(new Appointment(patientSsn,doctorEmpId,date,room));
+            Appointment appointment = new Appointment();
+            appointment.setPatient(patientService.getPatient(patientSsn));
+            appointment.setDoctor(doctorService.getDoctor(doctorId));
+            appointment.setDate(date);
+            appointment.setRoom(room);
+
+            repository.save(appointment);
             return HttpStatus.OK;
         }
 
@@ -105,7 +114,7 @@ public final class AppointmentService
      * @param appId The id of the appointment.
      * @param date The new date of the appointment.
      */
-    public HttpStatus changeDate(final long appId, final Date date){
+    public void changeDate(final long appId, final Date date){
         //make sure the appointment exists
         final Appointment appointment = find(appId);
 
@@ -118,7 +127,7 @@ public final class AppointmentService
         //if the doctor and room are available, set the new appointment date
         if (isDoctorAvailable && isRoomAvailable) {
             appointment.setDate(date);
-            return HttpStatus.OK;
+            return;
         }
         //throw an exception if the doctor or room is not available
         throw new FailedRequestException("Either the doctor or room requested at " + date +
@@ -130,7 +139,7 @@ public final class AppointmentService
      * @param appId The id of the appointment
      * @param room The new room for the appointment
      */
-    public HttpStatus changeRoom(final long appId, final int room){
+    public void changeRoom(final long appId, final int room){
         //make sure the appointment exists
         Appointment appointment = find(appId);
 
@@ -140,7 +149,7 @@ public final class AppointmentService
         //if the room is available change it
         if (isRoomAvailable) {
             appointment.setRoom(room);
-            return HttpStatus.OK;
+            return;
         }
         throw new FailedRequestException("Room " + room + " is not available at " + appointment.getDate() +
                 " please try to book another room or change your appointment date.");
@@ -152,10 +161,10 @@ public final class AppointmentService
 
         for (Appointment appointment:appointments) {
             if (!(appointment.getDate().equals(date) && appointment.getRoom() == room)){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     //helper method to make sure a doctor is available at a certain date and time
@@ -165,10 +174,10 @@ public final class AppointmentService
 
         for (Appointment appointment:doctorAppointments) {
             if (!(appointment.getDate().equals(date))){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     //a helper method to find an appointment in the repository
