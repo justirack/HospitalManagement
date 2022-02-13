@@ -21,10 +21,8 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
 @RequiredArgsConstructor
 public final class DoctorService {
 
-    //create a permanent reference to the doctor repository
-    private final DoctorRepository repository;
-
-
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * Getter for a list of all the {@link Doctor} in the database.
      * @return an unmodifiable list of all {@link Doctor} objects. This cannot be null.
@@ -155,10 +153,17 @@ public final class DoctorService {
                 "Please make sure all information is correct and try again.");
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Interface
     //helper method to find a doctor in the database
     private Doctor find(final long empId){
         return repository.findById(empId).orElseThrow(() -> new InvalidIdException(
                 "Doctor with id " + empId + " not found."));
     }
+
+    // --------------------------------------------------------------------
+    // :: Private Members
+    //create a permanent reference to the doctor repository
+    private final DoctorRepository repository;
 }
 

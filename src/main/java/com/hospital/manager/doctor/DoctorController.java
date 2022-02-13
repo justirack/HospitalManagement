@@ -48,6 +48,8 @@ import java.util.List;
 @RequestMapping(path = "doctor")
 public final class DoctorController {
 
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * <p>
      *     Allow the client to get the {@link Doctor} with a given id or a list of all
@@ -154,8 +156,8 @@ public final class DoctorController {
         return service.remove(payload.getId());
     }
 
-
-
+    // --------------------------------------------------------------------
+    // :: Private Nested Classes
     /**
      * <p>
      *     Represents the payload that will be received from the client.
@@ -260,5 +262,7 @@ public final class DoctorController {
         private final List<Patient> patients;
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Members
     private final DoctorService service;
 }
