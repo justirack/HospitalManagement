@@ -5,7 +5,6 @@ package com.hospital.manager.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.hospital.manager.exception.CustomException.FailedRequestException;
 import com.hospital.manager.exception.CustomException.NotFoundException;
 
 import io.swagger.annotations.Api;
@@ -47,6 +46,8 @@ import java.util.List;
 @RequestMapping(path = "appointment")
 public final class AppointmentController
 {
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * <p>
      *     Allow a client to get a list of all {@link Appointment}.
@@ -164,7 +165,8 @@ public final class AppointmentController
         return service.cancel(payload.id);
     }
 
-
+    // --------------------------------------------------------------------
+    // :: Private Nested Classes
 
     @Getter
     @ToString
@@ -241,7 +243,7 @@ public final class AppointmentController
         {
             id = appointment.getId();
             patientId = appointment.getPatient() != null
-                ? appointment.getPatient().getId() : null; 
+                ? appointment.getPatient().getId() : null;
             doctorId = appointment.getDoctor() != null
                 ? appointment.getDoctor().getId() : null;
             room = appointment.getRoom();
@@ -255,7 +257,12 @@ public final class AppointmentController
         private final String date;
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Members
     private final AppointmentService service;
+
+    // --------------------------------------------------------------------
+    // :: Private Interface
 
     // A date formatter used to produce string representations for the date objects
     // contained within this class. This formatter captures the date and time (

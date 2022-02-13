@@ -24,11 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class AppointmentService
 {
-    //create a permanent reference to the appointment repository
-    private final AppointmentRepository repository;
-    private final DoctorService doctorService;
-    private final PatientService patientService;
-
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * Retrieves a list of all appointments at this hospital.
      * 
@@ -155,6 +152,9 @@ public final class AppointmentService
                 " please try to book another room or change your appointment date.");
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Interface
+
     private boolean roomAvailability(final Date date,final int room){
         //get a list of all the appointments
         final List<Appointment> appointments =  getAppointments();
@@ -186,4 +186,11 @@ public final class AppointmentService
         return repository.findById(appId).orElseThrow(() -> new InvalidIdException(
                 "Appointment with id  " + appId + " not found."));
     }
+
+    // --------------------------------------------------------------------
+    // :: Private Members
+    //create a permanent reference to the appointment repository
+    private final AppointmentRepository repository;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 }
