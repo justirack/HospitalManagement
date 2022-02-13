@@ -27,9 +27,8 @@ import com.hospital.manager.exception.CustomException.InvalidIdException;
 @RequiredArgsConstructor
 public final class PatientService {
 
-    private final PatientRepository repository;
-    private final DoctorService doctorService;
-
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * <p>
      *     A method that will return a list of all {@link Patient} in the database to the client.
@@ -222,6 +221,8 @@ public final class PatientService {
                 " Please make sure all information is correct and try again.");
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Interface
     //A helper method to check if the patient exists in our database
     private Patient find(final long ssn){
         //create a new temporary patient by getting the patient with the given ssn's info from the database
@@ -231,4 +232,8 @@ public final class PatientService {
                 "Patient with SSN " + ssn + " not found."));
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Members
+    private final PatientRepository repository;
+    private final DoctorService doctorService;
 }

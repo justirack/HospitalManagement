@@ -48,6 +48,8 @@ import java.util.List;
 @RequestMapping(path = "patient")
 public final class PatientController {
 
+    // --------------------------------------------------------------------
+    // :: Public Interface
     /**
      * Allow a client to get an {@link Patient} or a list of patients.
      * @param payload The payload containing the information about the patient to return.
@@ -147,7 +149,8 @@ public final class PatientController {
     }
 
 
-
+    // --------------------------------------------------------------------
+    // :: Private Nested Classes
     @ToString
     @Getter
     @RequiredArgsConstructor
@@ -233,6 +236,8 @@ public final class PatientController {
         private final List<Appointment> appointments;
     }
 
+    // --------------------------------------------------------------------
+    // :: Private Members
     private final PatientService service;
 
 }
